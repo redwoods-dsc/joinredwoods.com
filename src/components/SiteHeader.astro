@@ -1,0 +1,37 @@
+---
+import logoRaw from '../assets/images/_redwoods_white.svg?raw';
+import communityRaw from '../assets/images/_community_bg.svg?raw';
+---
+
+<div class="item container-header">
+  <div class="header">
+    <a class="logo" title="Home" href="/">
+      <span id="redwoods-logo" set:html={logoRaw} />
+    </a>
+
+    <nav class="nav">
+      <ul>
+        <li><a href="/" title="Home">Home</a></li>
+        <li><a href="/blog" title="Blog">Blog</a></li>
+        <li><a href="/about" title="About">About</a></li>
+        <li><a href="/the-quarterly" title="The Quarterly">The Quarterly</a></li>
+        <li class="ps-link">
+          <a href="/join" title="Join Redwoods">Join</a>
+        </li>
+      </ul>
+    </nav>
+
+    <span id="redwoods-community" set:html={communityRaw} />
+  </div>
+</div>
+
+<style>
+  #redwoods-logo svg {
+    width: 100%;
+    max-width: 10em;
+  }
+  #redwoods-community svg {
+    width: 100%;
+    max-width: 16em;
+  }
+</style>

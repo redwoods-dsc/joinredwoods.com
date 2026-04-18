@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "joinredwoods-com",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,6 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/source-sans-3": "^5.2.9",
+    "@fontsource-variable/source-serif-4": "^5.2.9",
     "astro": "^6.1.7"
   }
 }

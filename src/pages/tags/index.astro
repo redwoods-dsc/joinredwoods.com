@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const posts = await getCollection('posts', entry => !entry.data.draft);
+
+// Build tag → count map
+const tagMap = new Map<string, number>();
+posts.forEach(post => {
+  post.data.tags.forEach(tag => {
+    const slug = tag.toLowerCase().replace(/\s+/g, '-');
+    tagMap.set(slug, (tagMap.get(slug) ?? 0) + 1);
+  });
+});
+
+const sortedTags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
+---
+
+<PageLayout title="Tags — Redwoods" description="Browse all content tags on Redwoods.">
+  <Fragment slot="primary">
+    <h1>All Tags</h1>
+    <ul class="tag-list">
+      {sortedTags.map(([slug, count]) => (
+        <li>
+          <a href={`/tags/${slug}`}>{slug.replace(/-/g, ' ')}</a>
+          <span class="count">({count})</span>
+        </li>
+      ))}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="secondary">
+    <p>{sortedTags.length} tags across {posts.length} posts.</p>
+  </Fragment>
+</PageLayout>
+
+<style>
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em;
+  }
+  .tag-list li {
+    display: flex;
+    align-items: center;
+    gap: .25em;
+  }
+  .count {
+    font-size: .8em;
+    color: var(--prim_c-gray-50);
+  }
+</style>

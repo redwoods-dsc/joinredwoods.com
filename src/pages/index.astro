@@ -1,11 +1,85 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import FeaturedList from '../components/FeaturedList.astro';
+import Promos from '../components/Promos.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const allPosts = await getCollection('posts', entry => !entry.data.draft);
+
+const learnings = allPosts.filter(
+  p => p.data.featured && p.data.tags.some(t => t.toLowerCase() === 'learning')
+);
+
+const events = allPosts.filter(
+  p => p.data.featured && p.data.type === 'event'
+);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<PageLayout
+  title="Redwoods — A Design System Community"
+  bodyClass="page_home"
+>
+  <Fragment slot="primary">
+    <h2 class="headline">Redwoods is a group of <em>life-long learners</em> committed to supporting each other on the journey of design system maturity.</h2>
+
+    <div class="columns">
+      <section class="hook">
+        <p class="mission">We're creators, not just consumers. We're teachers, not just learners. We're here to challenge and expand each other's perspectives, and to push the design system community forward in sustainable and meaningful ways.</p>
+
+        <p>Redwoods is made up of system thinkers from around the world who've worked on design systems for many organizations, including these:</p>
+
+        <ul>
+          <li>Spotify</li>
+          <li>Microsoft</li>
+          <li>The New York Times</li>
+          <li>Adobe</li>
+          <li>Dropbox</li>
+          <li>Mozilla</li>
+          <li>Shopify</li>
+          <li>Atlassian</li>
+          <li>Wise</li>
+          <li>The BBC</li>
+          <li>The Government of Canada</li>
+          <li>Alaska Airlines</li>
+          <li>and a whole lot more...</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3 id="values">Our Values</h3>
+        <p>Redwoods has three core values that provide the foundation of every interaction we have. These are actual, not aspirational. If you're a member of Redwoods, this is what we expect of you. And everyone is encouraged to speak up when these values are not upheld. We're not perfect, so we won't always get this right. But we are on a mission to be better humans and better practitioners.</p>
+
+        <h4>Stay in learning mode.</h4>
+        <p>Everyone, from junior to senior, has something to teach you. Redwoods encourages continuous and open learning, across experience level and discipline.</p>
+
+        <h4>Be generous with your knowledge.</h4>
+        <p>Learning is great, but it's not enough. Redwoods members are creators, not just consumers—we analyze, we synthesize, and then we offer our new understanding back to the larger community.</p>
+
+        <h4>We're in this together.</h4>
+        <p>Respect is our default. Redwoods is a safe and open community where everyone's experiences and perspectives are valued. We're here to support, advise, and guide you throughout your systems career.</p>
+      </section>
+    </div>
+  </Fragment>
+
+  <Fragment slot="secondary">
+    <FeaturedList
+      heading="What we've learned"
+      entries={learnings}
+      variant="blue"
+      seeAllHref="/blog"
+      seeAllLabel="All learning"
+    />
+
+    <FeaturedList
+      heading="Where we'll be:"
+      entries={events}
+      variant="green"
+      seeAllHref="/tags/event"
+      seeAllLabel="Previous events"
+    />
+
+    <section class="grouping">
+      <Promos />
+    </section>
+  </Fragment>
+</PageLayout>

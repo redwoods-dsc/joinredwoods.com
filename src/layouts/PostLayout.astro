@@ -1,0 +1,68 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Promos from '../components/Promos.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date: Date;
+  tags: string[];
+  externalLink?: string;
+  publishedOn?: string;
+  canonical?: string;
+}
+
+const { title, description, date, tags, externalLink, publishedOn, canonical } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout {title} {description} bodyClass="page_post" {canonical}>
+  <div class="container-grid">
+    <SiteHeader />
+    <div class="item container-primary">
+      <a class="small date" href="#">{formattedDate}</a>
+
+      {externalLink && publishedOn && (
+        <p class="published-on">
+          Originally published on <a href={externalLink}>{publishedOn}</a>
+        </p>
+      )}
+
+      <slot />
+
+      {tags.length > 0 && (
+        <p class="post-tags">
+          {tags.map(tag => (
+            <a class="tag" href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`}>{tag}</a>
+          ))}
+        </p>
+      )}
+    </div>
+
+    <div class="item container-secondary">
+      <section>
+        <Promos />
+      </section>
+    </div>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>
+
+<style>
+  .published-on {
+    font-size: .9em;
+    color: var(--prim_c-gray-50);
+    margin-bottom: 1em;
+  }
+  .post-tags {
+    margin-top: 2em;
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', entry => !entry.data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const canonical = post.data.externalLink ?? undefined;
+---
+
+<PostLayout
+  title={`${post.data.title} — Redwoods`}
+  description={post.data.description}
+  date={post.data.date}
+  tags={post.data.tags}
+  externalLink={post.data.externalLink}
+  publishedOn={post.data.publishedOn}
+  canonical={canonical}
+>
+  <Content />
+</PostLayout>
