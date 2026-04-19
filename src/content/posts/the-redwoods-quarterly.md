@@ -1,6 +1,6 @@
 ---
 title: "The Redwoods Quarterly"
-date: 2025-06-01
+date: 2025-09-12
 type: promo
 image: ../../assets/images/_the-quarterly_logo_horiz.png
 imageAlt: "The Redwoods Quarterly"

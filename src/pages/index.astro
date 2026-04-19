@@ -6,9 +6,9 @@ import Promos from '../components/Promos.astro';
 
 const allPosts = await getCollection('posts', entry => !entry.data.draft);
 
-const learnings = allPosts.filter(
-  p => p.data.featured && p.data.tags.some(t => t.toLowerCase() === 'learning')
-);
+const learnings = allPosts
+  .filter(p => p.data.featured && p.data.tags.some(t => t.toLowerCase() === 'learning'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const events = allPosts.filter(
   p => p.data.featured && p.data.type === 'event'
