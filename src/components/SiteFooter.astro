@@ -1,0 +1,15 @@
+---
+---
+
+<div class="item container-footer">
+  <div class="full elsewhere">
+    <p>Redwoods is thoughtfully maintained by <a href="https://bencallahan.com">Ben Callahan</a>, design system coach and consultant, and the many active community members who participate each day.</p>
+  </div>
+  <div class="copyright">
+    <p>&copy; Copyright <span id="footer-year"></span> Redwoods. <span class="extra">Better humans. Better practitioners.</span></p>
+  </div>
+</div>
+
+<script is:inline>
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+</script>

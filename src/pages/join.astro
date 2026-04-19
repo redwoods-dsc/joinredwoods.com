@@ -1,0 +1,147 @@
+---
+import { Image } from 'astro:assets';
+import treesImage from '../assets/images/_50-trees.svg';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Join Redwoods"
+  description="Join Redwoods — a committed community for people working on design systems. Daily Discord, weekly Zoom, monthly action groups, and quarterly events."
+  bodyClass="page_join"
+>
+  <Fragment slot="primary">
+    <h1>Join Redwoods Today!</h1>
+
+    <h3>Our Mission</h3>
+    <p>We're creators, not just consumers. We're teachers, not just learners. We're here to challenge and expand each other's perspectives, and to push the design system community forward in sustainable and meaningful ways.</p>
+
+    <section id="values" class="values-container">
+      <h4>Our Values</h4>
+      <p>Redwoods has three core values that provide the foundation of every interaction we have. These are actual, not aspirational. If you're a member of Redwoods, this is what we expect of you. And everyone is encouraged to speak up when these values are not upheld. We're not perfect, so we won't always get this right. But we are on a mission to be better humans and better practitioners.</p>
+
+      <h5>Stay in learning mode.</h5>
+      <p>Everyone, from junior to senior, has something to teach you. Redwoods encourages continuous and open learning, across experience level and discipline.</p>
+
+      <h5>Be generous with your knowledge.</h5>
+      <p>Learning is great, but it's not enough. Redwoods members are creators, not just consumers—we analyze, we synthesize, and then we offer our new understanding back to the larger community.</p>
+
+      <h5>We're in this together.</h5>
+      <p>Respect is our default. Redwoods is a safe and open community where everyone's experiences and perspectives are valued. We're here to support, advise, and guide you throughout your systems career.</p>
+    </section>
+
+    <h3>Join Redwoods</h3>
+    <p>If this sounds like what you're looking for, consider joining Redwoods. You can purchase a monthly or yearly membership, and many organizations will cover the cost through a training budget.</p>
+    <p>Your membership comes with additional benefits. You'll get free access to attend The Quarterly, an online design system event covering recent shifts in the DS space each quarter. You'll get behind the scenes access to <a href="/the-question">The Question</a>, a bi-monthly, live, design system research show. You'll also receive discounts on individual coaching and strategy sessions. All of this and more comes with your Redwoods membership.</p>
+    <p>We're open as of April 1st, so <a href="/connect">reach out if you have questions</a>, or join below.</p>
+
+    <!-- Stripe buy buttons — re-enable when payment is ready
+    <div id="join" class="bc-buy center">
+      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+      <stripe-buy-button
+        buy-button-id="buy_btn_1RG8x8JO1RFjFrSPo8zPoTGG"
+        publishable-key="pk_live_51PCj5CJO1RFjFrSP1IxpQ5GVQhDe6MyUX7Kl68OnAC5JPLOHWSpMvuN9oAUTlxsFoIX9nJ7MomR0R5ueAiZ5PCb800z4QVBE7A">
+      </stripe-buy-button>
+      <stripe-buy-button
+        buy-button-id="buy_btn_1RG91xJO1RFjFrSPRJenV2lm"
+        publishable-key="pk_live_51PCj5CJO1RFjFrSP1IxpQ5GVQhDe6MyUX7Kl68OnAC5JPLOHWSpMvuN9oAUTlxsFoIX9nJ7MomR0R5ueAiZ5PCb800z4QVBE7A">
+      </stripe-buy-button>
+    </div>
+    -->
+
+    <div class="hero">
+      <ul class="summary">
+        <li>Daily Discord chats</li>
+        <li>Weekly video conversations</li>
+        <li>Presentation coaching</li>
+        <li>Publishing opportunities</li>
+        <li>Cultural assessment sessions</li>
+        <li>DS peer reviews</li>
+        <li>Member showcases</li>
+        <li>Research collaborations</li>
+        <li>Focused problem solving</li>
+        <li>New friends</li>
+        <li>Much more...</li>
+      </ul>
+      <div class="lead-image capped-width">
+        <img src={treesImage.src} alt="Sketch of coastal redwood trees, the tallest tree in the world." />
+      </div>
+    </div>
+
+    <h4>What will we actually do?</h4>
+    <p>I've learned that the design system community has a LOT of ideas for things they want to do. In an effort to support that organic approach to learning, we'll be keeping the structure somewhat loose. We'll have a weekly "standup" in Discord to get things moving, and there will be opportunities each week to join video calls to connect, collaborate, and challenge each other. What we do in those calls will depend on what's happening with and what's needed from our membership.</p>
+
+    <h4>Introducing, The Quarterly!</h4>
+    <p>One key component for Redwoods is that we'll be hosting two or three online events (the first one in June) called The Quarterly. These will give us a goal to work toward and they'll create opportunities for us to share the big takeaways from each quarter. If we're going to push the industry forward in meaningful ways, we have to make space to synthesize and share out what we've learned! The Quarterly will be just that.</p>
+
+    <h4>Who is involved?</h4>
+    <p>Of course, I will always be around!</p>
+    <p>I've also recruited a small group of fantastic folks I call <i>Redwood Rangers</i>. They come from a variety of disciplines and backgrounds and will be present to help facilitate some of the more organic conversations.</p>
+    <p>If you're wondering if Redwoods is for you, I've structured the community to prioritize anyone who:</p>
+    <ul>
+      <li>Aligns with the values above</li>
+      <li>Desires to grow in their craft</li>
+      <li>Wants to make a sustainable impact in the industry</li>
+    </ul>
+    <p>If that sounds like you, it's likely you'll be a fantastic addition to the community.</p>
+
+    <h4>Why does it cost money?</h4>
+    <p>The investment ($25 per month or $250 per year) is intended to fit well within a standard education budget and cover the costs we have as a group, including time for administration and facilitation of the community as well as license fees for the tools we use. In order to keep the investment reasonable for Redwoods members, we will be actively looking for additional forms of revenue—things like sponsorship and ticket sales to attend The Quarterly—so that we can have resources to keep the community thriving.</p>
+
+    <h4>Why did you start Redwoods?</h4>
+    <p>Over many years, I've conducted hundreds of interviews with design system leads across company sizes. I've facilitated industry surveys, researched the impact a company's culture has on its design system, put this research to work with many organizations, and I've learned a lot.</p>
+
+    <h4>The Problem</h4>
+    <p>In all of that research, the biggest gap I've identified is that <i>companies don't know how to support the teams doing this work</i>. We are leaving these people on an island, and it's resulting in design systems that don't generate the results we had hoped for. I'm someone who believes in the impact a design system can have—I've seen it work—but systems have to be nurtured.</p>
+    <p><b>The way we do that is by nurturing the people working on them.</b></p>
+    <p>I know how much money companies (like yours) are investing in design systems. I know how long they've been trying and how many times they've had to restart. I'm here to tell you, it doesn't have to be that way.</p>
+
+    <h4>The Opportunity</h4>
+    <p>To address all of this, I've started Redwoods—a committed community for people working on design systems. This is a safe place where we can talk about the real challenges we're facing, support each other through those challenges, and start to generate the results we've been promising. And beyond all of this, we are makers. Joining Redwoods is committing to share what you're learning with the larger community.</p>
+
+    <h4>Why Join?</h4>
+    <p>I was in Muir Woods a few years ago. This is a coastal redwood forest—a genuinely spiritual place to visit. The ground is covered in pine needles, there is no noise, the smell is so pure… And you're surrounded by trees as tall as the Statue of Liberty. It's truly breathtaking.</p>
+    <p>When people first moved into the area, they cut down these trees for the lumber but would always leave a few standing. Inevitably, after a short time, those trees that were left would fall over.</p>
+    <p>You see, even though these trees are hundreds of feet tall, their roots only go down about ten feet. Those same roots grow out, horizontally, as much as 80 feet and intertwine with roots of other redwoods in the area. <i>These trees actually hold each other up.</i></p>
+    <p>This is what Redwoods Design System Community is. We need a space to hold each other up, to support each other. I believe there's an authentic way to do that through this very community. I hope you'll come along.</p>
+
+    <h2 id="cancellation">Cancellation Policy</h2>
+    <p>My intent is that Redwoods design system community is a genuinely valuable experience for all our members. However, if you need to cancel your membership for any reason, I understand and am providing these guidelines to inform your decision.</p>
+
+    <h3>How to Cancel</h3>
+    <p>You can modify or cancel your membership via the Stripe portal. You received this link via email when you first joined. If you can't find that link, contact me in Discord and I'll help you track it down!</p>
+
+    <h3>Notice Period</h3>
+    <p>Cancellations will take place at the end of each month. In cases where you have not derived the value you hoped, I will happily refund you and remove you from the community. Reach out in Discord to begin the process.</p>
+
+    <h3>Exceptions</h3>
+    <p>In cases of extenuating circumstances (e.g., medical emergencies, financial hardship), please contact Ben via Discord or email to discuss possible exceptions to this policy.</p>
+
+    <h3>Just ask!</h3>
+    <p>For assistance or more information regarding changes or cancellations, please reach out to Ben via Discord.</p>
+
+    <h2 id="confidentiality">Confidentiality</h2>
+    <p>Redwoods aims to strike a balance between people being willing to share enough that we can all learn together and the necessary confidentiality we need to create a safe space for hard conversations. For this reason, I ask that specific stories and examples not be shared outside of Redwoods communication channels. Screenshots, text, videos or audio captures, etc. are considered confidential to this community.</p>
+    <p>Part of what we also want is to be a community of people who are sharing what we learn with the larger design system community. This is encouraged, but requires that any learnings be made appropriately anonymous before sharing. If in doubt, reach out to Ben in Discord to verify your approach.</p>
+    <p>If you feel this ideal balance has not been upheld in a published communication or on social media, please reach out to Ben via Discord to discuss.</p>
+
+    <h2 id="coc">Redwoods Code of Conduct</h2>
+    <b>Harassment in any form will not be tolerated.</b>
+    <p>Redwoods is dedicated to providing inclusive, harassment-free, educational experiences for everyone, regardless of gender, gender identity and expression, age, sexual orientation, ability, physical appearance, body size, race, ethnicity, or religion or lack thereof.</p>
+    <p>We expect members and facilitators to fully comply with these ideals in every interaction. If you are harassed, or if you witness harassment, please contact Ben Callahan immediately. We reserve the right to determine the appropriate response, including but not limited to expelling individuals from the community without a refund.</p>
+    <p><i>Don't be nasty or mean—be considerate and respectful.</i></p>
+  </Fragment>
+
+  <Fragment slot="secondary">
+    <section>
+      <h4>Membership includes</h4>
+      <ul>
+        <li>Daily Discord chats</li>
+        <li>Weekly video conversations</li>
+        <li>Free access to The Quarterly</li>
+        <li>Behind-the-scenes access to The Question</li>
+        <li>Discounts on coaching sessions</li>
+        <li>Member showcases &amp; research collaborations</li>
+      </ul>
+    </section>
+  </Fragment>
+</PageLayout>

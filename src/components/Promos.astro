@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const promos = (await getCollection('posts', entry =>
+  entry.data.type === 'promo' &&
+  entry.data.featured === true &&
+  entry.data.draft === false
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const renderedPromos = await Promise.all(
+  promos.map(async promo => ({
+    promo,
+    Content: (await render(promo)).Content,
+  }))
+);
+---
+
+{renderedPromos.map(({ promo, Content }) => {
+  const href = promo.data.externalLink ?? `/posts/${promo.id}`;
+  const imageStyle = promo.data.imageStyle ?? '';
+  const styleClasses = imageStyle.split(' ').filter(Boolean).join(' ');
+
+  return (
+    <div class="ad">
+      {promo.data.image && (
+        <div class="ad-img">
+          <a href={href}>
+            <Image
+              src={promo.data.image}
+              alt={promo.data.imageAlt ?? promo.data.title}
+              class={styleClasses}
+            />
+          </a>
+        </div>
+      )}
+      <div class="ad-info">
+        <Content />
+      </div>
+    </div>
+  );
+})}

@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', entry => !entry.data.draft);
+
+  // Collect all unique tags
+  const tagSet = new Set<string>();
+  posts.forEach(post => {
+    post.data.tags.forEach(tag => {
+      tagSet.add(tag.toLowerCase().replace(/\s+/g, '-'));
+    });
+  });
+
+  return Array.from(tagSet).map(tag => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts
+        .filter(post =>
+          post.data.tags.some(t => t.toLowerCase().replace(/\s+/g, '-') === tag)
+        )
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const displayTag = tag.replace(/-/g, ' ');
+---
+
+<PageLayout
+  title={`${displayTag} — Redwoods`}
+  description={`Posts tagged "${displayTag}" on Redwoods.`}
+>
+  <Fragment slot="primary">
+    <h1>Tagged: <em>{displayTag}</em></h1>
+    <ul class="post-list">
+      {posts.map(post => {
+        const href = post.data.externalLink ?? `/posts/${post.id}`;
+        return (
+          <li>
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <a href={href}>{post.data.title}</a>
+            {post.data.authors && <span class="author"> — {post.data.authors}</span>}
+          </li>
+        );
+      })}
+    </ul>
+    <p><a href="/tags">All tags →</a></p>
+  </Fragment>
+
+  <Fragment slot="secondary">
+    <p>Showing all posts tagged <strong>{displayTag}</strong>.</p>
+  </Fragment>
+</PageLayout>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    margin-bottom: 1em;
+  }
+  .post-list time {
+    display: block;
+    font-size: .8em;
+    color: var(--prim_c-gray-50);
+  }
+  .author {
+    font-size: .9em;
+    color: var(--prim_c-gray-50);
+  }
+</style>

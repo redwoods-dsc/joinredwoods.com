@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  heading: string;
+  entries: CollectionEntry<'posts'>[];
+  variant?: 'blue' | 'green' | 'orange';
+  seeAllHref?: string;
+  seeAllLabel?: string;
+}
+
+const {
+  heading,
+  entries,
+  variant = 'blue',
+  seeAllHref,
+  seeAllLabel = 'See all',
+} = Astro.props;
+---
+
+<section class="grouping">
+  <h4>{heading}</h4>
+  <ol class={`list-special c-${variant}`}>
+    {entries.map(entry => {
+      const href = entry.data.externalLink
+        ? entry.data.externalLink
+        : `/posts/${entry.id}`;
+      return (
+        <li>
+          <a href={href}>
+            <article class="li-container" itemscope itemtype="https://schema.org/Article">
+              <time
+                class="list-meta"
+                itemprop="datePublished"
+                datetime={entry.data.date.toISOString()}
+              >
+                {entry.data.dayRange ?? entry.data.date.getDate()}
+                <small>{entry.data.month ?? entry.data.date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })}</small>
+              </time>
+              <div class="list-main">
+                <p itemprop="name">
+                  {entry.data.type === 'event' ? entry.data.presented : entry.data.authors}
+                </p>
+                <h1 itemprop="headline">{entry.data.title}</h1>
+              </div>
+            </article>
+          </a>
+        </li>
+      );
+    })}
+  </ol>
+  {seeAllHref && (
+    <a class="see-all" href={seeAllHref}>{seeAllLabel}</a>
+  )}
+</section>

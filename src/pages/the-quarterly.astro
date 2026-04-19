@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import quarterlyImage from '../assets/images/_redwoods-quarterly-ver-3.png';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="The Redwoods Quarterly"
+  description="The Redwoods Quarterly is an online conversation, facilitated by the Redwoods design system community."
+  bodyClass="page_the-quarterly"
+>
+  <Fragment slot="primary">
+    <h2 class="headline">The Redwoods Quarterly is an online conversation, facilitated by the <em>Redwoods design system community</em>.</h2>
+
+    <div class="columns">
+      <section class="hook">
+        <Image class="s_lrg" src={quarterlyImage} alt="The Redwoods Quarterly" />
+      </section>
+
+      <section>
+        <h3>About the event</h3>
+
+        <p>The first ever Redwoods Quarterly is happening in September. We're developing the agenda now, and early bird tickets are available.</p>
+
+        <h4>We show up daily in Discord</h4>
+        <p>This gives us a space to dive deep into async discussions, organize specific conversations, and share what's happening in our work and our lives.</p>
+
+        <h4>We show up weekly in Zoom</h4>
+        <p>We have three, optional times set aside for members to jump into a video call with each other. This gives us time to discuss the challenges we're facing, learn from each other, and build community.</p>
+
+        <h4>We show up monthly in action groups</h4>
+        <p>Every action group has a goal, a deadline, and an owner. These small groups let us collaborate on a specific goal over the course of a month.</p>
+        <p>All members are welcome to join action groups as they have interest and time. These action groups may co-publish their learnings, develop tools or templates, create presentations, or any other appropriate means of sharing their synthesis.</p>
+      </section>
+    </div>
+  </Fragment>
+
+  <Fragment slot="secondary">
+    <section class="quotes">
+      <h4>Words from the members:</h4>
+      <ul>
+        <li>
+          <blockquote>
+            <p>"Design Systems work is hard, particularly when you/your team are the only ones who understand the work. Redwoods creates a welcoming, open-minded space to work through challenges with people who, regardless of what you're dealing with, have been there, done that."</p>
+          </blockquote>
+          <p><cite>Riley S.</cite></p>
+        </li>
+        <li>
+          <blockquote>
+            <p>"Redwoods is one of the only communities where I feel like I can not only grow in my own DS practice by learning from others, but also have a hand in shaping the world of design systems at large. The collaborative nature and intelligence of the members, coupled with the structure of the community itself makes the time I spend there feel valuable and exciting, while still warm and inviting."</p>
+          </blockquote>
+          <p><cite>ToniAnn D.</cite></p>
+        </li>
+        <li>
+          <blockquote>
+            <p>"I joined Redwoods to meet kind, curious people who love design systems and to deep dive into the wonderful and wild world of making things better for our users! The energy here is so warm, and I am really looking forward to connecting and discovering new creative things together!"</p>
+          </blockquote>
+          <p><cite>Ashley Z.</cite></p>
+        </li>
+      </ul>
+    </section>
+  </Fragment>
+</PageLayout>

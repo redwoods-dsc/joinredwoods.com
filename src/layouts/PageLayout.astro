@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const { title, description, bodyClass = '', canonical, ogImage } = Astro.props;
+---
+
+<BaseLayout {title} {description} {bodyClass} {canonical} {ogImage}>
+  <div class="container-grid">
+    <SiteHeader />
+    <div class="item container-primary">
+      <slot name="primary" />
+    </div>
+    <div class="item container-secondary">
+      <slot name="secondary" />
+    </div>
+    <SiteFooter />
+  </div>
+</BaseLayout>
