@@ -2,17 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 
-const neutrals = ['0', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000'];
-const brand = ['100', '300', '500', '700', '900'];
+const brand = [
+  { name: 'orange', token: '--color-orange' },
+  { name: 'woodland', token: '--color-woodland' },
+  { name: 'green', token: '--color-green' },
+  { name: 'blue', token: '--color-blue' },
+  { name: 'cream', token: '--color-cream' },
+];
+
+const grayScale = ['00', '25', '50', '75', '100'];
+
 const semanticColors = [
   { name: 'bg', token: '--color-bg' },
   { name: 'surface', token: '--color-surface' },
   { name: 'text', token: '--color-text' },
-  { name: 'text-muted', token: '--color-text-muted' },
-  { name: 'border', token: '--color-border' },
   { name: 'accent', token: '--color-accent' },
-  { name: 'accent-contrast', token: '--color-accent-contrast' },
-  { name: 'focus', token: '--color-focus' },
 ];
 
 const typeSamples = [
@@ -60,35 +64,35 @@ const sections = [
       <div class="section__head">
         <h2>Colors</h2>
         <p>
-          Raw ramps plus semantic aliases. Use the semantic tokens in components; reach for the
-          ramps only when defining new aliases.
+          Brand palette plus semantic aliases. Use the semantic aliases in components; reach for the
+          brand palette only when defining new aliases.
         </p>
       </div>
 
-      <h3 class="subhead">Neutrals</h3>
+      <h3 class="subhead">Brand</h3>
       <div class="swatches">
         {
-          neutrals.map((step) => (
-            <div class="swatch" style={`--swatch: var(--color-neutral-${step})`}>
+          brand.map((c) => (
+            <div class="swatch" style={`--swatch: var(${c.token})`}>
               <div class="swatch__color" />
               <div class="swatch__meta">
-                <span class="swatch__name">neutral-{step}</span>
-                <code class="swatch__token">--color-neutral-{step}</code>
+                <span class="swatch__name">{c.name}</span>
+                <code class="swatch__token">{c.token}</code>
               </div>
             </div>
           ))
         }
       </div>
 
-      <h3 class="subhead">Brand</h3>
+      <h3 class="subhead">Gray Scale</h3>
       <div class="swatches">
         {
-          brand.map((step) => (
-            <div class="swatch" style={`--swatch: var(--color-brand-${step})`}>
+          grayScale.map((step) => (
+            <div class="swatch" style={`--swatch: var(--color-gray-${step})`}>
               <div class="swatch__color" />
               <div class="swatch__meta">
-                <span class="swatch__name">brand-{step}</span>
-                <code class="swatch__token">--color-brand-{step}</code>
+                <span class="swatch__name">gray-{step}</span>
+                <code class="swatch__token">--color-gray-{step}</code>
               </div>
             </div>
           ))
@@ -461,7 +465,7 @@ const sections = [
   .radii-sample__tile {
     width: 5rem;
     height: 5rem;
-    background: var(--color-accent);
+    background: var(--color-surface);
   }
 
   .shadow-sample__card {
@@ -507,7 +511,7 @@ const sections = [
 
   code {
     padding: 0 var(--space-2xs);
-    background: var(--color-surface);
+    /* background: var(--color-surface); */
     border-radius: var(--radius-xs);
   }
 </style>

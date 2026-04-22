@@ -1,4 +1,32 @@
 :root {
+  --color-orange: #875231;
+  --color-woodland: #6a6a40;
+  --color-green: #787848;
+  --color-blue: #97afab;
+  --color-cream: #f2efe4;
+
+  --color-gray-00: #000000;
+  --color-gray-25: #444444;
+  --color-gray-50: #888888;
+  --color-gray-75: #cccccc;
+  --color-gray-100: #ffffff;
+
+  --color-bg: var(--color-cream);
+  --color-surface: var(--color-green);
+  --color-text: var(--color-gray-25);
+  --color-accent: var(--color-orange);
+  --color-accent-contrast: var(--color-gray-100);
+
+  /* --mar-mid: var(--prim_r-04);
+  --main-bg-color: var(--prim_c-cream);
+  --dark-txt-color: var(--prim_c-cream);
+  --light-txt-color: var(--prim_c-gray-25);
+  --home-header-bg-color: var(--prim_c-orange);
+  --sub-header-bg-color: var(--prim_c-green);
+  --blog-header-bg-color: var(--prim_c-blue);
+  --quarterly-header-bg-color: var(--prim_c-orange);
+  --main-border-size: var(--prim_s-04); */
+  
   --color-neutral-0: #ffffff;
   --color-neutral-50: #fafaf9;
   --color-neutral-100: #f5f5f4;
@@ -18,21 +46,8 @@
   --color-brand-700: #1f5c3f;
   --color-brand-900: #123524;
 
-  --color-bg: var(--color-neutral-0);
-  --color-surface: var(--color-neutral-50);
-  --color-text: var(--color-neutral-900);
-  --color-text-muted: var(--color-neutral-600);
-  --color-border: var(--color-neutral-200);
-  --color-accent: var(--color-brand-500);
-  --color-accent-contrast: var(--color-neutral-0);
-  --color-focus: color-mix(in srgb, var(--color-accent) 60%, transparent);
-
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
+  --font-sans: "Source Sans 3", sans-serif;
+  --font-serif: "Source Serif 4", serif;
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
