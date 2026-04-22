@@ -16,6 +16,7 @@ const semanticColors = [
   { name: 'bg', token: '--color-bg' },
   { name: 'surface', token: '--color-surface' },
   { name: 'text', token: '--color-text' },
+  { name: 'border', token: '--color-border' },
   { name: 'accent', token: '--color-accent' },
   { name: 'accent-contrast', token: '--color-accent-contrast' },
 ];
@@ -31,7 +32,6 @@ const typeSamples = [
 
 const spacingSteps = ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
 const radiiSteps = ['xs', 'sm', 'md', 'lg', 'xl', 'full'];
-const shadowSteps = ['sm', 'md', 'lg'];
 
 const buttonVariants = ['primary', 'secondary', 'ghost', 'danger'] as const;
 const buttonSizes = ['sm', 'md', 'lg'] as const;
@@ -41,7 +41,6 @@ const sections = [
   { id: 'typography', label: 'Typography' },
   { id: 'spacing', label: 'Spacing' },
   { id: 'radii', label: 'Radii' },
-  { id: 'shadows', label: 'Shadows' },
   { id: 'buttons', label: 'Buttons' },
   { id: 'links', label: 'Links' },
 ];
@@ -194,25 +193,6 @@ const sections = [
               <div class="radii-sample__tile" style={`border-radius: var(--radius-${step})`} />
               <span class="radii-sample__name">radius-{step}</span>
               <code class="radii-sample__token">--radius-{step}</code>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <section id="shadows" class="section">
-      <div class="section__head">
-        <h2>Shadows</h2>
-        <p>Elevation for cards, popovers, and modals.</p>
-      </div>
-      <div class="shadow-grid">
-        {
-          shadowSteps.map((step) => (
-            <div class="shadow-sample">
-              <div class="shadow-sample__card" style={`box-shadow: var(--shadow-${step})`}>
-                shadow-{step}
-              </div>
-              <code class="shadow-sample__token">--shadow-{step}</code>
             </div>
           ))
         }

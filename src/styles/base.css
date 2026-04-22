@@ -66,6 +66,7 @@ p {
 }
 
 a {
+  color: var(--color-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
