@@ -26,28 +26,9 @@
   --blog-header-bg-color: var(--prim_c-blue);
   --quarterly-header-bg-color: var(--prim_c-orange);
   --main-border-size: var(--prim_s-04); */
-  
-  --color-neutral-0: #ffffff;
-  --color-neutral-50: #fafaf9;
-  --color-neutral-100: #f5f5f4;
-  --color-neutral-200: #e7e5e4;
-  --color-neutral-300: #d6d3d1;
-  --color-neutral-400: #a8a29e;
-  --color-neutral-500: #78716c;
-  --color-neutral-600: #57534e;
-  --color-neutral-700: #44403c;
-  --color-neutral-800: #292524;
-  --color-neutral-900: #1c1917;
-  --color-neutral-1000: #0c0a09;
 
-  --color-brand-100: #e7f3ec;
-  --color-brand-300: #8ec9a4;
-  --color-brand-500: #2f855a;
-  --color-brand-700: #1f5c3f;
-  --color-brand-900: #123524;
-
-  --font-sans: "Source Sans 3", sans-serif;
-  --font-serif: "Source Serif 4", serif;
+  --font-sans: 'Source Sans 3', sans-serif;
+  --font-serif: 'Source Serif 4', serif;
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
