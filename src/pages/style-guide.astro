@@ -351,7 +351,7 @@ const sections = [
 
   .swatches {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: var(--space-md);
   }
 
@@ -366,7 +366,7 @@ const sections = [
   }
 
   .swatch__color {
-    height: 4.5rem;
+    height: 72px;
     border-radius: var(--radius-sm);
     background: var(--swatch);
     border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
@@ -425,7 +425,7 @@ const sections = [
 
   .scale-row {
     display: grid;
-    grid-template-columns: 6rem 1fr auto;
+    grid-template-columns: 96px 1fr auto;
     align-items: center;
     gap: var(--space-md);
   }
@@ -436,7 +436,7 @@ const sections = [
   }
 
   .scale-row__bar {
-    height: 0.75rem;
+    height: 12px;
     background: var(--color-accent);
     border-radius: var(--radius-full);
     min-width: 2px;
@@ -450,7 +450,7 @@ const sections = [
   .radii-grid,
   .shadow-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
     gap: var(--space-lg);
   }
 
@@ -464,8 +464,8 @@ const sections = [
   }
 
   .radii-sample__tile {
-    width: 5rem;
-    height: 5rem;
+    width: 80px;
+    height: 80px;
     background: var(--color-surface);
   }
 
