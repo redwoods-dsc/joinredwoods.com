@@ -33,19 +33,21 @@ You need the following installed before running the site:
    pnpm dev
    ```
 
-   Open <http://localhost:4321> in your browser. Edits hot-reload automatically. The style guide lives at <http://localhost:4321/style-guide>. ✨
+   Open <http://localhost:4321/joinredwoods.com/> in your browser. Edits hot-reload automatically. The style guide lives at <http://localhost:4321/joinredwoods.com/style-guide/>. ✨
+
+   > 💡 The `/joinredwoods.com/` prefix on those URLs is because the site is configured to deploy to a GitHub Pages project subpath (`redwoods-dsc.github.io/joinredwoods.com/`). When we move to the custom domain the base will go away and these URLs will become plain `http://localhost:4321/`.
 
 ## 🧞 Available commands
 
 Run everything from the project root.
 
-| Command        | What it does                                          |
-| -------------- | ----------------------------------------------------- |
-| `pnpm install` | Install dependencies                                  |
-| `pnpm dev`     | Start the local dev server at <http://localhost:4321> |
-| `pnpm build`   | Build the production site to `./dist/`                |
-| `pnpm preview` | Preview the production build locally                  |
-| `pnpm astro …` | Run any Astro CLI command (e.g. `pnpm astro check`)   |
+| Command        | What it does                                                            |
+| -------------- | ----------------------------------------------------------------------- |
+| `pnpm install` | Install dependencies                                                    |
+| `pnpm dev`     | Start the local dev server at <http://localhost:4321/joinredwoods.com/> |
+| `pnpm build`   | Build the production site to `./dist/`                                  |
+| `pnpm preview` | Preview the production build locally                                    |
+| `pnpm astro …` | Run any Astro CLI command (e.g. `pnpm astro check`)                     |
 
 ## 📁 Project structure
 
@@ -56,8 +58,10 @@ Run everything from the project root.
 ├── src/
 │   ├── assets/               # Images/media processed by Astro's asset pipeline
 │   ├── components/           # Reusable .astro components (flat hierarchy)
-│   │   └── Button.astro
+│   │   ├── Button.astro
+│   │   └── Page.astro        # Global chrome — wraps every page (see Architecture)
 │   ├── layouts/              # Shared page shells (html, head, body, <slot />)
+│   │   ├── Home.astro
 │   │   └── Layout.astro
 │   ├── pages/                # File-based routes — each .astro is a URL
 │   │   ├── index.astro       # → /
@@ -76,9 +80,10 @@ Run everything from the project root.
 Astro is a static site generator. At build time, every `.astro` file in `src/pages/` becomes an HTML page; everything ships as plain HTML, CSS, and (optionally) JavaScript.
 
 - **Pages** (`src/pages/`) use file-based routing — `src/pages/foo/bar.astro` renders at `/foo/bar`. Pages can also be Markdown or MDX once we add content.
-- **Layouts** (`src/layouts/Layout.astro`) are page shells that supply the surrounding `<html>`, `<head>`, and `<body>`. A page imports a layout and drops its content into the layout's `<slot />`.
+- **Layouts** (`src/layouts/Layout.astro`) are page shells that supply the surrounding `<html>`, `<head>`, and `<body>`. A page imports a layout and drops its content into the layout's `<slot />`. `Home.astro` is a page-specific layout that adds the homepage header on top of `Layout`.
+- **The Page component** (`src/components/Page.astro`) is the global visual chrome that wraps every page — an outer padded frame, a rounded inner surface that holds the actual page content, and the vertical copyright mark. `Layout.astro` drops `<Page>` around its `<slot />`, so anything rendered through the default layout automatically picks up the chrome. If you ever need a full-bleed page (a landing hero, an OG image route), bypass the default layout rather than fighting the Page wrapper.
 - **Components** (`src/components/`) are reusable `.astro` fragments — buttons, cards, navigation, etc. They are server-rendered by default and ship zero JavaScript unless a [`client:*` directive](https://docs.astro.build/en/reference/directives-reference/#client-directives) is explicitly added.
-- **Assets** in `src/assets/` are optimised by Astro when imported from a component. Files in `public/` are copied to the build as-is — use this for the favicon, `robots.txt`, fonts you want to self-host, and similar static files.
+- **Assets** in `src/assets/` are optimised by Astro when imported from a component. Files in `public/` are copied to the build as-is — use this for the favicon, `robots.txt`, fonts you want to self-host, and similar static files. When referencing a `public/` file in an `href` or `src`, prefix it with `import.meta.env.BASE_URL` (or it'll 404 in production under the project subpath). See `Layout.astro` for the favicon pattern.
 
 The build output in `./dist/` is fully static and can be hosted on any static host (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront, etc.).
 
@@ -152,7 +157,7 @@ A few rules:
 
 `/style-guide` is a living reference of every token and primitive in the codebase. When you add a new token or component, add it to the style guide too — it's how contributors discover what already exists before reinventing. 🔍
 
-Run `pnpm dev` and visit <http://localhost:4321/style-guide>.
+Run `pnpm dev` and visit <http://localhost:4321/joinredwoods.com/style-guide/>.
 
 ## 🤝 Contributing
 
