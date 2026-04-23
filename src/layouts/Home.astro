@@ -6,10 +6,10 @@
 
 <style>
 /**
- * 1. Temporary style because the page is too short right now, we can remove this as soon as we've got some content in place.
+ * 1. Temporary style because the page is too short right now, we can remove this as soon as we've got some content in place. Subtracts the Page wrapper's top+bottom padding so the header fills the viewport without forcing a scrollbar.
  */
 .header {
-  min-height: 100vh; /* [1] */
+  min-height: calc(100dvh - (var(--space-lg) * 2)); /* [1] */
   padding: var(--space-lg);
 }
 
