@@ -49,11 +49,10 @@ const sections = [
 <Layout>
   <main class="guide">
     <header class="guide__header">
-      <p class="guide__eyebrow">Redwood Design System</p>
+      <p class="guide__eyebrow">Redwoods</p>
       <h1>Style guide</h1>
       <p class="guide__lede">
-        A living reference for the tokens, primitives, and patterns that make up this site. Add new
-        examples here as styles evolve so contributors always have one place to look.
+        A style guide for the tokens, styles, components, and patterns that make up this site. If you're making a resuable pattern for the site please add new examples here so contributors always have one place to look.
       </p>
       <nav class="guide__nav" aria-label="Sections">
         {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
@@ -63,10 +62,7 @@ const sections = [
     <section id="colors" class="section">
       <div class="section__head">
         <h2>Colors</h2>
-        <p>
-          Brand palette plus semantic aliases. Use the semantic aliases in components; reach for the
-          brand palette only when defining new aliases.
-        </p>
+        <p>Brand and gray scale palette plus semantic aliases. Use the semantic aliases wherever possible; reach for the brand and gray scale palette as a last resort.</p>
       </div>
 
       <h3 class="subhead">Brand</h3>
@@ -118,11 +114,8 @@ const sections = [
     <section id="typography" class="section">
       <div class="section__head">
         <h2>Typography</h2>
-        <p>
-          Stack is <code>var(--font-sans)</code>. Headings balance; paragraphs use <code
-            >text-wrap: pretty</code
-          > and cap at <code>--layout-prose-max</code>.
-        </p>
+        <p>Stack is <code>var(--font-serif)</code> for headings and <code>var(--font-sans)</code> for body copy.</p>
+        <p>Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at <code>--layout-prose-max</code>.</p>
       </div>
 
       <div class="type-scale">
@@ -138,11 +131,7 @@ const sections = [
         }
         <div class="type-row">
           <div class="type-row__sample">
-            <p>
-              Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of
-              flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for
-              pleasant line breaks.
-            </p>
+            <p>Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for pleasant line breaks.</p>
           </div>
           <code class="type-row__token">--font-size-base</code>
         </div>
@@ -152,21 +141,25 @@ const sections = [
           </div>
           <code class="type-row__token">--font-size-sm · --color-text-muted</code>
         </div>
-        <div class="type-row">
-          <div class="type-row__sample">
-            <p>Inline <code>code</code> and <kbd>⌘K</kbd> live in the mono stack.</p>
-          </div>
-          <code class="type-row__token">--font-mono</code>
-        </div>
       </div>
+    </section>
+
+    <section id="links" class="section">
+      <div class="section__head">
+        <h2>Links</h2>
+        <p>Anchor defaults live in <code>base.css</code>. Focus rings come from <code>--color-focus</code>.</p>
+      </div>
+      <ul class="link-list">
+        <li><a href="#links">Default link — hover to see the color shift</a></li>
+        <li><a href="https://example.com" rel="external">External link</a></li>
+        <li>Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to <a href="#typography">typography</a>.</li>
+      </ul>
     </section>
 
     <section id="spacing" class="section">
       <div class="section__head">
         <h2>Spacing</h2>
-        <p>
-          T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap.
-        </p>
+        <p>T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap. Don't use in places where the values align coincidently.</p>
       </div>
       <div class="scale-list">
         {
@@ -199,13 +192,10 @@ const sections = [
       </div>
     </section>
 
-    <section id="buttons" class="section">
+    <!-- <section id="buttons" class="section">
       <div class="section__head">
         <h2>Buttons</h2>
-        <p>
-          <code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set
-          the component renders an <code>&lt;a&gt;</code> styled as a button.
-        </p>
+        <p><code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set the component renders an <code>&lt;a&gt;</code> styled as a button.</p>
       </div>
 
       <h3 class="subhead">Variants (size md)</h3>
@@ -233,26 +223,9 @@ const sections = [
       <div class="cluster">
         <Button variant="secondary" href="#buttons">Anchor button</Button>
       </div>
-    </section>
+    </section> -->
 
-    <section id="links" class="section">
-      <div class="section__head">
-        <h2>Links</h2>
-        <p>
-          Anchor defaults live in <code>base.css</code>. Focus rings come from <code
-            >--color-focus</code
-          >.
-        </p>
-      </div>
-      <ul class="link-list">
-        <li><a href="#links">Default link — hover to see the color shift</a></li>
-        <li><a href="https://example.com" rel="external">External link</a></li>
-        <li>
-          Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to
-          <a href="#typography">typography</a>.
-        </li>
-      </ul>
-    </section>
+    
   </main>
 </Layout>
 
