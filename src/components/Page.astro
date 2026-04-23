@@ -1,0 +1,28 @@
+<div class="global-wrap">
+  <div class="page-wrap">
+    <slot />
+  </div>
+  <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
+</div>
+
+
+<style>
+.global-wrap {
+  position: relative;
+  padding: var(--space-lg);
+}
+
+.page-wrap {
+  height: 100%; /* [1] */
+  border-radius: 16px;
+  background-color: var(--color-bg); 
+}
+
+.copyright {
+  position: absolute;
+  bottom: var(--space-2xl);
+  right: 0;
+  font-size: var(--font-size-sm);
+  writing-mode: vertical-rl;
+}
+</style>

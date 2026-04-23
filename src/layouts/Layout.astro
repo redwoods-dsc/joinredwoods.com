@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Page from '../components/Page.astro';
 ---
 
 <!doctype html>
@@ -19,6 +20,8 @@ import '../styles/global.css';
     <title>Astro Basics</title>
   </head>
   <body>
-    <slot />
+    <Page>
+      <slot />
+    </Page>
   </body>
 </html>
