@@ -17,6 +17,7 @@
   --color-border: var(--color-gray-75);
   --color-accent: var(--color-orange);
   --color-accent-contrast: var(--color-gray-100);
+  --color-focus: var(--color-orange);
 
   /* --mar-mid: var(--prim_r-04);
   --main-bg-color: var(--prim_c-cream);
@@ -35,7 +36,7 @@
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem; /* 16px */
   --font-size-md: 1.125rem; /* 18px */
-  --font-size-lg: 1.25rem;
+  --font-size-lg: 1.25rem; /* 20px */
   --font-size-xl: 1.5rem; /* 24px */
   --font-size-2xl: 1.875rem;
   --font-size-3xl: 2.25rem;

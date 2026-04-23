@@ -72,17 +72,18 @@ a {
 }
 
 a:hover {
+  color: var(--color-focus);
   text-decoration: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus:);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  background-color: color-mix(in srgb, var(--color-focus:) 30%, transparent);
   color: var(--color-text);
 }
 
