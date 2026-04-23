@@ -1,0 +1,455 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+
+const brand = [
+  { name: 'orange', token: '--color-orange' },
+  { name: 'woodland', token: '--color-woodland' },
+  { name: 'green', token: '--color-green' },
+  { name: 'blue', token: '--color-blue' },
+  { name: 'cream', token: '--color-cream' },
+];
+
+const grayScale = ['00', '25', '50', '75', '100'];
+
+const semanticColors = [
+  { name: 'bg', token: '--color-bg' },
+  { name: 'surface', token: '--color-surface' },
+  { name: 'text', token: '--color-text' },
+  { name: 'border', token: '--color-border' },
+  { name: 'accent', token: '--color-accent' },
+  { name: 'accent-contrast', token: '--color-accent-contrast' },
+];
+
+const typeSamples = [
+  { tag: 'h1', label: 'Heading 1', token: '--font-size-4xl' },
+  { tag: 'h2', label: 'Heading 2', token: '--font-size-3xl' },
+  { tag: 'h3', label: 'Heading 3', token: '--font-size-2xl' },
+  { tag: 'h4', label: 'Heading 4', token: '--font-size-xl' },
+  { tag: 'h5', label: 'Heading 5', token: '--font-size-lg' },
+  { tag: 'h6', label: 'Heading 6', token: '--font-size-md' },
+] as const;
+
+const spacingSteps = ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
+const radiiSteps = ['xs', 'sm', 'md', 'lg', 'xl', 'full'];
+
+const buttonVariants = ['primary', 'secondary', 'ghost', 'danger'] as const;
+const buttonSizes = ['sm', 'md', 'lg'] as const;
+
+const sections = [
+  { id: 'colors', label: 'Colors' },
+  { id: 'typography', label: 'Typography' },
+  { id: 'spacing', label: 'Spacing' },
+  { id: 'radii', label: 'Radii' },
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'links', label: 'Links' },
+];
+---
+
+<Layout>
+  <main class="guide">
+    <header class="guide__header">
+      <p class="guide__eyebrow">Redwoods</p>
+      <h1>Style guide</h1>
+      <p class="guide__lede">
+        A style guide for the tokens, styles, components, and patterns that make up this site. If you're making a resuable pattern for the site please add new examples here so contributors always have one place to look.
+      </p>
+      <nav class="guide__nav" aria-label="Sections">
+        {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+      </nav>
+    </header>
+
+    <section id="colors" class="section">
+      <div class="section__head">
+        <h2>Colors</h2>
+        <p>Brand and gray scale palette plus semantic aliases. Use the semantic aliases wherever possible; reach for the brand and gray scale palette as a last resort.</p>
+      </div>
+
+      <h3 class="subhead">Brand</h3>
+      <div class="swatches">
+        {
+          brand.map((c) => (
+            <div class="swatch" style={`--swatch: var(${c.token})`}>
+              <div class="swatch__color" />
+              <div class="swatch__meta">
+                <span class="swatch__name">{c.name}</span>
+                <code class="swatch__token">{c.token}</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="subhead">Gray Scale</h3>
+      <div class="swatches">
+        {
+          grayScale.map((step) => (
+            <div class="swatch" style={`--swatch: var(--color-gray-${step})`}>
+              <div class="swatch__color" />
+              <div class="swatch__meta">
+                <span class="swatch__name">gray-{step}</span>
+                <code class="swatch__token">--color-gray-{step}</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="subhead">Semantic</h3>
+      <div class="swatches">
+        {
+          semanticColors.map((c) => (
+            <div class="swatch" style={`--swatch: var(${c.token})`}>
+              <div class="swatch__color" />
+              <div class="swatch__meta">
+                <span class="swatch__name">{c.name}</span>
+                <code class="swatch__token">{c.token}</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="typography" class="section">
+      <div class="section__head">
+        <h2>Typography</h2>
+        <p>Stack is <code>var(--font-serif)</code> for headings and <code>var(--font-sans)</code> for body copy.</p>
+        <p>Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at <code>--layout-prose-max</code>.</p>
+      </div>
+
+      <div class="type-scale">
+        {
+          typeSamples.map((t) => (
+            <div class="type-row">
+              <div class="type-row__sample">
+                <t.tag>{t.label}</t.tag>
+              </div>
+              <code class="type-row__token">{t.token}</code>
+            </div>
+          ))
+        }
+        <div class="type-row">
+          <div class="type-row__sample">
+            <p>Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for pleasant line breaks.</p>
+          </div>
+          <code class="type-row__token">--font-size-base</code>
+        </div>
+        <div class="type-row">
+          <div class="type-row__sample">
+            <small>Small / muted caption text.</small>
+          </div>
+          <code class="type-row__token">--font-size-sm · --color-text-muted</code>
+        </div>
+      </div>
+    </section>
+
+    <section id="links" class="section">
+      <div class="section__head">
+        <h2>Links</h2>
+        <p>Anchor defaults live in <code>base.css</code>. Focus rings come from <code>--color-focus</code>.</p>
+      </div>
+      <ul class="link-list">
+        <li><a href="#links">Default link — hover to see the color shift</a></li>
+        <li><a href="https://example.com" rel="external">External link</a></li>
+        <li>Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to <a href="#typography">typography</a>.</li>
+      </ul>
+    </section>
+
+    <section id="spacing" class="section">
+      <div class="section__head">
+        <h2>Spacing</h2>
+        <p>T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap. Don't use in places where the values align coincidently.</p>
+      </div>
+      <div class="scale-list">
+        {
+          spacingSteps.map((step) => (
+            <div class="scale-row">
+              <span class="scale-row__label">space-{step}</span>
+              <div class="scale-row__bar" style={`width: var(--space-${step})`} />
+              <code class="scale-row__token">--space-{step}</code>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="radii" class="section">
+      <div class="section__head">
+        <h2>Radii</h2>
+        <p>Rounded corners, from crisp to pill.</p>
+      </div>
+      <div class="radii-grid">
+        {
+          radiiSteps.map((step) => (
+            <div class="radii-sample">
+              <div class="radii-sample__tile" style={`border-radius: var(--radius-${step})`} />
+              <span class="radii-sample__name">radius-{step}</span>
+              <code class="radii-sample__token">--radius-{step}</code>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- <section id="buttons" class="section">
+      <div class="section__head">
+        <h2>Buttons</h2>
+        <p><code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set the component renders an <code>&lt;a&gt;</code> styled as a button.</p>
+      </div>
+
+      <h3 class="subhead">Variants (size md)</h3>
+      <div class="cluster">
+        {
+          buttonVariants.map((v) => (
+            <Button variant={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</Button>
+          ))
+        }
+      </div>
+
+      <h3 class="subhead">Sizes (primary)</h3>
+      <div class="cluster cluster--baseline">
+        {buttonSizes.map((s) => <Button size={s}>Size {s}</Button>)}
+      </div>
+
+      <h3 class="subhead">States</h3>
+      <div class="cluster">
+        <Button>Default</Button>
+        <Button>Focused (tab to reveal)</Button>
+        <Button disabled>Disabled</Button>
+      </div>
+
+      <h3 class="subhead">Rendered as anchor</h3>
+      <div class="cluster">
+        <Button variant="secondary" href="#buttons">Anchor button</Button>
+      </div>
+    </section> -->
+
+    
+  </main>
+</Layout>
+
+<style>
+  .guide {
+    max-width: var(--layout-content-max);
+    margin-inline: auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-4xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4xl);
+  }
+
+  .guide__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .guide__eyebrow {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .guide__lede {
+    color: var(--color-text-muted);
+    max-width: var(--layout-prose-max);
+  }
+
+  .guide__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-md);
+    padding: var(--space-sm) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin-top: var(--space-md);
+  }
+
+  .guide__nav a {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    scroll-margin-block-start: var(--space-xl);
+  }
+
+  .section__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section__head p {
+    color: var(--color-text-muted);
+  }
+
+  .subhead {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-block-start: var(--space-md);
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+    background: var(--color-gray-100);
+  }
+
+  .swatch__color {
+    height: 72px;
+    border-radius: var(--radius-sm);
+    background: var(--swatch);
+    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+  }
+
+  .swatch__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .swatch__name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .swatch__token {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .type-scale {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .type-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-lg);
+    align-items: baseline;
+    padding-block: var(--space-sm);
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .type-row:last-child {
+    border-bottom: 0;
+  }
+
+  .type-row__sample > * {
+    margin: 0;
+  }
+
+  .type-row__token {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .scale-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .scale-row {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .scale-row__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .scale-row__bar {
+    height: 12px;
+    background: var(--color-surface);
+    border-radius: var(--radius-full);
+    min-width: 2px;
+  }
+
+  .scale-row__token {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .radii-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .radii-sample {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    text-align: center;
+  }
+
+  .radii-sample__tile {
+    width: 80px;
+    height: 80px;
+    background: var(--color-surface);
+  }
+
+  .radii-sample__name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .radii-sample__token {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  .cluster--baseline {
+    align-items: baseline;
+  }
+
+  .link-list {
+    list-style: disc;
+    padding-left: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  code {
+    padding: 0 var(--space-2xs);
+    border-radius: var(--radius-xs);
+  }
+</style>
