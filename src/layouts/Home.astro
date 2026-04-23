@@ -1,19 +1,63 @@
+---
+import redwoodsLogo from '../assets/redwoods-logo-white.svg';
+import tagline from '../assets/tagline-white.svg';
+---
+
 <header class="header">
-  <p class="redwoods">Redwoods</p>
-  <h1>Welcome</h1>
-  <p>Let's build a super cool website here</p>
+  <a class="logo" href="#"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+  <img src={tagline.src} alt="A design system community" class="tagline" />
+  <nav class="nav" role="navigation">
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">The Quarterly</a></li>
+      <li><a href="#">Members</a></li>
+      <li>-</li>
+      <li><a class="join-link" href="#">Join</a></li>
+    </ul>
+  </nav>
 </header>
 
 <style>
-/**
- * 1. Temporary style because the page is too short right now, we can remove this as soon as we've got some content in place. Subtracts the Page wrapper's top+bottom padding so the header fills the viewport without forcing a scrollbar.
- */
 .header {
-  min-height: calc(100dvh - (var(--space-lg) * 2)); /* [1] */
-  padding: var(--space-lg);
+  position: relative;
+  min-height: clamp(450px, 30dvh + 25vw, 960px);
+  padding: var(--space-xl);
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
 }
 
-.redwoods {
-  color: var(--color-orange);
+.logo {
+  display: block;
+  width: 150px;
+}
+
+.tagline {
+  position: absolute;
+  bottom: var(--space-xl);
+  right: var(--space-xl);
+}
+
+.nav {
+  margin-block-start: var(--font-size-sm);
+}
+.nav li {
+  list-style: none;
+}
+
+.nav a {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-contrast);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.join-link {
+  font-style: italic;
 }
 </style>
