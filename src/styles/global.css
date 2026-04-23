@@ -1,6 +1,6 @@
 @layer normalize, reset, tokens, base;
 
 @import url('./tokens.css') layer(tokens);
-@import url('./normalize.css') layer (normalize);
+@import url('./normalize.css') layer(normalize);
 @import url('./reset.css') layer(reset);
 @import url('./base.css') layer(base);
