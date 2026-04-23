@@ -1,11 +1,23 @@
 ---
-import Home from '../layouts/Home.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/Header.astro';
 ---
 
 <Layout>
-  <Home />
+  <Header />
+  <main>
+    <div class="main-wrap">
+      <h1>Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each other on the journey of design system maturity.</h1>
+    </div>
+  </main>
 </Layout>
+
+<style>
+.main-wrap {
+  padding: var(--space-3xl);
+}
+
+.accent {
+  color: var(--color-green);
+}
+</style>

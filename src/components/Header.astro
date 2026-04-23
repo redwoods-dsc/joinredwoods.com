@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import redwoodsLogo from '../assets/redwoods-logo-white.svg';
+import tagline from '../assets/tagline-white.svg';
+import trees from '../assets/trees-02.png';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<header class:list={['header', { 'header-compact': compact }]}>
+  <div class="header-content">
+    <a class="logo" href="#"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+    <nav class="nav" role="navigation">
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">The Quarterly</a></li>
+        <li><a href="#">Members</a></li>
+        <li>-</li>
+        <li><a class="join-link" href="#">Join</a></li>
+      </ul>
+    </nav>
+    <img src={tagline.src} alt="A design system community" class="tagline" />
+  </div>
+  <Image src={trees} alt="" class="trees" densities={[1, 2]} />
+</header>
+
+<style>
+  .header {
+    position: relative;
+    display: flex;
+    min-height: clamp(450px, 30dvh + 25vw, 960px);
+    padding: var(--space-xl);
+    color: var(--color-accent-contrast);
+    background-color: var(--color-accent);
+    overflow: hidden;
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .logo {
+    display: block;
+    width: 150px;
+  }
+
+  .tagline {
+    width: clamp(180px, 30vw, 320px);
+    height: auto;
+    margin-block-start: auto;
+    align-self: flex-end;
+  }
+
+  .nav li {
+    list-style: none;
+  }
+
+  .nav a {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent-contrast);
+    text-decoration: none;
+  }
+
+  .nav a:hover {
+    text-decoration: underline;
+  }
+
+  .join-link {
+    font-style: italic;
+  }
+
+  .trees {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    max-width: 100%;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 700px) {
+    .trees {
+      display: none;
+    }
+  }
+
+  .header-compact {
+    min-height: auto;
+    background-color: var(--color-green);
+  }
+
+  .header-compact .header-content {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .header-compact .tagline {
+    margin-block-start: 0;
+    margin-inline-start: auto;
+    align-self: center;
+  }
+
+  .header-compact .nav {
+    flex-basis: 100%;
+    order: 1;
+  }
+</style>

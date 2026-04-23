@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import Header from '../components/Header.astro';
 
 const brand = [
   { name: 'orange', token: '--color-orange' },
@@ -43,6 +44,7 @@ const sections = [
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
   { id: 'links', label: 'Links' },
+  { id: 'header', label: 'Header' },
 ];
 ---
 
@@ -225,7 +227,18 @@ const sections = [
       </div>
     </section> -->
 
-    
+    <section id="header" class="section">
+      <div class="section__head">
+        <h2>Header</h2>
+        <p><code>&lt;Header compact /&gt;</code>. The default variant is the home hero with the trees artwork; the compact variant is for interior pages.</p>
+      </div>
+
+      <h3 class="subhead">Default</h3>
+      <Header />
+
+      <h3 class="subhead">Compact</h3>
+      <Header compact />
+    </section>
   </main>
 </Layout>
 
