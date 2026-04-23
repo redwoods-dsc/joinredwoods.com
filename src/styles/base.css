@@ -21,7 +21,6 @@ html {
 
 body {
   color: var(--color-text);
-  background-color: var(--color-bg);
 }
 
 h1,
@@ -83,7 +82,7 @@ a:hover {
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-focus:) 30%, transparent);
+  background-color: color-mix(in srgb, var(--color-focus) 30%, transparent);
   color: var(--color-text);
 }
 
