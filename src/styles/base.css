@@ -12,7 +12,7 @@
  */
 html {
   font-family: var(--font-sans);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-regular);
   overflow-y: scroll; /* [1] */
