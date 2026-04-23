@@ -33,9 +33,7 @@ You need the following installed before running the site:
    pnpm dev
    ```
 
-   Open <http://localhost:4321/joinredwoods.com/> in your browser. Edits hot-reload automatically. The style guide lives at <http://localhost:4321/joinredwoods.com/style-guide/>. ✨
-
-   > 💡 The `/joinredwoods.com/` prefix on those URLs is because the site is configured to deploy to a GitHub Pages project subpath (`redwoods-dsc.github.io/joinredwoods.com/`). When we move to the custom domain the base will go away and these URLs will become plain `http://localhost:4321/`.
+   Open <http://localhost:4321/> in your browser. Edits hot-reload automatically. The style guide lives at <http://localhost:4321/style-guide/>. ✨
 
 ## 🧞 Available commands
 
@@ -44,7 +42,7 @@ Run everything from the project root.
 | Command        | What it does                                                            |
 | -------------- | ----------------------------------------------------------------------- |
 | `pnpm install` | Install dependencies                                                    |
-| `pnpm dev`     | Start the local dev server at <http://localhost:4321/joinredwoods.com/> |
+| `pnpm dev`     | Start the local dev server at <http://localhost:4321/>                  |
 | `pnpm build`   | Build the production site to `./dist/`                                  |
 | `pnpm preview` | Preview the production build locally                                    |
 | `pnpm astro …` | Run any Astro CLI command (e.g. `pnpm astro check`)                     |
@@ -157,7 +155,7 @@ A few rules:
 
 `/style-guide` is a living reference of every token and primitive in the codebase. When you add a new token or component, add it to the style guide too — it's how contributors discover what already exists before reinventing. 🔍
 
-Run `pnpm dev` and visit <http://localhost:4321/joinredwoods.com/style-guide/>.
+Run `pnpm dev` and visit <http://localhost:4321/style-guide/>.
 
 ## 🤝 Contributing
 
