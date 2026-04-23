@@ -19,16 +19,6 @@
   --color-accent-contrast: var(--color-gray-100);
   --color-focus: var(--color-orange);
 
-  /* --mar-mid: var(--prim_r-04);
-  --main-bg-color: var(--prim_c-cream);
-  --dark-txt-color: var(--prim_c-cream);
-  --light-txt-color: var(--prim_c-gray-25);
-  --home-header-bg-color: var(--prim_c-orange);
-  --sub-header-bg-color: var(--prim_c-green);
-  --blog-header-bg-color: var(--prim_c-blue);
-  --quarterly-header-bg-color: var(--prim_c-orange);
-  --main-border-size: var(--prim_s-04); */
-
   --font-sans: 'Source Sans 3', sans-serif;
   --font-serif: 'Source Serif 4', serif;
   --font-mono: monospace;
