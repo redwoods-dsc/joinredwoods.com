@@ -105,8 +105,8 @@ table {
  *    using `display: block;`.
  */
 
- img,
- picture {
+img,
+picture {
   max-width: 100%; /* [1] */
   font-style: italic; /* [2] */
   vertical-align: middle; /* [3] */
@@ -118,7 +118,8 @@ table {
  */
 
 img[width], /* [1] */
-img[height] {  /* [1] */
+img[height] {
+  /* [1] */
   max-width: none;
 }
 
