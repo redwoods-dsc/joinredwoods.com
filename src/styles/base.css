@@ -67,6 +67,10 @@ p {
   max-width: var(--layout-prose-max);
 }
 
+p + p {
+  margin-block-start: var(--space-md);
+}
+
 ul,
 ol {
   padding-inline-start: var(--space-lg);
