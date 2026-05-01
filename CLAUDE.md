@@ -26,6 +26,7 @@ These are the ones that are easy to get wrong. Do not deviate without discussion
 - **Prefer semantic aliases** (`--color-bg`, `--color-text`, `--color-accent`) over raw palette tokens (`--color-orange`, `--color-gray-25`). Reach for raw tokens only when defining a new semantic alias.
 - **Units:** `--font-size-*` tokens are in `rem` so user scaling works; everything else (`--space-*`, `--radius-*`, `--layout-*`) is in `px`.
 - **Cascade layer order** is declared once in `src/styles/global.css`: `normalize, reset, tokens, base`. Anything outside a layer (including scoped component styles) wins over anything inside, so you don't need `!important`.
+- **Don't override base element styles.** `base.css` already styles links, headings, lists, and other elements. Scoped component styles should handle layout and spacing — not re-declare colors, text-decoration, or hover states that the base layer provides. Check `/style-guide` before adding element-level styles.
 - **Do not create a shared `components.css`.** Component styles live in the component's own `<style>` block (see below). We've had to rip this out once already — don't re-introduce it.
 
 ## 🧩 Component conventions
