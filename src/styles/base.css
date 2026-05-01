@@ -100,6 +100,12 @@ th {
   font-weight: var(--font-weight-semibold);
 }
 
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin-block: var(--space-lg);
+}
+
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
