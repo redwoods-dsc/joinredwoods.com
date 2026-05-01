@@ -71,6 +71,11 @@ p + p {
   margin-block-start: var(--space-md);
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 ul,
 ol {
   padding-inline-start: var(--space-lg);
