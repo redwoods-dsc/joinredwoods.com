@@ -45,6 +45,7 @@ const sections = [
   { id: 'buttons', label: 'Buttons' },
   { id: 'links', label: 'Links' },
   { id: 'lists', label: 'Lists' },
+  { id: 'blockquotes', label: 'Blockquotes' },
   { id: 'header', label: 'Header' },
 ];
 ---
@@ -186,6 +187,21 @@ const sections = [
           </ol>
         </li>
       </ol>
+    </section>
+
+    <section id="blockquotes" class="section">
+      <div class="section__head">
+        <h2>Blockquotes</h2>
+        <p>Left border uses <code>--color-accent</code>, text shifts to <code>--color-text-muted</code>. Styled in <code>base.css</code>.</p>
+      </div>
+      <blockquote>
+        <p>The best time to plant a tree was twenty years ago. The second best time is now.</p>
+      </blockquote>
+      <h3 class="subhead">Multi-paragraph</h3>
+      <blockquote>
+        <p>This is the first paragraph inside the quote.</p>
+        <p>And this is the second paragraph. Blockquotes can contain <strong>bold</strong>, <em>italic</em>, and other inline formatting.</p>
+      </blockquote>
     </section>
 
     <section id="spacing" class="section">

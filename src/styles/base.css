@@ -72,6 +72,13 @@ ol {
   padding-inline-start: var(--space-lg);
 }
 
+blockquote {
+  border-inline-start: 3px solid var(--color-accent);
+  padding-inline-start: var(--space-md);
+  margin-block: var(--space-md);
+  color: var(--color-text-muted);
+}
+
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
