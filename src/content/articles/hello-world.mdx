@@ -59,7 +59,11 @@ A multi-paragraph blockquote:
 >
 > And this is the second paragraph. Blockquotes can contain **bold**, *italic*, and other inline formatting.
 
-## Code blocks
+## Code
+
+Inline code: use `const x = 42` in a sentence. Also works for filenames like `astro.config.mjs` or CLI commands like `pnpm dev`.
+
+A fenced code block with syntax highlighting:
 
 ```js
 function greet(name) {
@@ -67,6 +71,17 @@ function greet(name) {
 }
 
 console.log(greet("world"));
+```
+
+A plain code block without a language:
+
+```
+src/
+  content/
+    articles/
+      hello-world.mdx
+  styles/
+    base.css
 ```
 
 ## Horizontal rule

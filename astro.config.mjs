@@ -6,4 +6,9 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://joinredwoods.com',
   integrations: [mdx()],
+  markdown: {
+    shikiConfig: {
+      theme: 'github-light-high-contrast',
+    },
+  },
 });
