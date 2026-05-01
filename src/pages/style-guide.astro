@@ -46,6 +46,7 @@ const sections = [
   { id: 'links', label: 'Links' },
   { id: 'lists', label: 'Lists' },
   { id: 'blockquotes', label: 'Blockquotes' },
+  { id: 'tables', label: 'Tables' },
   { id: 'header', label: 'Header' },
 ];
 ---
@@ -202,6 +203,23 @@ const sections = [
         <p>This is the first paragraph inside the quote.</p>
         <p>And this is the second paragraph. Blockquotes can contain <strong>bold</strong>, <em>italic</em>, and other inline formatting.</p>
       </blockquote>
+    </section>
+
+    <section id="tables" class="section">
+      <div class="section__head">
+        <h2>Tables</h2>
+        <p>Full-width with collapsed borders. Rows separated by <code>--color-border</code>. Styled in <code>base.css</code>.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>--space-sm</td><td>8px</td><td>Tight gaps</td></tr>
+          <tr><td>--space-md</td><td>16px</td><td>Default spacing</td></tr>
+          <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
+        </tbody>
+      </table>
     </section>
 
     <section id="spacing" class="section">
