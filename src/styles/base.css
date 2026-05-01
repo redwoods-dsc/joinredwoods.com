@@ -67,6 +67,11 @@ p {
   max-width: var(--layout-prose-max);
 }
 
+ul,
+ol {
+  padding-inline-start: var(--space-lg);
+}
+
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
