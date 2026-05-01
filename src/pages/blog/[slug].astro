@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', (entry) => !entry.data.draft);
@@ -12,16 +13,29 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content } = await render(article);
+
+function authorSlug(name: string) {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
 ---
 
 <Layout>
+  <Header compact />
   <main>
     <div class="article-wrap">
+      <a class="back-link" href="/blog/">&larr; Back to Blog</a>
       <article>
         <h1>{article.data.title}</h1>
-        <time datetime={article.data.date.toISOString()}>
-          {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
-        </time>
+        <div class="meta">
+          <span class="authors">
+            {article.data.authors.map((author, i) => (
+              <>{i > 0 && ', '}<a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a></>
+            ))}
+          </span>
+          <time datetime={article.data.date.toISOString()}>
+            {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
+          </time>
+        </div>
         <Content />
       </article>
     </div>
@@ -33,13 +47,36 @@ const { Content } = await render(article);
   padding: var(--space-3xl);
 }
 
+.back-link {
+  display: inline-block;
+  margin-block-end: var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
 h1 {
   margin-block-end: var(--space-xs);
 }
 
-time {
-  display: block;
+.meta {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   margin-block-end: var(--space-md);
+}
+
+.authors a {
+  color: inherit;
+}
+
+.authors a:hover {
+  text-decoration: underline;
 }
 
 article :global(p + p) {

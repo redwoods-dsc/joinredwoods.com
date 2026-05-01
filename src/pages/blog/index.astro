@@ -1,25 +1,36 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
 
 const articles = (await getCollection('articles', (entry) => !entry.data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function authorSlug(name: string) {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
 ---
 
 <Layout>
+  <Header compact />
   <main>
     <div class="blog-wrap">
       <h1>Blog</h1>
       <ul class="article-list">
         {articles.map((article) => (
           <li>
-            <a href={`/blog/${article.id}/`}>
-              <h2>{article.data.title}</h2>
-              {article.data.description && <p>{article.data.description}</p>}
+            <h2><a href={`/blog/${article.id}/`}>{article.data.title}</a></h2>
+            {article.data.description && <p>{article.data.description}</p>}
+            <div class="meta">
+              <span class="authors">
+                {article.data.authors.map((author, i) => (
+                  <>{i > 0 && ', '}<a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a></>
+                ))}
+              </span>
               <time datetime={article.data.date.toISOString()}>
                 {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
               </time>
-            </a>
+            </div>
           </li>
         ))}
       </ul>
@@ -44,25 +55,34 @@ h1 {
   gap: var(--space-lg);
 }
 
-.article-list a {
-  text-decoration: none;
-  color: inherit;
-  display: block;
+.article-list h2 {
+  margin: 0;
 }
 
-.article-list a:hover h2 {
+.article-list h2 a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-list h2 a:hover {
   color: var(--color-accent);
 }
 
-.article-list h2 {
-  margin: 0;
+.authors a {
+  color: inherit;
+}
+
+.authors a:hover {
+  text-decoration: underline;
 }
 
 .article-list p {
   margin: var(--space-xs) 0 0;
 }
 
-.article-list time {
+.article-list .meta {
+  display: flex;
+  gap: var(--space-sm);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
