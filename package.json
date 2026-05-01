@@ -1,5 +1,5 @@
 {
-  "name": "Redwood Design System Community",
+  "name": "Redwoods: A Design System Community",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -15,6 +15,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@astrojs/mdx": "^5.0.4",
     "astro": "^6.1.7",
     "sharp": "^0.34.5"
   },

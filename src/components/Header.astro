@@ -13,11 +13,11 @@ const { compact = false } = Astro.props;
 
 <header class:list={['header', { 'header-compact': compact }]}>
   <div class="header-content">
-    <a class="logo" href="#"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+    <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
     <nav class="nav" role="navigation">
       <ul>
         <li><a href="#">About</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="/blog/">Blog</a></li>
         <li><a href="#">The Quarterly</a></li>
         <li><a href="#">Members</a></li>
         <li>-</li>
