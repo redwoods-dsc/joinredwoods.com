@@ -33,14 +33,17 @@ h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   text-wrap: balance;
+  margin-block: var(--space-lg) var(--space-xs);
 }
 
 h1 {
   font-size: var(--font-size-4xl);
+  margin-block: var(--space-xl) var(--space-sm);
 }
 
 h2 {
   font-size: var(--font-size-3xl);
+  margin-block: var(--space-xl) var(--space-xs);
 }
 
 h3 {
