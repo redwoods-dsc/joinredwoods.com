@@ -2,13 +2,11 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
+import { authorSlug } from '../../lib/authors';
 
 const articles = (await getCollection('articles', (entry) => !entry.data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-function authorSlug(name: string) {
-  return name.toLowerCase().replace(/\s+/g, '-');
-}
 ---
 
 <Layout>

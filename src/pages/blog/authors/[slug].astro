@@ -2,16 +2,14 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
+import { authorSlug } from '../../../lib/authors';
 
 export async function getStaticPaths() {
-  function toSlug(name: string) {
-    return name.toLowerCase().replace(/\s+/g, '-');
-  }
   const articles = await getCollection('articles', (entry) => !entry.data.draft);
   const authorMap = new Map<string, string>();
   for (const article of articles) {
     for (const author of article.data.authors) {
-      authorMap.set(toSlug(author), author);
+      authorMap.set(authorSlug(author), author);
     }
   }
   return [...authorMap.entries()].map(([slug, name]) => ({
