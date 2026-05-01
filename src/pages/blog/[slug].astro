@@ -20,7 +20,7 @@ const { Content } = await render(article);
       <article>
         <h1>{article.data.title}</h1>
         <time datetime={article.data.date.toISOString()}>
-          {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
         </time>
         <Content />
       </article>

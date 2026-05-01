@@ -17,7 +17,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
               <h2>{article.data.title}</h2>
               {article.data.description && <p>{article.data.description}</p>}
               <time datetime={article.data.date.toISOString()}>
-                {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
               </time>
             </a>
           </li>
