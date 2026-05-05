@@ -33,14 +33,17 @@ h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   text-wrap: balance;
+  margin-block: var(--space-lg) var(--space-xs);
 }
 
 h1 {
   font-size: var(--font-size-4xl);
+  margin-block: var(--space-xl) var(--space-sm);
 }
 
 h2 {
   font-size: var(--font-size-3xl);
+  margin-block: var(--space-xl) var(--space-xs);
 }
 
 h3 {
@@ -62,6 +65,50 @@ h6 {
 p {
   text-wrap: pretty;
   max-width: var(--layout-prose-max);
+}
+
+p + p {
+  margin-block-start: var(--space-md);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  padding-inline-start: var(--space-lg);
+}
+
+blockquote {
+  border-inline-start: 3px solid var(--color-accent);
+  padding-inline-start: var(--space-md);
+  margin-block: var(--space-md);
+  color: var(--color-text-muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: var(--space-md);
+}
+
+th,
+td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  text-align: start;
+}
+
+th {
+  font-weight: var(--font-weight-semibold);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin-block: var(--space-lg);
 }
 
 a {
@@ -88,10 +135,31 @@ a:hover {
 
 code,
 kbd,
-samp,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+code {
+  background: color-mix(in srgb, var(--color-gray-75) 40%, var(--color-gray-100));
+  padding: var(--space-3xs) var(--space-2xs);
+  border-radius: var(--radius-xs);
+}
+
 pre {
   font-family: var(--font-mono);
   font-size: 0.95em;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin-block: var(--space-md);
+  background: var(--color-gray-100);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
 }
 
 small {

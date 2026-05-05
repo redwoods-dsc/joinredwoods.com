@@ -44,6 +44,10 @@ const sections = [
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
   { id: 'links', label: 'Links' },
+  { id: 'lists', label: 'Lists' },
+  { id: 'blockquotes', label: 'Blockquotes' },
+  { id: 'tables', label: 'Tables' },
+  { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
 ];
 ---
@@ -54,7 +58,9 @@ const sections = [
       <p class="guide__eyebrow">Redwoods</p>
       <h1>Style guide</h1>
       <p class="guide__lede">
-        A style guide for the tokens, styles, components, and patterns that make up this site. If you're making a resuable pattern for the site please add new examples here so contributors always have one place to look.
+        A style guide for the tokens, styles, components, and patterns that make up this site. If
+        you're making a resuable pattern for the site please add new examples here so contributors
+        always have one place to look.
       </p>
       <nav class="guide__nav" aria-label="Sections">
         {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
@@ -64,7 +70,10 @@ const sections = [
     <section id="colors" class="section">
       <div class="section__head">
         <h2>Colors</h2>
-        <p>Brand and gray scale palette plus semantic aliases. Use the semantic aliases wherever possible; reach for the brand and gray scale palette as a last resort.</p>
+        <p>
+          Brand and gray scale palette plus semantic aliases. Use the semantic aliases wherever
+          possible; reach for the brand and gray scale palette as a last resort.
+        </p>
       </div>
 
       <h3 class="subhead">Brand</h3>
@@ -116,8 +125,15 @@ const sections = [
     <section id="typography" class="section">
       <div class="section__head">
         <h2>Typography</h2>
-        <p>Stack is <code>var(--font-serif)</code> for headings and <code>var(--font-sans)</code> for body copy.</p>
-        <p>Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at <code>--layout-prose-max</code>.</p>
+        <p>
+          Stack is <code>var(--font-serif)</code> for headings and <code>var(--font-sans)</code> for body
+          copy.
+        </p>
+        <p>
+          Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at <code
+            >--layout-prose-max</code
+          >.
+        </p>
       </div>
 
       <div class="type-scale">
@@ -133,7 +149,11 @@ const sections = [
         }
         <div class="type-row">
           <div class="type-row__sample">
-            <p>Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for pleasant line breaks.</p>
+            <p>
+              Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of
+              flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for
+              pleasant line breaks.
+            </p>
           </div>
           <code class="type-row__token">--font-size-base</code>
         </div>
@@ -149,19 +169,124 @@ const sections = [
     <section id="links" class="section">
       <div class="section__head">
         <h2>Links</h2>
-        <p>Anchor defaults live in <code>base.css</code>. Focus rings come from <code>--color-focus</code>.</p>
+        <p>
+          Anchor defaults live in <code>base.css</code>. Focus rings come from <code
+            >--color-focus</code
+          >.
+        </p>
       </div>
       <ul class="link-list">
         <li><a href="#links">Default link — hover to see the color shift</a></li>
         <li><a href="https://example.com" rel="external">External link</a></li>
-        <li>Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to <a href="#typography">typography</a>.</li>
+        <li>
+          Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to
+          <a href="#typography">typography</a>.
+        </li>
       </ul>
+    </section>
+
+    <section id="lists" class="section">
+      <div class="section__head">
+        <h2>Lists</h2>
+        <p>
+          Lists use <code>padding-inline-start: var(--space-lg)</code> from <code>base.css</code>.
+          Markers stay inside the content box.
+        </p>
+      </div>
+      <h3 class="subhead">Unordered</h3>
+      <ul>
+        <li>First item</li>
+        <li>Second item</li>
+        <li>
+          Third item with a nested list
+          <ul>
+            <li>Nested item A</li>
+            <li>Nested item B</li>
+          </ul>
+        </li>
+      </ul>
+      <h3 class="subhead">Ordered</h3>
+      <ol>
+        <li>Step one</li>
+        <li>Step two</li>
+        <li>
+          Step three with a nested list
+          <ol>
+            <li>Sub-step A</li>
+            <li>Sub-step B</li>
+          </ol>
+        </li>
+      </ol>
+    </section>
+
+    <section id="blockquotes" class="section">
+      <div class="section__head">
+        <h2>Blockquotes</h2>
+        <p>
+          Left border uses <code>--color-accent</code>, text shifts to <code
+            >--color-text-muted</code
+          >. Styled in <code>base.css</code>.
+        </p>
+      </div>
+      <blockquote>
+        <p>The best time to plant a tree was twenty years ago. The second best time is now.</p>
+      </blockquote>
+      <h3 class="subhead">Multi-paragraph</h3>
+      <blockquote>
+        <p>This is the first paragraph inside the quote.</p>
+        <p>
+          And this is the second paragraph. Blockquotes can contain <strong>bold</strong>, <em
+            >italic</em
+          >, and other inline formatting.
+        </p>
+      </blockquote>
+    </section>
+
+    <section id="tables" class="section">
+      <div class="section__head">
+        <h2>Tables</h2>
+        <p>
+          Full-width with collapsed borders. Rows separated by <code>--color-border</code>. Styled
+          in <code>base.css</code>.
+        </p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>--space-sm</td><td>8px</td><td>Tight gaps</td></tr>
+          <tr><td>--space-md</td><td>16px</td><td>Default spacing</td></tr>
+          <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="code" class="section">
+      <div class="section__head">
+        <h2>Code</h2>
+        <p>
+          Inline <code>code</code> gets a subtle background from <code>--color-border</code>. Code
+          blocks use the <code>github-light-high-contrast</code> Shiki theme for WCAG AA compliance.
+        </p>
+      </div>
+      <h3 class="subhead">Inline</h3>
+      <p>
+        Use <code>var(--color-accent)</code> for brand highlights, or run <code>pnpm dev</code> to start
+        the server.
+      </p>
+      <h3 class="subhead">Block</h3>
+      <pre><code>const site = 'https://joinredwoods.com';
+console.log(site);</code></pre>
     </section>
 
     <section id="spacing" class="section">
       <div class="section__head">
         <h2>Spacing</h2>
-        <p>T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap. Don't use in places where the values align coincidently.</p>
+        <p>
+          T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap.
+          Don't use in places where the values align coincidently.
+        </p>
       </div>
       <div class="scale-list">
         {
@@ -230,7 +355,10 @@ const sections = [
     <section id="header" class="section">
       <div class="section__head">
         <h2>Header</h2>
-        <p><code>&lt;Header compact /&gt;</code>. The default variant is the home hero with the trees artwork; the compact variant is for interior pages.</p>
+        <p>
+          <code>&lt;Header compact /&gt;</code>. The default variant is the home hero with the trees
+          artwork; the compact variant is for interior pages.
+        </p>
       </div>
 
       <h3 class="subhead">Default</h3>

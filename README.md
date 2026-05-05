@@ -39,13 +39,13 @@ You need the following installed before running the site:
 
 Run everything from the project root.
 
-| Command        | What it does                                                            |
-| -------------- | ----------------------------------------------------------------------- |
-| `pnpm install` | Install dependencies                                                    |
-| `pnpm dev`     | Start the local dev server at <http://localhost:4321/>                  |
-| `pnpm build`   | Build the production site to `./dist/`                                  |
-| `pnpm preview` | Preview the production build locally                                    |
-| `pnpm astro …` | Run any Astro CLI command (e.g. `pnpm astro check`)                     |
+| Command        | What it does                                           |
+| -------------- | ------------------------------------------------------ |
+| `pnpm install` | Install dependencies                                   |
+| `pnpm dev`     | Start the local dev server at <http://localhost:4321/> |
+| `pnpm build`   | Build the production site to `./dist/`                 |
+| `pnpm preview` | Preview the production build locally                   |
+| `pnpm astro …` | Run any Astro CLI command (e.g. `pnpm astro check`)    |
 
 ## 📁 Project structure
 

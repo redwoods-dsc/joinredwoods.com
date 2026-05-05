@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
+import BackLink from '../../../components/BackLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
 export async function getStaticPaths() {
@@ -30,69 +31,56 @@ const articles = allArticles
   <Header compact />
   <main>
     <div class="author-wrap">
-      <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+      <BackLink href="/blog/">Back to Blog</BackLink>
       <h1>{name}</h1>
-      <p class="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+      <p class="bio">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris.
+      </p>
       <h2>Articles</h2>
       <ul class="article-list">
-        {articles.map((article) => (
-          <li>
-            <a href={`/blog/${article.id}/`}>{article.data.title}</a>
-            <time datetime={article.data.date.toISOString()}>
-              {article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
-            </time>
-          </li>
-        ))}
+        {
+          articles.map((article) => (
+            <li>
+              <a href={`/blog/${article.id}/`}>{article.data.title}</a>
+              <time datetime={article.data.date.toISOString()}>
+                {article.data.date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  timeZone: 'UTC',
+                })}
+              </time>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </main>
 </Layout>
 
 <style>
-.author-wrap {
-  padding: var(--space-3xl);
-}
+  .author-wrap {
+    padding: var(--space-3xl);
+  }
 
-.back-link {
-  display: inline-block;
-  margin-block-end: var(--space-md);
-  font-size: var(--font-size-sm);
-  color: var(--color-accent);
-  text-decoration: none;
-}
+  .bio {
+    margin-block-end: var(--space-lg);
+    color: var(--color-text-muted);
+  }
 
-.back-link:hover {
-  text-decoration: underline;
-}
+  .article-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
 
-h1 {
-  margin-block-end: var(--space-xs);
-}
-
-.bio {
-  margin-block-end: var(--space-lg);
-  color: var(--color-text-muted);
-}
-
-h2 {
-  margin-block-end: var(--space-sm);
-}
-
-.article-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.article-list a {
-  color: var(--color-accent);
-}
-
-.article-list time {
-  display: block;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
+  .article-list time {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
 </style>

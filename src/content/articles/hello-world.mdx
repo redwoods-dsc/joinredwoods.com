@@ -1,9 +1,106 @@
 ---
-title: "Hello World"
+title: 'Hello World'
 date: 2026-04-29
-authors: ["Redwoods Team"]
-description: "A sample article to verify the content collection is working."
+authors: ['Redwoods Team']
+description: 'A sample article to verify the content collection is working.'
 draft: false
 ---
 
-This is a sample article. Replace it with your own content.
+import { Image } from 'astro:assets';
+import trees from '../../assets/trees-01.png';
+
+This is a sample article showcasing how different Markdown elements render. Use it as a visual reference when writing new posts.
+
+## Headings: This is a second-level heading (h2)
+
+lorem ipsum
+
+### Third-level heading (h3)
+
+Jacobin cahiers noguchi chronically online asymmetrical retro. Orange wine nineties williamsburg danish modern.
+
+Food truck pitchfork palo santo snackwave lacto-ferment readymade. Yr muji criterion, authentic messenger bag hell of vibecession mood board tbh vice chronically online microdosing. Didion ayahuasca echo park, cupping aesthetic burrata nootropic guided by voices xiao long bao twee meditation wabi-sabi helvetica stussy claire saffitz. Ghosting mixtape thundercats unicorn flexitarian raw denim dreamcatcher zines YOLO mushroom coffee photo booth. Spritz ego death bolaño booktok.
+
+#### Fourth-level heading
+
+Dad shoes hell of pabst akerman YIMBY, ottessa moshfegh portra matcha bauhaus four tet bluesky af. Mitski braun VHS granny square disrupt intelligentsia. Selfies slugging solarpunk dirtbag freegan. Tarot pull woke post-rock garum bell hooks skateboard.
+
+## Paragraphs and inline formatting
+
+Here is a regular paragraph with **bold text**, _italic text_, and **_bold italic_** together. You can also use `inline code` for technical terms like `Array.prototype.map()`.
+
+Here is a [link to the Astro docs](https://docs.astro.build) and here is a second paragraph to show spacing between blocks.
+
+## Unordered lists
+
+- First item
+- Second item with a longer description that might wrap to the next line depending on the viewport width
+- Third item
+  - Nested item A
+  - Nested item B
+- Fourth item
+
+## Ordered lists
+
+1. Preheat the oven to 375°F
+2. Mix the dry ingredients together
+3. Fold in the wet ingredients
+   1. Eggs first
+   2. Then the buttermilk
+4. Bake for 25 minutes
+
+## Blockquotes
+
+> The best time to plant a tree was twenty years ago. The second best time is now.
+
+A multi-paragraph blockquote:
+
+> This is the first paragraph inside the quote.
+>
+> And this is the second paragraph. Blockquotes can contain **bold**, _italic_, and other inline formatting.
+
+## Code
+
+Inline code: use `const x = 42` in a sentence. Also works for filenames like `astro.config.mjs` or CLI commands like `pnpm dev`.
+
+A fenced code block with syntax highlighting:
+
+```js
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('world'));
+```
+
+A plain code block without a language:
+
+```
+src/
+  content/
+    articles/
+      hello-world.mdx
+  styles/
+    base.css
+```
+
+## Horizontal rule
+
+---
+
+## Images
+
+<Image src={trees} alt="Illustrated redwood trees" />
+
+## Tables
+
+| Feature     | Status  | Notes                  |
+| ----------- | ------- | ---------------------- |
+| Headers     | Working | All levels render      |
+| Lists       | Working | Nested too             |
+| Blockquotes | Working | Multi-paragraph        |
+| Code blocks | Working | With syntax highlights |
+
+## Wrapping up
+
+That covers the main Markdown primitives. If something looks off, tweak the prose styles and check this page again.
