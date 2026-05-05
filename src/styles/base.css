@@ -141,7 +141,7 @@ samp {
 }
 
 code {
-  background: var(--color-border);
+  background: color-mix(in srgb, var(--color-gray-75) 40%, var(--color-gray-100));
   padding: var(--space-3xs) var(--space-2xs);
   border-radius: var(--radius-xs);
 }
@@ -153,6 +153,7 @@ pre {
   border-radius: var(--radius-md);
   overflow-x: auto;
   margin-block: var(--space-md);
+  background: var(--color-gray-100);
 }
 
 pre code {
