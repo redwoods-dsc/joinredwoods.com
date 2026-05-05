@@ -14,6 +14,7 @@
   --color-bg: var(--color-cream);
   --color-surface: var(--color-green);
   --color-text: var(--color-gray-25);
+  --color-text-muted: var(--color-gray-50);
   --color-border: var(--color-gray-75);
   --color-accent: var(--color-orange);
   --color-accent-contrast: var(--color-cream);
