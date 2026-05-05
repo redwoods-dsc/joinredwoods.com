@@ -23,15 +23,29 @@
   --font-serif: 'Source Serif 4', serif;
   --font-mono: monospace;
 
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem; /* 16px */
-  --font-size-md: 1.125rem; /* 18px */
-  --font-size-lg: 1.25rem; /* 20px */
-  --font-size-xl: 1.5rem; /* 24px */
-  --font-size-2xl: 1.875rem;
-  --font-size-3xl: 2.25rem;
-  --font-size-4xl: 4rem; /* 64px */
+  /* === Type scale primitives (Utopia: 320→1240, 18→20, 1.067→1.25) === */
+
+  --step--2: clamp(0.8rem, 1.0536rem + -0.3272vw, 0.9882rem);
+  --step--1: clamp(1rem, 1.0733rem + -0.0945vw, 1.0544rem);
+  --step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+  --step-1: clamp(1.2004rem, 1.0744rem + 0.6298vw, 1.5625rem);
+  --step-2: clamp(1.2808rem, 1.0469rem + 1.1693vw, 1.9531rem);
+  --step-3: clamp(1.3666rem, 0.9928rem + 1.8692vw, 2.4414rem);
+  --step-4: clamp(1.4582rem, 0.9039rem + 2.7714vw, 3.0518rem);
+  --step-5: clamp(1.5559rem, 0.7702rem + 3.9284vw, 3.8147rem);
+  --step-6: clamp(2rem, 1.3043rem + 3.4783vw, 4rem);
+
+  /* === Semantic font-size tokens === */
+
+  --font-size-xs: var(--step--2);
+  --font-size-sm: var(--step--1);
+  --font-size-base: var(--step-0);
+  --font-size-md: var(--step-1);
+  --font-size-lg: var(--step-2);
+  --font-size-xl: var(--step-3);
+  --font-size-2xl: var(--step-4);
+  --font-size-3xl: var(--step-5);
+  --font-size-4xl: var(--step-6);
 
   --line-height-tight: 1.15;
   --line-height-snug: 1.3;
