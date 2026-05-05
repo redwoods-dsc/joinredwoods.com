@@ -1,7 +1,18 @@
 ---
+import { Code } from 'astro:components';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Header from '../components/Header.astro';
+
+const codeSampleJs = `const site = 'https://joinredwoods.com';
+console.log(site);`;
+
+const codeSamplePlain = `src/
+  content/
+    articles/
+      hello-world.mdx
+  styles/
+    base.css`;
 
 const brand = [
   { name: 'orange', token: '--color-orange' },
@@ -276,9 +287,11 @@ const sections = [
         Use <code>var(--color-accent)</code> for brand highlights, or run <code>pnpm dev</code> to start
         the server.
       </p>
-      <h3 class="subhead">Block</h3>
-      <pre><code>const site = 'https://joinredwoods.com';
-console.log(site);</code></pre>
+      <h3 class="subhead">Block (with language)</h3>
+      <Code code={codeSampleJs} lang="js" theme="github-light-high-contrast" />
+
+      <h3 class="subhead">Block (plain)</h3>
+      <Code code={codeSamplePlain} theme="github-light-high-contrast" />
     </section>
 
     <section id="spacing" class="section">
