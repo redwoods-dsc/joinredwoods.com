@@ -85,7 +85,6 @@ blockquote {
   border-inline-start: 3px solid var(--color-accent);
   padding-inline-start: var(--space-md);
   margin-block: var(--space-md);
-  color: var(--color-text-muted);
 }
 
 table {
