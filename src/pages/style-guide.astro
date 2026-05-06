@@ -1,8 +1,10 @@
 ---
 import { Code } from 'astro:components';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Header from '../components/Header.astro';
+import trees from '../assets/trees-01.png';
 
 const codeSampleJs = `const site = 'https://joinredwoods.com';
 console.log(site);`;
@@ -28,7 +30,6 @@ const semanticColors = [
   { name: 'bg', token: '--color-bg' },
   { name: 'surface', token: '--color-surface' },
   { name: 'text', token: '--color-text' },
-  { name: 'text-muted', token: '--color-text-muted' },
   { name: 'border', token: '--color-border' },
   { name: 'accent', token: '--color-accent' },
   { name: 'accent-contrast', token: '--color-accent-contrast' },
@@ -56,9 +57,12 @@ const sections = [
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
   { id: 'links', label: 'Links' },
+  { id: 'inline', label: 'Inline formatting' },
   { id: 'lists', label: 'Lists' },
   { id: 'blockquotes', label: 'Blockquotes' },
+  { id: 'rules', label: 'Horizontal rules' },
   { id: 'tables', label: 'Tables' },
+  { id: 'images', label: 'Images' },
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
 ];
@@ -171,9 +175,9 @@ const sections = [
         </div>
         <div class="type-row">
           <div class="type-row__sample">
-            <small>Small / muted caption text.</small>
+            <small>Small caption text.</small>
           </div>
-          <code class="type-row__token">--font-size-sm · --color-text-muted</code>
+          <code class="type-row__token">--font-size-sm</code>
         </div>
       </div>
     </section>
@@ -195,6 +199,21 @@ const sections = [
           <a href="#typography">typography</a>.
         </li>
       </ul>
+    </section>
+
+    <section id="inline" class="section">
+      <div class="section__head">
+        <h2>Inline formatting</h2>
+        <p>
+          Emphasis primitives that flow inside paragraphs. Inherit color and size from the
+          surrounding text.
+        </p>
+      </div>
+      <p>
+        A paragraph with <strong>bold text</strong>, <em>italic text</em>, and
+        <strong><em>bold italic</em></strong> together. You can also use <code>inline code</code> for
+        technical terms like <code>Array.prototype.map()</code>.
+      </p>
     </section>
 
     <section id="lists" class="section">
@@ -235,9 +254,7 @@ const sections = [
       <div class="section__head">
         <h2>Blockquotes</h2>
         <p>
-          Left border uses <code>--color-accent</code>, text shifts to <code
-            >--color-text-muted</code
-          >. Styled in <code>base.css</code>.
+          Left border uses <code>--color-accent</code>. Styled in <code>base.css</code>.
         </p>
       </div>
       <blockquote>
@@ -252,6 +269,19 @@ const sections = [
           >, and other inline formatting.
         </p>
       </blockquote>
+    </section>
+
+    <section id="rules" class="section">
+      <div class="section__head">
+        <h2>Horizontal rules</h2>
+        <p>
+          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin.
+          Styled in <code>base.css</code>.
+        </p>
+      </div>
+      <p>Content above the rule.</p>
+      <hr />
+      <p>Content below the rule.</p>
     </section>
 
     <section id="tables" class="section">
@@ -272,6 +302,18 @@ const sections = [
           <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
         </tbody>
       </table>
+    </section>
+
+    <section id="images" class="section">
+      <div class="section__head">
+        <h2>Images</h2>
+        <p>
+          Images are fluid by default — <code>max-width: 100%</code> and
+          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code>
+          component for assets in <code>src/assets/</code> so they're optimized.
+        </p>
+      </div>
+      <Image src={trees} alt="Illustrated redwood trees" width={320} />
     </section>
 
     <section id="code" class="section">
@@ -409,7 +451,7 @@ const sections = [
   }
 
   .guide__lede {
-    color: var(--color-text-muted);
+    color: var(--color-text);
     max-width: var(--layout-prose-max);
   }
 
@@ -444,7 +486,7 @@ const sections = [
   }
 
   .section__head p {
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   .subhead {
@@ -452,7 +494,7 @@ const sections = [
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-text-muted);
+    color: var(--color-text);
     margin-block-start: var(--space-md);
   }
 
@@ -492,7 +534,7 @@ const sections = [
 
   .swatch__token {
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   .type-scale {
@@ -520,7 +562,7 @@ const sections = [
 
   .type-row__token {
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text);
     white-space: nowrap;
   }
 
@@ -551,7 +593,7 @@ const sections = [
 
   .scale-row__token {
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   .radii-grid {
@@ -581,7 +623,7 @@ const sections = [
 
   .radii-sample__token {
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   .cluster {
