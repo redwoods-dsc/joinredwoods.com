@@ -39,11 +39,27 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
     font-family: var(--font-serif);
   }
 
+  .content-page :global(h1) {
+    margin-block-start: 0;
+  }
+
   .content-page :global(h2) {
     margin-block-start: var(--space-3xl);
   }
 
   .content-page :global(h3) {
     margin-block-start: var(--space-2xl);
+  }
+
+  .content-page :global(h4) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .content-page :global(h5) {
+    margin-block-start: var(--space-lg);
+  }
+
+  .content-page :global(h6) {
+    margin-block-start: var(--space-md);
   }
 </style>
