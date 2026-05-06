@@ -1,5 +1,5 @@
 ---
-layout: ../layouts/ContentPage.astro
+layout: '@layouts/ContentPage.astro'
 title: About
 subtitle: Redwoods is a design system community.
 ---
