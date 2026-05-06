@@ -1,0 +1,65 @@
+---
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
+---
+
+<Layout>
+  <Header compact />
+  <main>
+    <article class="content-page">
+      <header class="content-page__intro">
+        <h1>{title}</h1>
+        {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+      </header>
+      <slot />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .content-page {
+    max-width: var(--layout-prose-max);
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-xl);
+  }
+
+  .content-page__intro {
+    margin-block-end: var(--space-3xl);
+  }
+
+  .content-page__subtitle {
+    font-size: var(--font-size-xl);
+    font-family: var(--font-serif);
+  }
+
+  .content-page :global(h1) {
+    margin-block-start: 0;
+  }
+
+  .content-page :global(h2) {
+    margin-block-start: var(--space-3xl);
+  }
+
+  .content-page :global(h3) {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .content-page :global(h4) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .content-page :global(h5) {
+    margin-block-start: var(--space-lg);
+  }
+
+  .content-page :global(h6) {
+    margin-block-start: var(--space-md);
+  }
+</style>
