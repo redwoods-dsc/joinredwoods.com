@@ -67,7 +67,11 @@ p {
   max-width: var(--layout-prose-max);
 }
 
-p + p {
+p + p,
+ul + p,
+ol + p,
+p + ul,
+p + ol {
   margin-block-start: var(--space-md);
 }
 
