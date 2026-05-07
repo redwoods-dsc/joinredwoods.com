@@ -2,7 +2,7 @@
   <div class="page-wrap">
     <slot />
   </div>
-  <p class="copyright flow">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
+  <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
 </div>
 
 <style>
@@ -20,8 +20,7 @@
   }
 
   .copyright {
-    margin-block-start: .5em;
-    position: absolute;
+    margin-block-start: var(--space-xs);
     font-size: var(--font-size-xs);
     writing-mode: horizontal-tb;
   }
