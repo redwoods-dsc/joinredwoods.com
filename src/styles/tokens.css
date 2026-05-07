@@ -25,6 +25,7 @@
 
   /* === Type scale primitives (Utopia: 320→1240, 18→20, 1.067→1.25) === */
 
+  --step--3: clamp(0.64rem, 1.0256rem + -0.4976vw, 0.9261rem);
   --step--2: clamp(0.8rem, 1.0536rem + -0.3272vw, 0.9882rem);
   --step--1: clamp(1rem, 1.0733rem + -0.0945vw, 1.0544rem);
   --step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
@@ -37,7 +38,7 @@
 
   /* === Semantic font-size tokens === */
 
-  --font-size-xs: var(--step--2);
+  --font-size-xs: var(--step--3);
   --font-size-sm: var(--step--1);
   --font-size-base: var(--step-0);
   --font-size-md: var(--step-1);
