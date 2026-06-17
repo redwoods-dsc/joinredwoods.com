@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
-import Header from '../../../components/Header.astro';
 import BackLink from '../../../components/BackLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
@@ -28,43 +27,34 @@ const articles = allArticles
 ---
 
 <Layout>
-  <Header compact />
-  <main>
-    <div class="author-wrap">
-      <BackLink href="/blog/">Back to Blog</BackLink>
-      <h1>{name}</h1>
-      <p class="bio">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris.
-      </p>
-      <h2>Articles</h2>
-      <ul class="article-list">
-        {
-          articles.map((article) => (
-            <li>
-              <a href={`/blog/${article.id}/`}>{article.data.title}</a>
-              <time datetime={article.data.date.toISOString()}>
-                {article.data.date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  timeZone: 'UTC',
-                })}
-              </time>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </main>
+  <BackLink href="/blog/">Back to Blog</BackLink>
+  <h1>{name}</h1>
+  <p class="bio">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris.
+  </p>
+  <h2>Articles</h2>
+  <ul class="article-list">
+    {
+      articles.map((article) => (
+        <li>
+          <a href={`/blog/${article.id}/`}>{article.data.title}</a>
+          <time datetime={article.data.date.toISOString()}>
+            {article.data.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              timeZone: 'UTC',
+            })}
+          </time>
+        </li>
+      ))
+    }
+  </ul>
 </Layout>
 
 <style>
-  .author-wrap {
-    padding: var(--space-3xl);
-  }
-
   .bio {
     margin-block-end: var(--space-lg);
     color: var(--color-text);

@@ -1,17 +1,9 @@
 ---
-import { Image } from 'astro:assets';
 import redwoodsLogo from '../assets/redwoods-logo-white.svg';
 import tagline from '../assets/tagline-white.svg';
-import trees from '../assets/trees-02.png';
-
-interface Props {
-  compact?: boolean;
-}
-
-const { compact = false } = Astro.props;
 ---
 
-<header class:list={['header', { 'header-compact': compact }]}>
+<header class="header">
   <div class="header-content">
     <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
     <nav class="nav" role="navigation">
@@ -26,39 +18,130 @@ const { compact = false } = Astro.props;
     </nav>
     <img src={tagline.src} alt="A design system community" class="tagline" />
   </div>
-  <Image src={trees} alt="" class="trees" densities={[1, 2]} />
 </header>
 
 <style>
   .header {
     position: relative;
-    display: flex;
-    min-height: clamp(450px, 30dvh + 25vw, 960px);
-    padding: var(--space-xl);
+    height: 50vh;
+    min-height: 360px;
+    padding: var(--space-lg);
     color: var(--color-accent-contrast);
     background-color: var(--color-accent);
-    overflow: hidden;
+    background-image: url('../assets/trees-01.png');
+    background-repeat: no-repeat;
+    background-position-y: var(--space-xl);
+    background-position-x: var(--space-4xl);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+
+  /* tall viewports — anchor the trees to the card bottom */
+  @media (min-height: 1024px) {
+    .header {
+      background-position-y: bottom;
+    }
+  }
+
+  /* very short viewports — drop the trees so the nav has room to breathe */
+  @media (max-height: 400px) {
+    .header {
+      background-image: none;
+    }
+  }
+
+  /* 850px+ — header card sits in its own column. Fully rounded by default
+     (the desktop block below re-flattens the bottom corners when header
+     rejoins main beneath it in the left column). */
+  @media (min-width: 850px) {
+    .header {
+      border-radius: var(--radius-xl);
+    }
+  }
+
+  /* Tablet — fixed card pinned to the viewport. Width matches the left grid
+     column: (shell − gap) ÷ 2, where shell = 100vw − 2 × --space-lg. */
+  @media (min-width: 850px) and (max-width: 1399.98px) {
+    .header {
+      position: fixed;
+      width: calc((100vw - 3 * var(--space-lg)) / 2);
+      height: calc(100dvh - 2 * var(--space-lg));
+    }
+  }
+
+  /* Desktop — header rejoins main below it in the left column, so back to
+     top-only border-radius to meet main's bottom-only flush. Height returns
+     to auto so the card sizes from its content (logo + nav); the absolute
+     tagline below then lands cleanly on the nav's bottom baseline. */
+  @media (min-width: 1400px) {
+    .header {
+      height: auto;
+      min-height: 0;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      background-position-x: center;
+      background-position-y: top;
+    }
+  }
+
+  @media (min-width: 1400px) and (min-height: 650px) {
+    .header {
+      min-height: 420px;
+    }
   }
 
   .header-content {
-    position: relative;
-    z-index: 1;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-md);
+    height: 100%;
   }
 
   .logo {
     display: block;
-    width: 150px;
+    width: 190px;
   }
 
   .tagline {
-    width: clamp(180px, 30vw, 320px);
+    width: 80%;
+    max-width: 350px;
     height: auto;
     margin-block-start: auto;
-    align-self: flex-end;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 740px) {
+    .tagline {
+      width: auto;
+      align-self: flex-end;
+    }
+  }
+
+  @media (min-width: 850px) {
+    .tagline {
+      align-self: flex-start;
+    }
+  }
+
+  /* Desktop — tagline breaks out of the column flow so it sits on the same
+     baseline as the bottom of the nav, anchored to the right of the card. */
+  @media (min-width: 1400px) {
+    .tagline {
+      position: absolute;
+      right: var(--space-lg);
+      bottom: var(--space-lg);
+      margin-block-start: 0;
+    }
+  }
+
+  .nav {
+    /* TODO: revisit when the typography scale is reworked — the fluid scale
+       wasn't landing at the right size in the header. Pinned here (not on
+       `.nav a`) so the <li> line box uses this fixed value instead of the
+       inherited fluid body font-size, keeping nav row spacing constant. */
+    font-size: 20px;
+  }
+
+  .nav ul {
+    padding-inline-start: 0;
   }
 
   .nav li {
@@ -67,8 +150,7 @@ const { compact = false } = Astro.props;
 
   .nav a {
     font-family: var(--font-serif);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     color: var(--color-accent-contrast);
     text-decoration: none;
   }
@@ -79,42 +161,5 @@ const { compact = false } = Astro.props;
 
   .join-link {
     font-style: italic;
-  }
-
-  .trees {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    max-width: 100%;
-    height: auto;
-    transform: translateX(-50%);
-  }
-
-  @media (max-width: 700px) {
-    .trees {
-      display: none;
-    }
-  }
-
-  .header-compact {
-    min-height: auto;
-    background-color: var(--color-green);
-  }
-
-  .header-compact .header-content {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .header-compact .tagline {
-    margin-block-start: 0;
-    margin-inline-start: auto;
-    align-self: center;
-  }
-
-  .header-compact .nav {
-    flex-basis: 100%;
-    order: 1;
   }
 </style>

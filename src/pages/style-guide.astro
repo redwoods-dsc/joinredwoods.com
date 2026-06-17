@@ -65,11 +65,12 @@ const sections = [
   { id: 'images', label: 'Images' },
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
+  { id: 'layout', label: 'Layout' },
 ];
 ---
 
 <Layout>
-  <main class="guide">
+  <div class="guide">
     <header class="guide__header">
       <p class="guide__eyebrow">Redwoods</p>
       <h1>Style guide</h1>
@@ -275,8 +276,8 @@ const sections = [
       <div class="section__head">
         <h2>Horizontal rules</h2>
         <p>
-          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin.
-          Styled in <code>base.css</code>.
+          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin. Styled
+          in <code>base.css</code>.
         </p>
       </div>
       <p>Content above the rule.</p>
@@ -309,7 +310,8 @@ const sections = [
         <h2>Images</h2>
         <p>
           Images are fluid by default — <code>max-width: 100%</code> and
-          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code>
+          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code
+          >
           component for assets in <code>src/assets/</code> so they're optimized.
         </p>
       </div>
@@ -413,18 +415,53 @@ const sections = [
       <div class="section__head">
         <h2>Header</h2>
         <p>
-          <code>&lt;Header compact /&gt;</code>. The default variant is the home hero with the trees
-          artwork; the compact variant is for interior pages.
+          <code>&lt;Header /&gt;</code>. A single site header — the same logo, nav, and tagline
+          render on every page. It's mounted once by the layout shell (see Layout below), so pages
+          never import it themselves. The trees backdrop is a background image; on tall viewports (<code
+            >min-height: 1024px</code
+          >) it anchors to the bottom of the card, and on very short ones (<code
+            >max-height: 400px</code
+          >) it drops out entirely.
         </p>
       </div>
 
-      <h3 class="subhead">Default</h3>
-      <Header />
-
-      <h3 class="subhead">Compact</h3>
-      <Header compact />
+      <div class="header-demo"><Header /></div>
     </section>
-  </main>
+
+    <section id="layout" class="section">
+      <div class="section__head">
+        <h2>Layout</h2>
+        <p>
+          Every page uses one responsive shell of three regions — <code>header</code>,
+          <code>main</code>, and <code>aside</code> — owned by <code>Page.astro</code>. The shell's
+          <code>.shell__*</code> wrapper divs are pure grid placeholders; the visible card chrome (background,
+          border-radius, padding, fixed-at-tablet positioning) lives on the inner elements. Pages provide
+          <code>main</code> content (default slot) and optional <code>aside</code>
+          content (<code>slot="aside"</code>).
+        </p>
+      </div>
+
+      <h3 class="subhead">Breakpoints</h3>
+      <p>
+        Driven by two breakpoints. These are raw <code>px</code> values rather than tokens because CSS
+        custom properties cannot be used inside <code>@media</code> conditions.
+      </p>
+      <ul>
+        <li>
+          <strong>&lt; 850px</strong> — single column: header, main, aside stacked. Header and main read
+          as one rounded card.
+        </li>
+        <li>
+          <strong>850–1400px</strong> — two equal columns. The header becomes a full-viewport-height card
+          pinned with <code>position: fixed</code> while the main column scrolls past underneath.
+        </li>
+        <li>
+          <strong>&gt; 1400px</strong> — 2/3 + 1/3: header over main on the left, aside spanning the full-height
+          right column. The header no longer sticks, and the page grows fluidly with no maximum width.
+        </li>
+      </ul>
+    </section>
+  </div>
 </Layout>
 
 <style>
@@ -476,6 +513,26 @@ const sections = [
     flex-direction: column;
     gap: var(--space-xl);
     scroll-margin-block-start: var(--space-xl);
+  }
+
+  /* The demo wrapper only needs to clip <Header>'s top-only border-radius at
+     mobile widths to a fully-rounded shape — chrome (bg, padding, min-height)
+     lives on .header itself now. */
+  .header-demo {
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+  }
+
+  /* Header's tablet rule fixes it to the viewport for the real layout. In the
+     style-guide we're showing the component in isolation, so unwind that
+     positioning and let it lay out in flow inside the demo box. */
+  @media (min-width: 850px) and (max-width: 1399.98px) {
+    .header-demo :global(.header) {
+      position: static;
+      width: auto;
+      height: auto;
+    }
   }
 
   .section__head {
