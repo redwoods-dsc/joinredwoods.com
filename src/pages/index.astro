@@ -1,26 +1,67 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
 ---
 
 <Layout>
-  <Header />
-  <main>
-    <div class="main-wrap">
-      <h1>
-        Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
-        each other on the journey of design system maturity.
-      </h1>
+  <h1>
+    Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each
+    other on the journey of design system maturity.
+  </h1>
+
+  <Fragment slot="aside">
+    <div class="aside-wrap">
+      <section class="aside-card">
+        <h2>What we've learned</h2>
+        <ul>
+          <li><strong>10</strong> The Question Episode 057 Recap</li>
+          <li><strong>27</strong> The Question Episode 056 Recap</li>
+          <li><strong>05</strong> Analysis vs Synthesis</li>
+        </ul>
+      </section>
+      <section class="aside-card">
+        <h2>Where we'll be</h2>
+        <ul>
+          <li><strong>30-31</strong> Converge, 2025</li>
+        </ul>
+      </section>
     </div>
-  </main>
+  </Fragment>
 </Layout>
 
 <style>
-  .main-wrap {
-    padding: var(--space-3xl);
-  }
-
   .accent {
     color: var(--color-green);
+  }
+
+  .aside-wrap {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .aside-card h2 {
+    margin: 0 0 var(--space-md);
+  }
+
+  .aside-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .aside-card li {
+    display: flex;
+    gap: var(--space-md);
+    align-items: baseline;
+  }
+
+  .aside-card strong {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
   }
 </style>

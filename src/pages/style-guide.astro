@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import trees from '../assets/trees-01.png';
 
 const codeSampleJs = `const site = 'https://joinredwoods.com';
@@ -65,11 +66,13 @@ const sections = [
   { id: 'images', label: 'Images' },
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
+  { id: 'footer', label: 'Footer' },
+  { id: 'layout', label: 'Layout' },
 ];
 ---
 
 <Layout>
-  <main class="guide">
+  <div class="guide">
     <header class="guide__header">
       <p class="guide__eyebrow">Redwoods</p>
       <h1>Style guide</h1>
@@ -275,8 +278,8 @@ const sections = [
       <div class="section__head">
         <h2>Horizontal rules</h2>
         <p>
-          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin.
-          Styled in <code>base.css</code>.
+          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin. Styled
+          in <code>base.css</code>.
         </p>
       </div>
       <p>Content above the rule.</p>
@@ -309,7 +312,8 @@ const sections = [
         <h2>Images</h2>
         <p>
           Images are fluid by default — <code>max-width: 100%</code> and
-          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code>
+          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code
+          >
           component for assets in <code>src/assets/</code> so they're optimized.
         </p>
       </div>
@@ -413,18 +417,75 @@ const sections = [
       <div class="section__head">
         <h2>Header</h2>
         <p>
-          <code>&lt;Header compact /&gt;</code>. The default variant is the home hero with the trees
-          artwork; the compact variant is for interior pages.
+          <code>&lt;Header /&gt;</code>. A single site header — the same logo, nav, and tagline
+          render on every page. It's mounted once by the layout shell (see Layout below), so pages
+          never import it themselves. The trees backdrop is a background image; on tall viewports (<code
+            >min-height: 1024px</code
+          >) it anchors to the bottom of the card, and on very short ones (<code
+            >max-height: 400px</code
+          >) it drops out entirely.
         </p>
       </div>
 
-      <h3 class="subhead">Default</h3>
-      <Header />
-
-      <h3 class="subhead">Compact</h3>
-      <Header compact />
+      <div class="header-demo"><Header /></div>
     </section>
-  </main>
+
+    <section id="footer" class="section">
+      <div class="section__head">
+        <h2>Footer</h2>
+        <p>
+          <code>&lt;Footer /&gt;</code>. A single site footer carrying the maintainer and community
+          attribution. Like the header, it's mounted once by the layout shell and identical on every
+          page. In the shell it renders on the cream card surface — full-width beneath the grid at
+          desktop, and flush at the bottom of the joined column below that.
+        </p>
+      </div>
+
+      <div class="footer-demo"><Footer /></div>
+    </section>
+
+    <section id="layout" class="section">
+      <div class="section__head">
+        <h2>Layout</h2>
+        <p>
+          Every page uses one responsive shell of four regions — <code>header</code>,
+          <code>main</code>, <code>aside</code>, and <code>footer</code> — owned by
+          <code>Page.astro</code>. The <code>.shell__*</code> wrappers own the card surface — grid placement,
+          the breakpoint-dependent join <code>border-radius</code>, the cream fill, and clipping —
+          because only the shell knows where each card sits in the grid. Content styling (padding,
+          type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>, per-page
+          aside wrappers). The <code>header</code> is the exception: its chrome lives on
+          <code>.header</code> because <code>position: fixed</code> at tablet must be on the element itself.
+          Pages provide <code>main</code> content (default slot) and optional <code>aside</code> content
+          (<code>slot="aside"</code>); the
+          <code>header</code> and <code>footer</code> are global and identical on every page.
+        </p>
+      </div>
+
+      <h3 class="subhead">Breakpoints</h3>
+      <p>
+        Driven by two breakpoints. These are raw <code>px</code> values rather than tokens because CSS
+        custom properties cannot be used inside <code>@media</code> conditions.
+      </p>
+      <ul>
+        <li>
+          <strong>&lt; 850px</strong> — single column: header, main, aside, and footer stacked and flush,
+          reading as one rounded card.
+        </li>
+        <li>
+          <strong>850–1400px</strong> — two equal columns. The header becomes a full-viewport-height card
+          pinned with <code>position: fixed</code> while the right column (main + aside + footer) scrolls
+          past underneath as one joined card.
+        </li>
+        <li>
+          <strong>&gt; 1400px</strong> — 2/3 + 1/3: header over main on the left, aside spanning the full-height
+          right column, and the footer as a full-width card beneath the grid. The header no longer sticks,
+          and the shell grows fluidly up to a maximum width (<code>--layout-shell-max</code>),
+          centered beyond that.
+        </li>
+      </ul>
+    </section>
+  </div>
 </Layout>
 
 <style>
@@ -476,6 +537,34 @@ const sections = [
     flex-direction: column;
     gap: var(--space-xl);
     scroll-margin-block-start: var(--space-xl);
+  }
+
+  /* The demo wrapper only needs to clip <Header>'s top-only border-radius at
+     mobile widths to a fully-rounded shape — chrome (bg, padding, min-height)
+     lives on .header itself now. */
+  .header-demo {
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+  }
+
+  /* Footer renders on the cream card surface in the real shell; the demo
+     reproduces that surface so it reads the same in isolation. */
+  .footer-demo {
+    overflow: hidden;
+    background-color: var(--color-bg);
+    border-radius: var(--radius-xl);
+  }
+
+  /* Header's tablet rule fixes it to the viewport for the real layout. In the
+     style-guide we're showing the component in isolation, so unwind that
+     positioning and let it lay out in flow inside the demo box. */
+  @media (min-width: 850px) and (max-width: 1399.98px) {
+    .header-demo :global(.header) {
+      position: static;
+      width: auto;
+      height: auto;
+    }
   }
 
   .section__head {

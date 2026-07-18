@@ -1,6 +1,5 @@
 ---
 import Layout from './Layout.astro';
-import Header from '../components/Header.astro';
 
 interface Props {
   title: string;
@@ -11,23 +10,19 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
 ---
 
 <Layout>
-  <Header compact />
-  <main>
-    <article class="content-page">
-      <header class="content-page__intro">
-        <h1>{title}</h1>
-        {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
-      </header>
-      <slot />
-    </article>
-  </main>
+  <div class="content-page">
+    <header class="content-page__intro">
+      <h1>{title}</h1>
+      {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+    </header>
+    <slot />
+  </div>
 </Layout>
 
 <style>
   .content-page {
     max-width: var(--layout-prose-max);
     margin: 0 auto;
-    padding: var(--space-3xl) var(--space-xl);
   }
 
   .content-page__intro {

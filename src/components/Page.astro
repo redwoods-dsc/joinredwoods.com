@@ -1,27 +1,132 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+---
+
 <div class="global-wrap">
-  <div class="page-wrap">
-    <slot />
+  <div class="shell">
+    <div class="shell__header"><Header /></div>
+    <div class="shell__main">
+      <main class="main-wrap"><slot /></main>
+    </div>
+    <aside class="shell__aside"><slot name="aside" /></aside>
+    <div class="shell__footer"><Footer /></div>
   </div>
   <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
 </div>
 
 <style>
+  /* Layout breakpoints (raw px — custom properties cannot be used in @media conditions):
+       850px  → single column → two equal columns, header fixed to viewport
+       1400px → two equal columns → 2/3 + 1/3, header back in flow         */
+
   .global-wrap {
     position: relative;
+    max-width: var(--layout-shell-max);
+    margin-inline: auto;
     padding: var(--space-lg);
   }
 
-  .page-wrap {
-    max-width: 1400px;
-    margin: 0 auto;
-    border-radius: 16px;
-    background-color: var(--color-bg);
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'main'
+      'aside'
+      'footer';
+    gap: 0; /* header + main + aside + footer read as one joined column on mobile */
+  }
+
+  /* At tablet, .header is position: fixed; the cell collapses in flow but the
+     column track is still allocated by grid-template-columns. */
+  .shell__header {
+    grid-area: header;
+  }
+
+  /* Cream cards share the same surface and clip to their rounded corners. The
+     column they belong to changes per breakpoint (see the joining radii below),
+     so radius is set contextually rather than here. */
+  .shell__main,
+  .shell__aside,
+  .shell__footer {
     overflow: hidden;
+    background-color: var(--color-bg);
+  }
+
+  .shell__main {
+    grid-area: main;
+  }
+
+  /* Shared semantic landmark and content padding for every page that consumes
+     the shell. Per-page wrappers shouldn't repeat padding rules. */
+  .main-wrap {
+    padding: var(--space-xl);
+  }
+
+  .shell__aside {
+    grid-area: aside;
+  }
+
+  .shell__footer {
+    grid-area: footer;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  /* Tablet: main + aside + footer join into one cream column on the right
+     (column-gap between left/right, row-gap 0 so the cards meet flush). */
+  @media (min-width: 850px) {
+    .shell {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'header main'
+        'header aside'
+        'header footer';
+      column-gap: var(--space-lg);
+      row-gap: 0;
+    }
+
+    .shell__main {
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+  }
+
+  /* Desktop: header + main are the joined column on the left, aside is its own
+     standalone card on the right (spans both rows), and footer becomes a
+     full-width card sitting beneath the grid. */
+  @media (min-width: 1400px) {
+    .shell {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+        'header aside'
+        'main aside'
+        'footer footer';
+    }
+
+    .shell__main {
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    }
+
+    .shell__aside {
+      border-radius: var(--radius-xl);
+    }
+
+    .shell__footer {
+      margin-block-start: var(--space-lg);
+      border-radius: var(--radius-xl);
+    }
   }
 
   .copyright {
-    margin-block-start: var(--space-xs);
-    font-size: var(--font-size-xs);
-    writing-mode: horizontal-tb;
+    position: fixed;
+    /* Physical bottom/right: writing-mode remaps logical insets, so logical
+       props here would resolve against the rotated axis and mis-place the text. */
+    bottom: var(--space-lg);
+    right: var(--space-3xs);
+    margin: 0;
+    writing-mode: vertical-rl;
+    /* TODO: revisit when the typography scale is reworked — a "caption" size
+       between xs and sm would belong here. */
+    font-size: 14px;
   }
 </style>

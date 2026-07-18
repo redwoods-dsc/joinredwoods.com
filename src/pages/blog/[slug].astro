@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
 import BackLink from '../../components/BackLink.astro';
 import { authorSlug } from '../../lib/authors';
 
@@ -18,45 +17,36 @@ const { Content } = await render(article);
 ---
 
 <Layout>
-  <Header compact />
-  <main>
-    <div class="article-wrap">
-      <BackLink href="/blog/">Back to Blog</BackLink>
-      <article>
-        <h1>{article.data.title}</h1>
-        <div class="meta">
-          <span class="authors">
-            {
-              article.data.authors.map((author, i) => (
-                <>
-                  {i > 0 && ', '}
-                  <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
-                </>
-              ))
-            }
-          </span>
-          <time datetime={article.data.date.toISOString()}>
-            {
-              article.data.date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                timeZone: 'UTC',
-              })
-            }
-          </time>
-        </div>
-        <Content />
-      </article>
+  <BackLink href="/blog/">Back to Blog</BackLink>
+  <article>
+    <h1>{article.data.title}</h1>
+    <div class="meta">
+      <span class="authors">
+        {
+          article.data.authors.map((author, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
+            </>
+          ))
+        }
+      </span>
+      <time datetime={article.data.date.toISOString()}>
+        {
+          article.data.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC',
+          })
+        }
+      </time>
     </div>
-  </main>
+    <Content />
+  </article>
 </Layout>
 
 <style>
-  .article-wrap {
-    padding: var(--space-3xl);
-  }
-
   .meta {
     display: flex;
     gap: var(--space-sm);
