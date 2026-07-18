@@ -1,9 +1,10 @@
 ---
 import redwoodsLogo from '../assets/redwoods-logo-white.svg';
 import tagline from '../assets/tagline-white.svg';
+import trees from '../assets/trees-01.png';
 ---
 
-<header class="header">
+<header class="header" style={`--bg-image: url(${trees.src})`}>
   <div class="header-content">
     <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
     <nav class="nav" role="navigation">
@@ -28,7 +29,11 @@ import tagline from '../assets/tagline-white.svg';
     padding: var(--space-lg);
     color: var(--color-accent-contrast);
     background-color: var(--color-accent);
-    background-image: url('../assets/trees-01.png');
+    /* URL comes from an ESM import (see the frontmatter) via --bg-image so
+       Astro's pipeline reliably emits the file; a bare url('../assets/…') here
+       compiles to a hashed path that never gets written in the production build.
+       Media-query background-position logic below stays in CSS. */
+    background-image: var(--bg-image);
     background-repeat: no-repeat;
     background-position-y: var(--space-xl);
     background-position-x: var(--space-4xl);

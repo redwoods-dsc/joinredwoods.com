@@ -1,5 +1,6 @@
 ---
 import Header from './Header.astro';
+import Footer from './Footer.astro';
 ---
 
 <div class="global-wrap">
@@ -9,6 +10,7 @@ import Header from './Header.astro';
       <main class="main-wrap"><slot /></main>
     </div>
     <aside class="shell__aside"><slot name="aside" /></aside>
+    <div class="shell__footer"><Footer /></div>
   </div>
   <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
 </div>
@@ -20,6 +22,8 @@ import Header from './Header.astro';
 
   .global-wrap {
     position: relative;
+    max-width: var(--layout-shell-max);
+    margin-inline: auto;
     padding: var(--space-lg);
   }
 
@@ -29,8 +33,9 @@ import Header from './Header.astro';
     grid-template-areas:
       'header'
       'main'
-      'aside';
-    gap: 0; /* header + main read as one joined card on mobile */
+      'aside'
+      'footer';
+    gap: 0; /* header + main + aside + footer read as one joined column on mobile */
   }
 
   /* At tablet, .header is position: fixed; the cell collapses in flow but the
@@ -39,11 +44,18 @@ import Header from './Header.astro';
     grid-area: header;
   }
 
-  .shell__main {
-    grid-area: main;
+  /* Cream cards share the same surface and clip to their rounded corners. The
+     column they belong to changes per breakpoint (see the joining radii below),
+     so radius is set contextually rather than here. */
+  .shell__main,
+  .shell__aside,
+  .shell__footer {
     overflow: hidden;
     background-color: var(--color-bg);
-    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  .shell__main {
+    grid-area: main;
   }
 
   /* Shared semantic landmark and content padding for every page that consumes
@@ -54,20 +66,22 @@ import Header from './Header.astro';
 
   .shell__aside {
     grid-area: aside;
-    overflow: hidden;
-    background-color: var(--color-bg);
-    border-radius: var(--radius-xl);
-    margin-block-start: var(--space-lg);
   }
 
-  /* Tablet: main + aside join into one cream column on the right (column-gap
-     between left/right, row-gap 0 so the two cards meet flush). */
+  .shell__footer {
+    grid-area: footer;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  /* Tablet: main + aside + footer join into one cream column on the right
+     (column-gap between left/right, row-gap 0 so the cards meet flush). */
   @media (min-width: 850px) {
     .shell {
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
         'header main'
-        'header aside';
+        'header aside'
+        'header footer';
       column-gap: var(--space-lg);
       row-gap: 0;
     }
@@ -75,21 +89,18 @@ import Header from './Header.astro';
     .shell__main {
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
-
-    .shell__aside {
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-      margin-block-start: 0;
-    }
   }
 
-  /* Desktop: layout reflows so header + main are the joined column on the left,
-     and aside is its own standalone card on the right (spans both rows). */
+  /* Desktop: header + main are the joined column on the left, aside is its own
+     standalone card on the right (spans both rows), and footer becomes a
+     full-width card sitting beneath the grid. */
   @media (min-width: 1400px) {
     .shell {
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
         'header aside'
-        'main aside';
+        'main aside'
+        'footer footer';
     }
 
     .shell__main {
@@ -97,6 +108,11 @@ import Header from './Header.astro';
     }
 
     .shell__aside {
+      border-radius: var(--radius-xl);
+    }
+
+    .shell__footer {
+      margin-block-start: var(--space-lg);
       border-radius: var(--radius-xl);
     }
   }
