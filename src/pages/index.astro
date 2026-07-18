@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-  <h1>
+  <h1 class="headline">
     Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each
     other on the journey of design system maturity.
   </h1>
@@ -29,6 +29,19 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+  .headline {
+    margin-block-start: 0;
+    font-size: var(--font-size-hero);
+  }
+
+  /* Grows to display size once the main column itself is wide, not the
+     viewport — see the container on .main-wrap in Page.astro. */
+  @container main (min-width: 640px) {
+    .headline {
+      font-size: var(--font-size-hero-max);
+    }
+  }
+
   .accent {
     color: var(--color-green);
   }
