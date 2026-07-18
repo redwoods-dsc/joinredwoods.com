@@ -3,6 +3,7 @@ import { Code } from 'astro:components';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import EntryCard from '../components/EntryCard.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import trees from '../assets/trees-01.png';
@@ -51,12 +52,15 @@ const radiiSteps = ['xs', 'sm', 'md', 'lg', 'xl', 'full'];
 const buttonVariants = ['primary', 'secondary', 'ghost', 'danger'] as const;
 const buttonSizes = ['sm', 'md', 'lg'] as const;
 
+const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
+
 const sections = [
   { id: 'colors', label: 'Colors' },
   { id: 'typography', label: 'Typography' },
   { id: 'spacing', label: 'Spacing' },
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
+  { id: 'entry-card', label: 'Entry card' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
   { id: 'lists', label: 'Lists' },
@@ -431,6 +435,68 @@ const sections = [
       </div>
     </section> -->
 
+    <section id="entry-card" class="section">
+      <div class="section__head">
+        <h2>Entry card</h2>
+        <p>
+          <code>&lt;EntryCard href primaryLabel secondaryLabel date endDate tone /&gt;</code>. A
+          card for linking to blog articles and events. The whole card is a single anchor: a date
+          block on the left (its shade calculated from the tone) and a secondary label above a bold
+          primary label on the right. Pass a <code>date</code> alone for a single day, or add
+          <code>endDate</code> for a range.
+        </p>
+      </div>
+
+      <h3 class="subhead">Dates</h3>
+      <div class="entry-card-demo">
+        <EntryCard
+          href="#entry-card"
+          secondaryLabel="Ben Callahan"
+          primaryLabel="The Question Episode 057 Recap"
+          date={new Date(Date.UTC(2025, 6, 10))}
+        />
+        <EntryCard
+          href="#entry-card"
+          secondaryLabel="Bristol, UK"
+          primaryLabel="Converge, 2025"
+          date={new Date(Date.UTC(2025, 9, 30))}
+          endDate={new Date(Date.UTC(2025, 9, 31))}
+        />
+        <EntryCard
+          href="#entry-card"
+          secondaryLabel="London, UK"
+          primaryLabel="Cross-month conference"
+          date={new Date(Date.UTC(2025, 9, 30))}
+          endDate={new Date(Date.UTC(2025, 10, 2))}
+        />
+      </div>
+
+      <h3 class="subhead">Tones</h3>
+      <div class="entry-card-demo">
+        <EntryCard
+          href="#entry-card"
+          tone="surface"
+          secondaryLabel="tone: surface"
+          primaryLabel="The Question Episode 057 Recap"
+          date={entryToneSample}
+        />
+        <EntryCard
+          href="#entry-card"
+          tone="woodland"
+          secondaryLabel="tone: woodland"
+          primaryLabel="The Question Episode 056 Recap"
+          date={entryToneSample}
+        />
+        <EntryCard
+          href="#entry-card"
+          tone="blue"
+          secondaryLabel="tone: blue"
+          primaryLabel="Analysis vs Synthesis"
+          date={entryToneSample}
+        />
+      </div>
+    </section>
+
     <section id="header" class="section">
       <div class="section__head">
         <h2>Header</h2>
@@ -754,6 +820,13 @@ const sections = [
 
   .cluster--baseline {
     align-items: baseline;
+  }
+
+  .entry-card-demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 32rem;
   }
 
   .link-list {

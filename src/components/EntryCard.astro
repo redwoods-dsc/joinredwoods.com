@@ -1,0 +1,170 @@
+---
+interface Props {
+  href: string;
+  primaryLabel: string;
+  secondaryLabel: string;
+  date: Date;
+  endDate?: Date;
+  tone?: 'surface' | 'woodland' | 'blue';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  primaryLabel,
+  secondaryLabel,
+  date,
+  endDate,
+  tone = 'surface',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const monthFmt = new Intl.DateTimeFormat('en-GB', { month: 'short', timeZone: 'UTC' });
+const day = (d: Date) => String(d.getUTCDate()).padStart(2, '0');
+const month = (d: Date) => monthFmt.format(d);
+const year = (d: Date) => `'${String(d.getUTCFullYear()).slice(-2)}`;
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const isRange = endDate != null;
+const sameMonth =
+  isRange &&
+  date.getUTCFullYear() === endDate.getUTCFullYear() &&
+  date.getUTCMonth() === endDate.getUTCMonth();
+const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
+---
+
+<a class:list={['entry-card', className]} href={href} data-tone={tone} {...rest}>
+  {
+    !isRange && (
+      <span class="entry-card__date">
+        <time class="entry-card__day" datetime={iso(date)}>
+          {day(date)}
+        </time>
+        <span class="entry-card__month">
+          {month(date)} {year(date)}
+        </span>
+      </span>
+    )
+  }
+  {
+    isRange && sameMonth && (
+      <span class="entry-card__date">
+        <span class="entry-card__day">{`${day(date)}–${day(endDate)}`}</span>
+        <span class="entry-card__month">
+          {month(date)} {year(endDate)}
+        </span>
+      </span>
+    )
+  }
+  {
+    isRange && !sameMonth && (
+      <span class="entry-card__date entry-card__date--split">
+        <time class="entry-card__split-line" datetime={iso(date)}>
+          <span class="entry-card__split-day">{day(date)}</span> {month(date)}
+          {sameYear ? '' : ` ${year(date)}`} &#8211;
+        </time>
+        <time class="entry-card__split-line" datetime={iso(endDate)}>
+          <span class="entry-card__split-day">{day(endDate)}</span> {month(endDate)} {year(endDate)}
+        </time>
+      </span>
+    )
+  }
+
+  <span class="entry-card__body">
+    <span class="entry-card__secondary">{secondaryLabel}</span>
+    <span class="entry-card__primary">{primaryLabel}</span>
+  </span>
+</a>
+
+<style>
+  .entry-card {
+    --entry-bg: var(--color-surface);
+    --entry-fg: var(--color-cream);
+
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--entry-bg);
+    color: var(--entry-fg);
+    text-decoration: none;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .entry-card[data-tone='surface'] {
+    --entry-bg: var(--color-surface);
+    --entry-fg: var(--color-cream);
+  }
+
+  .entry-card[data-tone='woodland'] {
+    --entry-bg: var(--color-woodland);
+    --entry-fg: var(--color-cream);
+  }
+
+  .entry-card[data-tone='blue'] {
+    --entry-bg: var(--color-blue);
+    --entry-fg: var(--color-text);
+  }
+
+  .entry-card:hover {
+    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 8%);
+  }
+
+  .entry-card__date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-3xs);
+    min-width: 5rem;
+    padding: var(--space-sm) var(--space-md);
+    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 12%);
+  }
+
+  .entry-card__day {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+  }
+
+  .entry-card__month {
+    font-size: var(--font-size-sm);
+    color: color-mix(in srgb, var(--entry-fg), transparent 25%);
+  }
+
+  .entry-card__date--split {
+    justify-content: center;
+    gap: var(--space-2xs);
+  }
+
+  .entry-card__split-line {
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-tight);
+    white-space: nowrap;
+  }
+
+  .entry-card__split-day {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .entry-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2xs);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .entry-card__secondary {
+    font-size: var(--font-size-sm);
+    color: color-mix(in srgb, var(--entry-fg), transparent 20%);
+  }
+
+  .entry-card__primary {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-snug);
+  }
+</style>
