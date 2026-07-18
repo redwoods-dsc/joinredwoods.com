@@ -155,7 +155,19 @@ const sections = [
         </p>
       </div>
 
+      <p>
+        The hero is the one size that responds to layout: it sizes against the width of its column
+        (a container query), not the viewport — small in a narrow column, display-scale once the
+        column is wide.
+      </p>
+
       <div class="type-scale">
+        <div class="type-row">
+          <div class="type-row__sample">
+            <p class="type-hero">Hero headline</p>
+          </div>
+          <code class="type-row__token">--font-size-hero / --font-size-hero-max</code>
+        </div>
         {
           typeSamples.map((t) => (
             <div class="type-row">
@@ -174,13 +186,19 @@ const sections = [
               pleasant line breaks.
             </p>
           </div>
-          <code class="type-row__token">--font-size-base</code>
+          <code class="type-row__token">--font-size-md</code>
         </div>
         <div class="type-row">
           <div class="type-row__sample">
             <small>Small caption text.</small>
           </div>
           <code class="type-row__token">--font-size-sm</code>
+        </div>
+        <div class="type-row">
+          <div class="type-row__sample">
+            <p class="type-caption">Caption text — copyright lines, metadata, fine print.</p>
+          </div>
+          <code class="type-row__token">--font-size-caption</code>
         </div>
       </div>
     </section>
@@ -648,6 +666,17 @@ const sections = [
 
   .type-row__sample > * {
     margin: 0;
+  }
+
+  .type-hero {
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    font-size: var(--font-size-hero);
+  }
+
+  .type-caption {
+    font-size: var(--font-size-caption);
   }
 
   .type-row__token {

@@ -12,7 +12,7 @@
  */
 html {
   font-family: var(--font-sans);
-  font-size: var(--font-size-md);
+  font-size: 1rem; /* fixed 16px root — keeps rem stable, honors user font-size preference */
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-regular);
   overflow-y: scroll; /* [1] */
@@ -21,6 +21,7 @@ html {
 
 body {
   color: var(--color-text);
+  font-size: var(--font-size-md);
 }
 
 h1,
