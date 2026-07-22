@@ -30,6 +30,53 @@ const articles = [
     other on the journey of design system maturity.
   </h1>
 
+  <div class="intro-grid">
+    <section class="mission">
+      <p>
+        We're creators, not just consumers. We're teachers, not just learners. We're here to
+        challenge and expand each other's perspectives, and to push the design system community
+        forward in sustainable and meaningful ways.
+      </p>
+      <p>
+        Redwoods is made up of system thinkers from around the world who've worked on design systems
+        for many organizations, including these: Spotify, Microsoft, The New York Times, Adobe,
+        Dropbox, Mozilla, Shopify, Atlassian, Wise, The BBC, The Government of Canada, Alaska
+        Airlines, and a whole lot more&hellip;
+      </p>
+    </section>
+
+    <section class="values">
+      <h2>Our Values</h2>
+      <p>
+        Redwoods has three core values that provide the foundation of every interaction we have.
+        These are actual, not aspirational. If you're a member of Redwoods, this is what we expect
+        of you. And everyone is encouraged to speak up when these values are not upheld. We're not
+        perfect, so we won't always get this right. But we are on a mission to be better humans and
+        better practitioners.
+      </p>
+
+      <h3>Stay in learning mode.</h3>
+      <p>
+        Everyone, from junior to senior, has something to teach you. Redwoods encourages continuous
+        and open learning, across experience level and discipline.
+      </p>
+
+      <h3>Be generous with your knowledge.</h3>
+      <p>
+        Learning is great, but it's not enough. Redwoods members are creators, not just consumers—we
+        analyze, we synthesize, and then we offer our new understanding back to the larger
+        community.
+      </p>
+
+      <h3>We're in this together.</h3>
+      <p>
+        Respect is our default. Redwoods is a safe and open community where everyone's experiences
+        and perspectives are valued. We're here to support, advise, and guide you throughout your
+        systems career.
+      </p>
+    </section>
+  </div>
+
   <Fragment slot="aside">
     <div class="aside-wrap">
       <section class="aside-card">
@@ -71,6 +118,26 @@ const articles = [
 
   .accent {
     color: var(--color-green);
+  }
+
+  .intro-grid {
+    margin-block-start: var(--space-xl);
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .values h2:first-child {
+    margin-block-start: 0;
+  }
+
+  .values h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  @container main (min-width: 640px) {
+    .intro-grid {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .aside-wrap {
