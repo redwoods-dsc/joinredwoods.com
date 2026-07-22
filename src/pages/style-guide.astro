@@ -59,7 +59,6 @@ const sections = [
   { id: 'typography', label: 'Typography' },
   { id: 'spacing', label: 'Spacing' },
   { id: 'radii', label: 'Radii' },
-  { id: 'buttons', label: 'Buttons' },
   { id: 'entry-card', label: 'Entry card' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
@@ -224,6 +223,17 @@ const sections = [
           <a href="#typography">typography</a>.
         </li>
       </ul>
+
+      <h3 class="subhead">On accent background</h3>
+      <p>
+        <code>--color-focus</code> is the same hue as <code>--color-accent</code>, so the default
+        ring disappears on an accent-colored surface. Override <code>outline-color</code> to <code
+          >--color-accent-contrast</code
+        > wherever a link sits on <code>--color-accent</code> (see the header nav).
+      </p>
+      <div class="link-on-accent">
+        <a href="#links" class="link-on-accent__link">Link on accent — tab to reveal the ring</a>
+      </div>
     </section>
 
     <section id="inline" class="section">
@@ -835,6 +845,20 @@ const sections = [
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+  }
+
+  .link-on-accent {
+    padding: var(--space-md);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+  }
+
+  .link-on-accent__link {
+    color: var(--color-accent-contrast);
+  }
+
+  .link-on-accent__link:focus-visible {
+    outline-color: var(--color-accent-contrast);
   }
 
   code {
