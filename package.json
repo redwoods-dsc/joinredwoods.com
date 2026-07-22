@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "packageManager": "pnpm@10.33.3",
   "scripts": {
     "start": "npm run dev",
     "dev": "astro dev",
@@ -13,6 +14,8 @@
     "astro": "astro",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "test:visual": "playwright test",
+    "chromatic": "chromatic --playwright",
     "prepare": "husky"
   },
   "dependencies": {
@@ -24,6 +27,9 @@
     "*": "prettier --write --ignore-unknown"
   },
   "devDependencies": {
+    "@chromatic-com/playwright": "^0.13.3",
+    "@playwright/test": "^1.59.1",
+    "chromatic": "^18.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
