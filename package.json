@@ -29,7 +29,7 @@
   "devDependencies": {
     "@chromatic-com/playwright": "^0.13.3",
     "@playwright/test": "^1.59.1",
-    "chromatic": "^16.8.0",
+    "chromatic": "^18.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
