@@ -29,6 +29,13 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
     margin-block-end: var(--space-3xl);
   }
 
+  /* A subtitle already gives the intro visual closure, so the big gap
+     meant to separate a bare title from the first content heading reads
+     as too much dead air here — tighten it up. */
+  .content-page__intro:has(.content-page__subtitle) {
+    margin-block-end: var(--space-xl);
+  }
+
   .content-page__subtitle {
     font-size: var(--font-size-xl);
     font-family: var(--font-serif);
