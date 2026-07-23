@@ -247,31 +247,31 @@ const articles = [
         <p>Ben Callahan,<br />Founder of Redwoods</p>
       </p>
     </section>
-
-    <Fragment slot="aside">
-      <div class="aside-wrap">
-        <section class="aside-card">
-          <h2>What we've learned</h2>
-          <div class="entry-list">
-            {articles.map((article) => <EntryCard {...article} />)}
-          </div>
-        </section>
-        <section class="aside-card">
-          <h2>Where we'll be</h2>
-          <div class="entry-list">
-            <EntryCard
-              href="#"
-              tone="woodland"
-              secondaryLabel="Bristol, UK"
-              primaryLabel="Converge, 2025"
-              date={new Date(Date.UTC(2025, 9, 30))}
-              endDate={new Date(Date.UTC(2025, 9, 31))}
-            />
-          </div>
-        </section>
-      </div>
-    </Fragment>
   </div>
+
+  <Fragment slot="aside">
+    <div class="aside-wrap">
+      <section class="aside-card">
+        <h2>What we've learned</h2>
+        <div class="entry-list">
+          {articles.map((article) => <EntryCard {...article} />)}
+        </div>
+      </section>
+      <section class="aside-card">
+        <h2>Where we'll be</h2>
+        <div class="entry-list">
+          <EntryCard
+            href="#"
+            tone="woodland"
+            secondaryLabel="Bristol, UK"
+            primaryLabel="Converge, 2025"
+            date={new Date(Date.UTC(2025, 9, 30))}
+            endDate={new Date(Date.UTC(2025, 9, 31))}
+          />
+        </div>
+      </section>
+    </div>
+  </Fragment>
 
   <style>
     .headline {
