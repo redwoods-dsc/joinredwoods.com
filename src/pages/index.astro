@@ -308,8 +308,12 @@ const articles = [
 
     .intro-grid {
       margin-block-start: var(--space-xl);
-      display: grid;
-      gap: var(--space-xl);
+    }
+
+    /* Mobile: sections just stack, so the second one needs its own gap
+       above it in place of the grid/column gap used at wider widths. */
+    .intro-grid > .values {
+      margin-block-start: var(--space-xl);
     }
 
     .values h2:first-child {
@@ -320,9 +324,28 @@ const articles = [
       font-size: var(--font-size-lg);
     }
 
+    /* Wide: a native CSS multi-column flow instead of a fixed 2-col grid, so
+       the two halves self-balance by height as copy is added or trimmed
+       rather than leaving one column trailing off in whitespace. Section
+       boundaries no longer align with the column break, so keep headings
+       attached to what follows them and keep lists from splitting mid-way. */
     @container main (min-width: 640px) {
       .intro-grid {
-        grid-template-columns: 1fr 1fr;
+        column-count: 2;
+        column-gap: var(--space-xl);
+      }
+
+      .intro-grid > .values {
+        margin-block-start: 0;
+      }
+
+      .intro-grid h2,
+      .intro-grid h3 {
+        break-after: avoid;
+      }
+
+      .intro-grid ul {
+        break-inside: avoid;
       }
     }
 
