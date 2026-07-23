@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import EntryCard from '../components/EntryCard.astro';
+import Button from '../components/Button.astro';
 
 const articles = [
   {
@@ -36,7 +37,10 @@ const articles = [
         expand each other's perspectives and to push the design system community forward in
         sustainable, meaningful ways.
       </p>
-      <p><a href="/join">Join Redwoods</a> <a href="#values">Read our values ↓</a></p>
+      <p class="cta-row">
+        <Button href="/join" size="sm">Join Redwoods</Button>
+        <Button href="#values" variant="secondary" size="sm">Read our values ↓</Button>
+      </p>
       <p>
         <em
           >“Redwoods is one of the only communities where I feel like I can not only grow in my own
@@ -106,7 +110,9 @@ const articles = [
         we're learning and share it with the wider design system community.
       </p>
 
-      <p><a href="/join">Join Redwoods</a></p>
+      <p class="cta-row">
+        <Button href="/join" size="sm">Join Redwoods</Button>
+      </p>
 
       <h2>What membership is like</h2>
       Redwoods runs on a simple rhythm. Here are the ways to show up.
@@ -289,6 +295,12 @@ const articles = [
 
     .accent {
       color: var(--color-green);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
     }
 
     .intro-grid {
