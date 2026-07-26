@@ -6,7 +6,9 @@ import trees from '../assets/trees-01.png';
 
 <header class="header" style={`--bg-image: url(${trees.src})`}>
   <div class="header-content">
-    <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+    <h1 class="logo-heading">
+      <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+    </h1>
     <nav class="nav" role="navigation">
       <ul>
         <li><a href="/about">About</a></li>
@@ -14,7 +16,7 @@ import trees from '../assets/trees-01.png';
         <li><a href="#">The Quarterly</a></li>
         <li><a href="#">Members</a></li>
         <li>-</li>
-        <li><a class="join-link" href="#">Join</a></li>
+        <li><a class="join-link" href="/join">Join</a></li>
       </ul>
     </nav>
     <img src={tagline.src} alt="A design system community" class="tagline" />
@@ -98,6 +100,10 @@ import trees from '../assets/trees-01.png';
     flex-direction: column;
     gap: var(--space-md);
     height: 100%;
+  }
+
+  .logo-heading {
+    margin: 0;
   }
 
   .logo {

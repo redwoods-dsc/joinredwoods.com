@@ -59,6 +59,7 @@ const sections = [
   { id: 'typography', label: 'Typography' },
   { id: 'spacing', label: 'Spacing' },
   { id: 'radii', label: 'Radii' },
+  { id: 'buttons', label: 'Buttons' },
   { id: 'entry-card', label: 'Entry card' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
@@ -78,7 +79,7 @@ const sections = [
   <div class="guide">
     <header class="guide__header">
       <p class="guide__eyebrow">Redwoods</p>
-      <h1>Style guide</h1>
+      <h2>Style guide</h2>
       <p class="guide__lede">
         A style guide for the tokens, styles, components, and patterns that make up this site. If
         you're making a resuable pattern for the site please add new examples here so contributors
@@ -412,10 +413,13 @@ const sections = [
       </div>
     </section>
 
-    <!-- <section id="buttons" class="section">
+    <section id="buttons" class="section">
       <div class="section__head">
         <h2>Buttons</h2>
-        <p><code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set the component renders an <code>&lt;a&gt;</code> styled as a button.</p>
+        <p>
+          <code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set
+          the component renders an <code>&lt;a&gt;</code> styled as a button.
+        </p>
       </div>
 
       <h3 class="subhead">Variants (size md)</h3>
@@ -443,7 +447,7 @@ const sections = [
       <div class="cluster">
         <Button variant="secondary" href="#buttons">Anchor button</Button>
       </div>
-    </section> -->
+    </section>
 
     <section id="entry-card" class="section">
       <div class="section__head">

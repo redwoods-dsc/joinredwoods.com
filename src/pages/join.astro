@@ -1,0 +1,40 @@
+---
+import ContentPage from '../layouts/ContentPage.astro';
+import Button from '../components/Button.astro';
+---
+
+<ContentPage
+  title="Join Redwoods"
+  subtitle="Membership is available monthly or yearly, and many organizations cover the cost through a training or education budget."
+>
+  <p><strong>What you get:</strong></p>
+  <ul>
+    <li>Daily Slack conversations</li>
+    <li>Weekly video calls</li>
+    <li>Presentation coaching</li>
+    <li>Co-publishing opportunities</li>
+    <li>Design system peer reviews</li>
+    <li>Member showcases</li>
+    <li>Research collaborations</li>
+    <li>Focused problem solving</li>
+    <li>Free access to The Redwoods Quarterly</li>
+    <li>Discounts to industry events and online courses</li>
+    <li>A Collab Figma seat</li>
+    <li>New friends, and much more</li>
+  </ul>
+
+  <p class="cta-row">
+    <Button href="#" variant="primary">Join Monthly</Button>
+    <Button href="#" variant="secondary">Join Yearly</Button>
+  </p>
+
+  <p><a href="https://bencallahan.com/connect">Questions? Reach out.</a></p>
+</ContentPage>
+
+<style>
+  .cta-row {
+    display: flex;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-lg);
+  }
+</style>

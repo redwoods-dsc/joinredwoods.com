@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import EntryCard from '../components/EntryCard.astro';
+import Button from '../components/Button.astro';
 
 const articles = [
   {
@@ -25,10 +26,238 @@ const articles = [
 ---
 
 <Layout>
-  <h1 class="headline">
-    Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each
-    other on the journey of design system maturity.
-  </h1>
+  <div class="intro-grid">
+    <section class="mission">
+      <h2 class="headline">
+        Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
+        each other on the journey of design system maturity.
+      </h2>
+      <p>
+        We're creators, not just consumers. Teachers, not just learners. We're here to challenge and
+        expand each other's perspectives and to push the design system community forward in
+        sustainable, meaningful ways.
+      </p>
+      <p class="cta-row">
+        <Button href="/join" size="sm">Join Redwoods</Button>
+        <Button href="#values" variant="secondary" size="sm">Read our values ↓</Button>
+      </p>
+      <br />
+      <blockquote>
+        <p>
+          “Redwoods is one of the only communities where I feel like I can not only grow in my own
+          DS practice by learning from others, but also have a hand in shaping the world of design
+          systems at large.”
+        </p>
+        <footer>~ <cite>ToniAnn</cite>, Redwoods member</footer>
+      </blockquote>
+
+      <h2 id="values">Our Values</h2>
+      <p>
+        Redwoods has three core values that provide the foundation of every interaction we have.
+        These are actual, not aspirational. If you're a member, this is who we are, not who we want
+        to be. We're not perfect, so we won't always get this right. But we are on a mission to be
+        better humans and better practitioners.
+      </p>
+
+      <h3>Stay in learning mode.</h3>
+      <p>
+        Everyone, from junior to senior, has something to teach you. Redwoods encourages continuous
+        and open learning, across experience level and discipline.
+      </p>
+
+      <h3>Be generous with your knowledge.</h3>
+      <p>
+        Learning is great, but it's not enough. Redwoods members are creators, not just consumers:
+        we analyze, we synthesize, and then we offer our new understanding back to the larger
+        community.
+      </p>
+
+      <h3>We're in this together.</h3>
+      <p>
+        Respect is our default. Redwoods is a safe and open community where everyone's experiences
+        and perspectives are valued. We're here to support, advise, and guide you throughout your
+        systems career.
+      </p>
+      <blockquote>
+        <p>“DS weekly therapy session :)”</p>
+        <footer>~ <cite>Pedro</cite>, Redwoods member</footer>
+      </blockquote>
+
+      <h2>Why Redwoods?</h2>
+      <p>
+        Companies don't know how to support their design system teams. We’re often left on an
+        island, and the result is design systems that never generate the value we hoped for.
+      </p>
+      <p>
+        We believe deeply in what a design system can do, but systems have to be nurtured. And the
+        way you nurture a system is by nurturing the people building it.
+      </p>
+
+      <p>
+        Redwoods is a committed community for the people doing this work. A safe place to talk about
+        the real challenges, support each other through them, and start producing the results we've
+        been promising our companies for years.
+      </p>
+
+      <blockquote>
+        <p>“[Redwoods is] your design system team’s design system team.”</p>
+        <footer>~ <cite>Jules</cite>, Redwoods member</footer>
+      </blockquote>
+
+      <p>
+        And because we're makers, membership is also a commitment to give back, to synthesize what
+        we're learning and share it with the wider design system community.
+      </p>
+
+      <p class="cta-row">
+        <Button href="/join" size="sm">Join Redwoods</Button>
+      </p>
+
+      <h2>What membership is like</h2>
+      Redwoods runs on a simple rhythm. Here are the ways to show up.
+
+      <h3>Daily</h3>
+      We use Slack to hang out, catch up, and connect.
+      <h3>Weekly</h3>
+      <ul>
+        <li>
+          <strong>Standup:</strong> early each week, share a success, a challenge, and what you're working
+          on in #weekly-standup.
+        </li>
+        <li>
+          <strong>Weekly call:</strong> a one-hour video call every Tuesday at noon Eastern. Come to as
+          many as you like, and volunteer to facilitate or demo. As we grow we'll add calls and adjust
+          for other time zones.
+        </li>
+      </ul>
+      <h3>Monthly</h3>
+      <ul>
+        <li>
+          <strong>All-Redwoods call:</strong> first Friday of each month at noon Eastern. Hear what's
+          happening, meet new members, and find ways to get more involved.
+        </li>
+        <li>
+          <strong>Action channels:</strong> each month we run #action- channels for people who want to
+          build something together. Every one has a goal, a ~30-day deadline, and an owner. These channels
+          co-publish learnings, build tools and templates, create talks, and find other ways to share
+          what we synthesize back with the community.
+        </li>
+      </ul>
+      <h3>Quarterly</h3>
+      <ul>
+        <li>
+          <strong>The Redwoods Quarterly:</strong> we occasionally product an online design system event
+          covering the recent shifts in the DS space. It gives us something to work toward and a stage
+          to share our biggest takeaways. A subset of Redwoods membership presents and everyone else attends
+          free.
+        </li>
+      </ul>
+      <h3>Also included</h3>
+      <ul>
+        <li>Discount codes for industry events and online courses.</li>
+        <li>A Collab Figma seat as part of your membership.</li>
+        <li>
+          Behind-the-scenes access to <a href="https://bencallahan.com/the-question">The Question</a
+          >, a live design system research show.
+        </li>
+        <li>Discounts on individual coaching and strategy sessions.<br /></li>
+      </ul>
+    </section>
+
+    <section class="values">
+      <br />
+      <h2>Is Redwoods for you?</h2>
+
+      Redwoods is structured to prioritize anyone who:
+      <ul>
+        <li>Aligns with our values</li>
+        <li>Wants to grow in their craft</li>
+        <li>Wants to make a sustainable impact on the industry</li>
+      </ul>
+      <p>
+        We have researchers, product managers, designers, ux-ers, developers...you name it. If
+        you’re a part-time design system team of one, or one of 30 systems practitioners working at
+        enterprise scale, Redwoods has a place for you.
+      </p>
+
+      <p>
+        Consultants and folks at product companies are welcome too, just know this is a space for
+        mutual support, not sales.
+
+        <blockquote>
+          <p>
+            “The community of Redwoods is made of great people from whom I’ve learned so much
+            through the years.”
+          </p>
+          <footer>~ <cite>Robin</cite>, Redwoods member</footer>
+        </blockquote>
+
+        <h2 id="join">Join Redwoods</h2>
+
+        <p>
+          Membership is available monthly or yearly, and many organizations cover the cost through a
+          training or education budget.
+        </p>
+        <p><strong>What you get:</strong></p>
+        <ul>
+          <li>Daily Slack conversations</li>
+          <li>Weekly video calls</li>
+          <li>Presentation coaching</li>
+          <li>Co-publishing opportunities</li>
+          <li>Design system peer reviews</li>
+          <li>Member showcases</li>
+          <li>Research collaborations</li>
+          <li>Focused problem solving</li>
+          <li>Free access to The Redwoods Quarterly</li>
+          <li>Discounts to industry events and online courses</li>
+          <li>A Collab Figma seat</li>
+          <li>New friends, and much more</li>
+        </ul>
+        <p class="cta-row">
+          <Button href="/join" size="sm">Join Monthly</Button>
+          <Button href="/join" variant="secondary" size="sm">Join Yearly</Button>
+        </p>
+
+        <p><a href="https://bencallahan.com/connect">Questions? Reach out.</a></p>
+
+        <h2>The history of Redwoods</h2>
+
+        <p>
+          I was in Muir Woods a few years ago, a coastal redwood forest, and a genuinely spiritual
+          place to visit. The ground is covered in needles, there's no noise, the air is pure, and
+          you're surrounded by trees as tall as the Statue of Liberty. It's breathtaking.
+        </p>
+        <p>
+          When people first settled the area, they cut these trees down for lumber but would leave a
+          few standing. Inevitably, after a short time, the trees left behind would fall over.
+        </p>
+        <p>
+          Even though these trees are hundreds of feet tall, their roots only go down about ten
+          feet. But those roots grow outward, as much as 80 feet, and intertwine with the roots of
+          every other redwood around them. These trees hold each other up. That's what Redwoods is.
+          A place to hold each other up.
+        </p>
+        <p>
+          Beyond this, if you read the writings of John Muir, you’ll recognize that he saw the
+          interconnectedness present in a Redwood forest:
+        </p>
+
+        <blockquote>
+          <p>
+            “When one tugs at a single thing in nature, he finds it attached to the rest of the
+            world.”
+          </p>
+          <footer>― <cite>John Muir</cite></footer>
+        </blockquote>
+
+        <p>
+          I started Redwoods because I needed that connection. If you’re looking for it too, perhaps
+          Redwoods is for you.
+        </p>
+        <p>Ben Callahan,<br />Founder of Redwoods</p>
+      </p>
+    </section>
+  </div>
 
   <Fragment slot="aside">
     <div class="aside-wrap">
@@ -53,40 +282,89 @@ const articles = [
       </section>
     </div>
   </Fragment>
-</Layout>
 
-<style>
-  .headline {
-    margin-block-start: 0;
-    font-size: var(--font-size-hero);
-  }
-
-  /* Grows to display size once the main column itself is wide, not the
-     viewport — see the container on .main-wrap in Page.astro. */
-  @container main (min-width: 640px) {
+  <style>
     .headline {
-      font-size: var(--font-size-hero-max);
+      margin-block-start: 0;
+      font-size: var(--font-size-hero);
     }
-  }
 
-  .accent {
-    color: var(--color-green);
-  }
+    /* Grows to display size once the main column itself is wide, not the
+     viewport — see the container on .main-wrap in Page.astro. */
+    @container main (min-width: 640px) {
+      .headline {
+        font-size: var(--font-size-hero-max);
+      }
+    }
 
-  .aside-wrap {
-    padding: var(--space-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
+    .accent {
+      color: var(--color-green);
+    }
 
-  .aside-card h2 {
-    margin: 0 0 var(--space-md);
-  }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
 
-  .entry-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-</style>
+    .intro-grid {
+      margin-block-start: var(--space-xl);
+    }
+
+    /* Mobile: sections just stack, so the second one needs its own gap
+       above it in place of the grid/column gap used at wider widths. */
+    .intro-grid > .values {
+      margin-block-start: var(--space-xl);
+    }
+
+    .values h2:first-of-type {
+      margin-block-start: 0;
+    }
+
+    .values h3 {
+      font-size: var(--font-size-lg);
+    }
+
+    /* Wide: a native CSS multi-column flow instead of a fixed 2-col grid, so
+       the two halves self-balance by height as copy is added or trimmed
+       rather than leaving one column trailing off in whitespace. Section
+       boundaries no longer align with the column break, so keep headings
+       attached to what follows them and keep lists from splitting mid-way. */
+    @container main (min-width: 640px) {
+      .intro-grid {
+        column-count: 2;
+        column-gap: var(--space-xl);
+      }
+
+      .intro-grid > .values {
+        margin-block-start: 0;
+      }
+
+      .intro-grid h2,
+      .intro-grid h3 {
+        break-after: avoid;
+      }
+
+      .intro-grid ul {
+        break-inside: avoid;
+      }
+    }
+
+    .aside-wrap {
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+    }
+
+    .aside-card h2 {
+      margin: 0 0 var(--space-md);
+    }
+
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  </style>
+</Layout>

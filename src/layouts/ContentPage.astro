@@ -12,7 +12,7 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
 <Layout>
   <div class="content-page">
     <header class="content-page__intro">
-      <h1>{title}</h1>
+      <h2>{title}</h2>
       {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
     </header>
     <slot />
@@ -29,17 +29,24 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
     margin-block-end: var(--space-3xl);
   }
 
+  /* A subtitle already gives the intro visual closure, so the big gap
+     meant to separate a bare title from the first content heading reads
+     as too much dead air here — tighten it up. */
+  .content-page__intro:has(.content-page__subtitle) {
+    margin-block-end: var(--space-xl);
+  }
+
   .content-page__subtitle {
     font-size: var(--font-size-xl);
     font-family: var(--font-serif);
   }
 
-  .content-page :global(h1) {
-    margin-block-start: 0;
-  }
-
   .content-page :global(h2) {
     margin-block-start: var(--space-3xl);
+  }
+
+  .content-page__intro :global(h2) {
+    margin-block-start: 0;
   }
 
   .content-page :global(h3) {
