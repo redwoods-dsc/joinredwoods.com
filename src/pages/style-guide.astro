@@ -9,6 +9,7 @@ import Hero from '../components/Hero.astro';
 import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import trees from '../assets/trees-01.png';
 
 const codeSampleJs = `const site = 'https://joinredwoods.com';
@@ -77,6 +78,7 @@ const sections = [
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
+  { id: 'toc', label: 'Table of contents' },
   { id: 'layout', label: 'Layout' },
 ];
 ---
@@ -601,6 +603,36 @@ const sections = [
       </div>
 
       <div class="footer-demo"><Footer /></div>
+    </section>
+
+    <section id="toc" class="section">
+      <div class="section__head">
+        <h2>Table of contents</h2>
+        <p>
+          A right-hand sidebar navigation component for blog articles and long-form content. It
+          renders an automatically-generated nested list of page headings (from h2 through h6) with
+          smooth hover states and proper focus visibility.
+        </p>
+      </div>
+
+      <h3 class="subhead">Sample</h3>
+      <p>Click a link to scroll to that section:</p>
+      <TableOfContents
+        headings={[
+          { level: 2, text: 'Getting started', slug: 'getting-started' },
+          { level: 3, text: 'Prerequisites', slug: 'prerequisites' },
+          { level: 3, text: 'Installation', slug: 'installation' },
+          { level: 2, text: 'Usage', slug: 'usage' },
+          { level: 3, text: 'Basic example', slug: 'basic-example' },
+          { level: 4, text: 'With options', slug: 'with-options' },
+          { level: 2, text: 'API reference', slug: 'api-reference' },
+          { level: 3, text: 'Props', slug: 'props' },
+        ]}
+      />
+
+      <h3 class="subhead">Empty state</h3>
+      <p>When no headings are provided, the component hides gracefully:</p>
+      <TableOfContents headings={[]} />
     </section>
 
     <section id="layout" class="section">

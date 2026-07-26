@@ -1,0 +1,125 @@
+---
+interface Props {
+  headings?: Array<{ level: number; text: string; slug: string }>;
+}
+
+const { headings = [] } = Astro.props;
+
+function buildHeadingTree(headings: Array<{ level: number; text: string; slug: string }>) {
+  const tree: any[] = [];
+  const stack: any[] = [];
+
+  headings.forEach((heading) => {
+    const node = {
+      level: heading.level,
+      text: heading.text,
+      slug: heading.slug,
+      children: [],
+    };
+
+    while (stack.length > 0 && stack[stack.length - 1].level >= heading.level) {
+      stack.pop();
+    }
+
+    if (stack.length === 0) {
+      tree.push(node);
+    } else {
+      stack[stack.length - 1].children.push(node);
+    }
+
+    stack.push(node);
+  });
+
+  return tree;
+}
+
+function renderHeadingTree(nodes: any[]): string {
+  if (nodes.length === 0) return '';
+
+  return `<ul class="toc__list">${nodes
+    .map((node) => {
+      const children = renderHeadingTree(node.children);
+      return `<li class="toc__item toc__item--level-${node.level}"><a href="#${node.slug}">${node.text}</a>${children}</li>`;
+    })
+    .join('')}</ul>`;
+}
+
+const headingTree = buildHeadingTree(headings);
+const isEmpty = headings.length === 0;
+---
+
+<nav class="toc" aria-label="Table of contents" class:list={{ 'toc--empty': isEmpty }}>
+  {
+    !isEmpty && (
+      <>
+        <p class="toc__title">On this page</p>
+        <Fragment set:html={renderHeadingTree(headingTree)} />
+      </>
+    )
+  }
+</nav>
+
+<style>
+  .toc {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-snug);
+  }
+
+  .toc--empty {
+    display: none;
+  }
+
+  .toc__title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    margin-block-end: var(--space-md);
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .toc__list .toc__list {
+    gap: 0;
+    margin-block-start: var(--space-xs);
+    padding-inline-start: var(--space-md);
+  }
+
+  .toc__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc__item a {
+    color: var(--color-text);
+    text-decoration: none;
+    display: inline-block;
+    padding-block: var(--space-2xs);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .toc__item a:hover {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .toc__item a:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Reduce visual weight for deeply nested items */
+  .toc__item--level-5,
+  .toc__item--level-6 {
+    opacity: 0.75;
+  }
+</style>
