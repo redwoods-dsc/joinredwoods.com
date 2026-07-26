@@ -25,39 +25,71 @@ const headingsWithSlugs = headings.map((heading) => ({
 ---
 
 <Layout>
-  <BackLink href="/blog/">Back to Blog</BackLink>
-  <article>
-    <h2>{article.data.title}</h2>
-    <div class="meta">
-      <span class="authors">
-        {
-          article.data.authors.map((author, i) => (
-            <>
-              {i > 0 && ', '}
-              <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
-            </>
-          ))
-        }
-      </span>
-      <time datetime={article.data.date.toISOString()}>
-        {
-          article.data.date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            timeZone: 'UTC',
-          })
-        }
-      </time>
+  <div class="blog-wrapper">
+    <div class="blog-main">
+      <BackLink href="/blog/">Back to Blog</BackLink>
+      <article>
+        <h2>{article.data.title}</h2>
+        <div class="meta">
+          <span class="authors">
+            {
+              article.data.authors.map((author, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
+                </>
+              ))
+            }
+          </span>
+          <time datetime={article.data.date.toISOString()}>
+            {
+              article.data.date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC',
+              })
+            }
+          </time>
+        </div>
+        <Content />
+      </article>
     </div>
-    <Content />
-  </article>
-  <slot name="aside" slot="aside">
-    <TableOfContents headings={headingsWithSlugs} />
-  </slot>
+    <div class="blog-toc">
+      <TableOfContents headings={headingsWithSlugs} />
+    </div>
+  </div>
 </Layout>
 
 <style>
+  .blog-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .blog-main {
+    min-width: 0;
+  }
+
+  .blog-toc {
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    .blog-wrapper {
+      grid-template-columns: 1fr 240px;
+      gap: var(--space-xl);
+    }
+
+    .blog-toc {
+      display: block;
+      position: sticky;
+      top: var(--space-xl);
+      height: fit-content;
+    }
+  }
+
   .meta {
     display: flex;
     gap: var(--space-sm);
