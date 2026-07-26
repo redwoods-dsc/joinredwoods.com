@@ -1,0 +1,170 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>Redwoods - A Design System Community</title>
+  </head>
+  <body>
+    <div class="global-wrap">
+      <div class="blog-layout">
+        <header class="blog-layout__header"><slot name="header" /></header>
+        <main class="blog-layout__main">
+          <div class="blog-page">
+            <header class="blog-page__intro">
+              <h2>{title}</h2>
+              {subtitle && <p class="blog-page__subtitle">{subtitle}</p>}
+            </header>
+            <slot />
+          </div>
+        </main>
+        <footer class="blog-layout__footer"><slot name="footer" /></footer>
+      </div>
+      <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
+    </div>
+  </body>
+</html>
+
+<style>
+  .global-wrap {
+    position: relative;
+    max-width: var(--layout-shell-max);
+    margin-inline: auto;
+    padding: var(--space-lg);
+  }
+
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+    gap: 0;
+  }
+
+  .blog-layout__header {
+    grid-area: header;
+  }
+
+  .blog-layout__main {
+    grid-area: main;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    padding: var(--space-xl);
+    container: main / inline-size;
+  }
+
+  .blog-layout__footer {
+    grid-area: footer;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  @media (min-width: 850px) {
+    .blog-layout {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'header main'
+        'header footer';
+      column-gap: var(--space-lg);
+      row-gap: 0;
+    }
+
+    .blog-layout__main {
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .blog-layout {
+      grid-template-columns: 2fr;
+      grid-template-areas:
+        'header'
+        'main'
+        'footer';
+    }
+
+    .blog-layout__main {
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    }
+
+    .blog-layout__footer {
+      margin-block-start: var(--space-lg);
+      border-radius: var(--radius-xl);
+    }
+  }
+
+  .blog-page {
+    max-width: var(--layout-prose-max);
+    margin: 0 auto;
+  }
+
+  .blog-page__intro {
+    margin-block-end: var(--space-3xl);
+  }
+
+  .blog-page__intro:has(.blog-page__subtitle) {
+    margin-block-end: var(--space-xl);
+  }
+
+  .blog-page__subtitle {
+    font-size: var(--font-size-xl);
+    font-family: var(--font-serif);
+  }
+
+  .blog-page :global(h2) {
+    margin-block-start: var(--space-3xl);
+  }
+
+  .blog-page__intro :global(h2) {
+    margin-block-start: 0;
+  }
+
+  .blog-page :global(h3) {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .blog-page :global(h4) {
+    margin-block-start: var(--space-xl);
+  }
+
+  .blog-page :global(h5) {
+    margin-block-start: var(--space-lg);
+  }
+
+  .blog-page :global(h6) {
+    margin-block-start: var(--space-md);
+  }
+
+  .copyright {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-3xs);
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-size: var(--font-size-caption);
+  }
+</style>

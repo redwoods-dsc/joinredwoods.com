@@ -1,8 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
-import ContentPage from '../../layouts/ContentPage.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import BackLink from '../../components/BackLink.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import { authorSlug } from '../../lib/authors';
 
 export async function getStaticPaths() {
@@ -24,7 +26,8 @@ const headingsWithSlugs = headings.map((heading) => ({
 }));
 ---
 
-<ContentPage title={article.data.title}>
+<BlogLayout title={article.data.title}>
+  <Header slot="header" />
   <div class="blog-wrapper">
     <div class="blog-main">
       <BackLink href="/blog/">Back to Blog</BackLink>
@@ -56,7 +59,8 @@ const headingsWithSlugs = headings.map((heading) => ({
       <TableOfContents headings={headingsWithSlugs} />
     </div>
   </div>
-</ContentPage>
+  <Footer slot="footer" />
+</BlogLayout>
 
 <style>
   .blog-wrapper {
