@@ -5,12 +5,13 @@ interface Props {
   title?: string;
   subtitle?: string;
   columns?: 1 | 2;
+  aside?: boolean;
 }
 
-const { title, subtitle, columns = 1 } = Astro.props.frontmatter ?? Astro.props;
+const { title, subtitle, columns = 1, aside = true } = Astro.props.frontmatter ?? Astro.props;
 ---
 
-<Layout>
+<Layout aside={aside}>
   <div class="content-page" data-columns={columns}>
     {
       title && (

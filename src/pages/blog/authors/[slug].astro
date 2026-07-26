@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
+import ContentPage from '../../../layouts/ContentPage.astro';
 import BackLink from '../../../components/BackLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
@@ -26,9 +26,8 @@ const articles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout>
+<ContentPage title={name} aside={false}>
   <BackLink href="/blog/">Back to Blog</BackLink>
-  <h2>{name}</h2>
   <p class="bio">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -52,7 +51,7 @@ const articles = allArticles
       ))
     }
   </ul>
-</Layout>
+</ContentPage>
 
 <style>
   .bio {

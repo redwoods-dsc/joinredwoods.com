@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import ContentPage from '../../layouts/ContentPage.astro';
 import { authorSlug } from '../../lib/authors';
 
 const articles = (await getCollection('articles', (entry) => !entry.data.draft)).sort(
@@ -8,8 +8,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
 );
 ---
 
-<Layout>
-  <h2>Blog</h2>
+<ContentPage title="Blog" aside={false}>
   <ul class="article-list">
     {
       articles.map((article) => (
@@ -40,7 +39,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
       ))
     }
   </ul>
-</Layout>
+</ContentPage>
 
 <style>
   .article-list {
