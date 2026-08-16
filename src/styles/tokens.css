@@ -13,6 +13,9 @@
 
   --color-bg: var(--color-cream);
   --color-surface: var(--color-green);
+  /* White, not cream: cream on the green surface is 3.98:1, which misses AA for
+     normal-size text. White clears it at 4.59:1. */
+  --color-surface-contrast: var(--color-gray-100);
   --color-text: var(--color-gray-25);
   --color-border: var(--color-gray-75);
   --color-accent: var(--color-orange);
@@ -28,7 +31,7 @@
      The scale is deliberately static: the root font-size is fixed at 1rem so
      rem stays a stable, predictable unit and tokens never compound. The one
      responsive type change (the hero) is column-driven via a container query,
-     not baked into these tokens. See index.astro / Page.astro. */
+     not baked into these tokens. See Hero.astro / Page.astro. */
 
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-caption: 0.8125rem; /* 13px */

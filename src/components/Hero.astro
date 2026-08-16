@@ -1,0 +1,30 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id } = Astro.props;
+---
+
+<h2 class="hero" id={id}><slot /></h2>
+
+<style>
+  .hero {
+    margin-block-start: 0;
+    font-size: var(--font-size-hero);
+  }
+
+  /* Grows to display size once the main column itself is wide, not the
+     viewport — see the container on .main-wrap in Page.astro. */
+  @container main (min-width: 640px) {
+    .hero {
+      font-size: var(--font-size-hero-max);
+    }
+  }
+
+  /* Slotted content is not scoped to this component, so the accent has to be
+     addressed globally to reach a <span> written in the page's Markdown. */
+  .hero :global(.accent) {
+    color: var(--color-green);
+  }
+</style>

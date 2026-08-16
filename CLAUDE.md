@@ -80,7 +80,17 @@ Body copy lands in the layout's `<slot />`, so heading spacing and prose styles 
 
 See `src/pages/code-of-conduct.md` for the canonical example.
 
-Reach for `.astro` only when the page needs something Markdown can't express — imported components (`<Button />`), computed frontmatter, `getStaticPaths()`, or bespoke layout. `src/pages/join.astro` qualifies; a wall of prose doesn't. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
+`ContentPage` frontmatter knobs, all optional:
+
+| Key        | Default | What it does                                                                                                      |
+| ---------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| `title`    | —       | Renders the intro header. Omit it and the page opens straight into body copy.                                     |
+| `subtitle` | —       | Serif lede under the title. Ignored without a `title`.                                                            |
+| `columns`  | `1`     | `2` drops the prose max-width and flows the body into two balanced CSS columns once the main column passes 640px. |
+
+`columns: 2` also keeps headings on the base spacing scale rather than the roomier single-column rhythm — see the comments in `ContentPage.astro`.
+
+Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 
 Blog articles are different: they live in the `articles` content collection (`src/content/articles/*.mdx`, schema in `src/content.config.ts`) and are rendered by `src/pages/blog/[slug].astro`. Don't add standalone pages to that collection, and don't spin up a new collection for a one-off page.
 

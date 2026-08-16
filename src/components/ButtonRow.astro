@@ -1,0 +1,25 @@
+---
+// Callers in .mdx must keep each button's label on the same line as its tags.
+// MDX parses a label sitting on its own line as a Markdown paragraph, which puts
+// a <p> inside the <a>. Prefix the row with a prettier-ignore comment so
+// formatting cannot reintroduce the line break.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['button-row', className]}><slot /></div>
+
+<style>
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    /* base.css spaces prose through adjacency (p + p, ul + p). A div breaks
+       those chains, so the row carries its own block margin instead — it
+       collapses against neighbours to the same gaps the chain produced. */
+    margin-block: var(--space-md);
+  }
+</style>
