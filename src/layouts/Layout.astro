@@ -1,6 +1,19 @@
 ---
+// Fonts are self-hosted rather than pulled from Google Fonts: that request was
+// render-blocking on a third-party origin and then chained a second hop to
+// fonts.gstatic.com for the files themselves. Bundled here, the @font-face
+// rules ride along in the page stylesheet and the woff2s come off our own
+// already-open connection. `wght` is the weight-only cut of Source Serif 4 —
+// we never vary optical size, and the `opsz`/`standard` cuts are ~70 KiB more.
+import '@fontsource-variable/source-sans-3/wght.css';
+import '@fontsource-variable/source-sans-3/wght-italic.css';
+import '@fontsource-variable/source-serif-4/wght.css';
+import '@fontsource-variable/source-serif-4/wght-italic.css';
+import sourceSansLatin from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url';
+import sourceSerifLatin from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import Page from '../components/Page.astro';
+import { headerBackground } from '../lib/header-background';
 
 interface Props {
   aside?: boolean;
@@ -8,6 +21,7 @@ interface Props {
 
 const { aside = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const background = await headerBackground();
 ---
 
 <!doctype html>
@@ -17,11 +31,21 @@ const base = import.meta.env.BASE_URL;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="icon" href={`${base}favicon.ico`} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sourceSansLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatin} crossorigin />
+    {
+      /* The trees are a CSS background, so the preload scanner can't find them
+        on its own — without this the LCP request waits on the stylesheet. The
+        media query mirrors the one in Header.astro that drops the image on
+        very short viewports. */
+    }
     <link
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href={background.src}
+      fetchpriority="high"
+      media="(min-height: 401px)"
     />
     <meta name="generator" content={Astro.generator} />
     <title>Redwoods - A Design System Community</title>

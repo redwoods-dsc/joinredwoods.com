@@ -29,6 +29,15 @@ These are the ones that are easy to get wrong. Do not deviate without discussion
 - **Don't override base element styles.** `base.css` already styles links, headings, lists, and other elements. Scoped component styles should handle layout and spacing — not re-declare colors, text-decoration, or hover states that the base layer provides. Check `/style-guide` before adding element-level styles.
 - **Do not create a shared `components.css`.** Component styles live in the component's own `<style>` block (see below). We've had to rip this out once already — don't re-introduce it.
 
+## ⚡ Performance rules
+
+These exist because Lighthouse caught them once. Undoing one costs real score.
+
+- **Fonts are self-hosted**, via `@fontsource-variable/*` imported in `Layout.astro`. Don't reach back for a `<link>` to Google Fonts — that's a render-blocking request on a third-party origin that then chains a second hop for the files. Source Serif 4 uses the `wght` cut (weight axis only); `opsz`/`standard` are ~70 KiB heavier per style and we never vary optical size.
+- **The header trees are the LCP element** on every page. They're a CSS background, which the browser's preload scanner can't see, so `Layout.astro` preloads the URL from `<head>` — hence `src/lib/header-background.ts` sharing one resolved image between the two files. If you change the header artwork, keep both sides in step.
+- **Route raster images through the image pipeline.** `getImage()` (or `<Image>`) with `format: 'webp'` — a bare `img.src` from an ESM import ships the untouched original, which is how a 697 KiB PNG ended up on the critical path.
+- **Give every `<img>` a `width` and `height`** so the browser can reserve the box. Astro's image imports carry both (`logo.width`, `logo.height`), including for SVGs with only a `viewBox`. Scoped component styles still control the rendered size — they sit outside the cascade layers, so they beat the `img[width]` rule in `reset.css`.
+
 ## 🧩 Component conventions
 
 - `src/components/` is **flat** — no `primitives/` or `ui/` subfolder. Every reusable Astro component sits at the top level.
