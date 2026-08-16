@@ -13,6 +13,9 @@
 
   --color-bg: var(--color-cream);
   --color-surface: var(--color-green);
+  /* White, not cream: cream on the green surface is 3.98:1, which misses AA for
+     normal-size text. White clears it at 4.59:1. */
+  --color-surface-contrast: var(--color-gray-100);
   --color-text: var(--color-gray-25);
   --color-border: var(--color-gray-75);
   --color-accent: var(--color-orange);

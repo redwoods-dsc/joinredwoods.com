@@ -34,6 +34,7 @@ const grayScale = ['00', '25', '50', '75', '100'];
 const semanticColors = [
   { name: 'bg', token: '--color-bg' },
   { name: 'surface', token: '--color-surface' },
+  { name: 'surface-contrast', token: '--color-surface-contrast' },
   { name: 'text', token: '--color-text' },
   { name: 'border', token: '--color-border' },
   { name: 'accent', token: '--color-accent' },
@@ -475,9 +476,12 @@ const sections = [
         <h2>Button row</h2>
         <p>
           <code>&lt;ButtonRow&gt;</code>. Lays a group of buttons out in a wrapping row with
-          <code>--space-sm</code> between them. It renders a <code>&lt;p&gt;</code> rather than a
-          <code>&lt;div&gt;</code> so the paragraph adjacency rules in <code>base.css</code> still apply
-          — a row dropped between two paragraphs keeps the surrounding rhythm instead of collapsing it.
+          <code>--space-sm</code> between them. <code>base.css</code> spaces prose through adjacency (<code
+            >p + p</code
+          >, <code>ul + p</code>), which a wrapper element breaks, so the row carries its own <code
+            >--space-md</code
+          > block margin — that collapses against its neighbours to the same gaps the adjacency chain
+          produced.
         </p>
       </div>
 
