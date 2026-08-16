@@ -9,8 +9,15 @@ import '@fontsource-variable/source-sans-3/wght.css';
 import '@fontsource-variable/source-sans-3/wght-italic.css';
 import '@fontsource-variable/source-serif-4/wght.css';
 import '@fontsource-variable/source-serif-4/wght-italic.css';
+// The three faces every page is guaranteed to paint: body copy, headings, and
+// the italic serif of the "Join" link in the global nav. Preloading takes them
+// off the stylesheet's dependency chain — otherwise they aren't discovered
+// until the CSS has parsed, and the italic arrives late enough to visibly swap.
+// Italic sans is deliberately not here: whether a page needs it depends on its
+// content (an <em>, a <cite>), so it isn't worth the bytes up front.
 import sourceSansLatin from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url';
 import sourceSerifLatin from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
+import sourceSerifLatinItalic from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-italic.woff2?url';
 import '../styles/global.css';
 import Page from '../components/Page.astro';
 import { headerBackground } from '../lib/header-background';
@@ -33,6 +40,7 @@ const background = await headerBackground();
     <link rel="icon" href={`${base}favicon.ico`} />
     <link rel="preload" as="font" type="font/woff2" href={sourceSansLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatinItalic} crossorigin />
     {
       /* The trees are a CSS background, so the preload scanner can't find them
         on its own — without this the LCP request waits on the stylesheet. The

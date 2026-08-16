@@ -44,6 +44,9 @@ const background = await headerBackground();
     min-height: 360px;
     padding: var(--space-lg);
     color: var(--color-accent-contrast);
+    /* Load-bearing: the trees image is pre-composited onto this exact colour
+       (see lib/header-background.ts) so it can drop its alpha channel, and it
+       only stays seamless while the card behind it matches. */
     background-color: var(--color-accent);
     /* URL comes from an ESM import (see the frontmatter) via --bg-image so
        Astro's pipeline reliably emits the file; a bare url('../assets/…') here
