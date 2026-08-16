@@ -1,13 +1,22 @@
 ---
 import redwoodsLogo from '../assets/redwoods-logo-white.svg';
 import tagline from '../assets/tagline-white.svg';
-import trees from '../assets/trees-01.png';
+import { headerBackground } from '../lib/header-background';
+
+const background = await headerBackground();
 ---
 
-<header class="header" style={`--bg-image: url(${trees.src})`}>
+<header class="header" style={`--bg-image: url(${background.src})`}>
   <div class="header-content">
     <h1 class="logo-heading">
-      <a class="logo" href="/"><img src={redwoodsLogo.src} alt="Redwoods" /></a>
+      <a class="logo" href="/"
+        ><img
+          src={redwoodsLogo.src}
+          width={redwoodsLogo.width}
+          height={redwoodsLogo.height}
+          alt="Redwoods"
+        /></a
+      >
     </h1>
     <nav class="nav" role="navigation">
       <ul>
@@ -18,7 +27,13 @@ import trees from '../assets/trees-01.png';
         <li><a class="join-link" href="/join">Join</a></li>
       </ul>
     </nav>
-    <img src={tagline.src} alt="A design system community" class="tagline" />
+    <img
+      src={tagline.src}
+      width={tagline.width}
+      height={tagline.height}
+      alt="A design system community"
+      class="tagline"
+    />
   </div>
 </header>
 
