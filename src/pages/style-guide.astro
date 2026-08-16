@@ -3,7 +3,10 @@ import { Code } from 'astro:components';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
+import Hero from '../components/Hero.astro';
+import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import trees from '../assets/trees-01.png';
@@ -60,6 +63,8 @@ const sections = [
   { id: 'spacing', label: 'Spacing' },
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
+  { id: 'button-row', label: 'Button row' },
+  { id: 'hero', label: 'Hero' },
   { id: 'entry-card', label: 'Entry card' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
@@ -305,6 +310,22 @@ const sections = [
           >, and other inline formatting.
         </p>
       </blockquote>
+
+      <h3 class="subhead">Attributed</h3>
+      <p>
+        <code>&lt;Quote cite role marker&gt;</code>. A blockquote with an attribution line, so pull
+        quotes can be written in Markdown without hand-rolling the
+        <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is optional,
+        and <code>marker</code> overrides the leading <code>~</code>.
+      </p>
+      <Quote cite="ToniAnn" role="Redwoods member">
+        “Redwoods is one of the only communities where I feel like I can not only grow in my own DS
+        practice by learning from others, but also have a hand in shaping the world of design
+        systems at large.”
+      </Quote>
+      <Quote cite="John Muir" marker="―">
+        “When one tugs at a single thing in nature, he finds it attached to the rest of the world.”
+      </Quote>
     </section>
 
     <section id="rules" class="section">
@@ -447,6 +468,42 @@ const sections = [
       <div class="cluster">
         <Button variant="secondary" href="#buttons">Anchor button</Button>
       </div>
+    </section>
+
+    <section id="button-row" class="section">
+      <div class="section__head">
+        <h2>Button row</h2>
+        <p>
+          <code>&lt;ButtonRow&gt;</code>. Lays a group of buttons out in a wrapping row with
+          <code>--space-sm</code> between them. It renders a <code>&lt;p&gt;</code> rather than a
+          <code>&lt;div&gt;</code> so the paragraph adjacency rules in <code>base.css</code> still apply
+          — a row dropped between two paragraphs keeps the surrounding rhythm instead of collapsing it.
+        </p>
+      </div>
+
+      <ButtonRow>
+        <Button href="#button-row" size="sm">Join Redwoods</Button>
+        <Button href="#button-row" variant="secondary" size="sm">Read our values ↓</Button>
+      </ButtonRow>
+    </section>
+
+    <section id="hero" class="section">
+      <div class="section__head">
+        <h2>Hero</h2>
+        <p>
+          <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
+          <code>&lt;h2&gt;</code> that steps up from <code>--font-size-hero</code> to
+          <code>--font-size-hero-max</code> once the <em>main column</em> passes 640px — a container query
+          against <code>.main-wrap</code>, not a media query, so it responds to the space it
+          actually has rather than the viewport. Wrap words in
+          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
+        </p>
+      </div>
+
+      <Hero>
+        Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
+        each other.
+      </Hero>
     </section>
 
     <section id="entry-card" class="section">

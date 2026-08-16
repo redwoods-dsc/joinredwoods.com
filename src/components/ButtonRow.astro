@@ -1,0 +1,24 @@
+---
+// Renders a <p>, not a <div>, so the paragraph adjacency rules in base.css keep
+// spacing whatever sits either side of the row.
+//
+// Callers in .mdx must keep each button's label on the same line as its tags.
+// MDX parses a label sitting on its own line as a Markdown paragraph, which puts
+// a <p> inside the <a> and closes this <p> early. Prefix the row with a
+// prettier-ignore comment so formatting cannot reintroduce the line break.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<p class:list={['button-row', className]}><slot /></p>
+
+<style>
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+</style>

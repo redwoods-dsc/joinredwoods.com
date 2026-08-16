@@ -1,0 +1,14 @@
+---
+interface Props {
+  cite: string;
+  role?: string;
+  marker?: string;
+}
+
+const { cite, role, marker = '~' } = Astro.props;
+---
+
+<blockquote>
+  <slot />
+  <footer>{marker} <cite>{cite}</cite>{role && `, ${role}`}</footer>
+</blockquote>

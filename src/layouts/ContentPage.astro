@@ -2,20 +2,25 @@
 import Layout from './Layout.astro';
 
 interface Props {
-  title: string;
+  title?: string;
   subtitle?: string;
+  columns?: 1 | 2;
 }
 
-const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
+const { title, subtitle, columns = 1 } = Astro.props.frontmatter ?? Astro.props;
 ---
 
 <Layout>
-  <div class="content-page">
-    <header class="content-page__intro">
-      <h2>{title}</h2>
-      {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
-    </header>
-    <slot />
+  <div class="content-page" data-columns={columns}>
+    {
+      title && (
+        <header class="content-page__intro">
+          <h2>{title}</h2>
+          {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+        </header>
+      )
+    }
+    <div class="content-page__body"><slot /></div>
   </div>
 </Layout>
 
@@ -41,27 +46,65 @@ const { title, subtitle } = Astro.props.frontmatter ?? Astro.props;
     font-family: var(--font-serif);
   }
 
-  .content-page :global(h2) {
+  /* Single-column pages open the heading rhythm up beyond the base scale; a
+     lone measure of prose can carry the air. Two-column pages stay on the base
+     rhythm — 64px above every h2 would eat a visible slice of a narrow column
+     and make the two halves harder to balance. */
+  .content-page[data-columns='1'] :global(h2) {
     margin-block-start: var(--space-3xl);
   }
 
-  .content-page__intro :global(h2) {
+  .content-page[data-columns='1'] .content-page__intro :global(h2) {
     margin-block-start: 0;
   }
 
-  .content-page :global(h3) {
+  .content-page[data-columns='1'] :global(h3) {
     margin-block-start: var(--space-2xl);
   }
 
-  .content-page :global(h4) {
+  .content-page[data-columns='1'] :global(h4) {
     margin-block-start: var(--space-xl);
   }
 
-  .content-page :global(h5) {
+  .content-page[data-columns='1'] :global(h5) {
     margin-block-start: var(--space-lg);
   }
 
-  .content-page :global(h6) {
+  .content-page[data-columns='1'] :global(h6) {
     margin-block-start: var(--space-md);
+  }
+
+  /* Untitled pages open straight into body copy, so the gap the intro block
+     would have provided has to come from the body instead. */
+  .content-page:not(:has(.content-page__intro)) .content-page__body {
+    margin-block-start: var(--space-xl);
+  }
+
+  /* Two-column pages fill the main column rather than the prose measure —
+     each column lands near the prose width on its own. */
+  .content-page[data-columns='2'] {
+    max-width: none;
+  }
+
+  /* A native multi-column flow rather than a fixed 2-col grid, so the halves
+     self-balance by height as copy is added or trimmed instead of leaving one
+     column trailing off in whitespace. Section boundaries no longer align with
+     the column break, so keep headings attached to what follows them and keep
+     lists from splitting mid-way. Container-based (see .main-wrap in
+     Page.astro) so it responds to this column's width, not the viewport's. */
+  @container main (min-width: 640px) {
+    .content-page[data-columns='2'] .content-page__body {
+      column-count: 2;
+      column-gap: var(--space-xl);
+    }
+
+    .content-page[data-columns='2'] .content-page__body :global(h2),
+    .content-page[data-columns='2'] .content-page__body :global(h3) {
+      break-after: avoid;
+    }
+
+    .content-page[data-columns='2'] .content-page__body :global(ul) {
+      break-inside: avoid;
+    }
   }
 </style>
