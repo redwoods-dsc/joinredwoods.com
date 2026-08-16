@@ -75,7 +75,7 @@ const sections = [
 ];
 ---
 
-<Layout>
+<Layout aside={false}>
   <div class="guide">
     <header class="guide__header">
       <p class="guide__eyebrow">Redwoods</p>
@@ -551,12 +551,14 @@ const sections = [
           <code>Page.astro</code>. The <code>.shell__*</code> wrappers own the card surface — grid placement,
           the breakpoint-dependent join <code>border-radius</code>, the cream fill, and clipping —
           because only the shell knows where each card sits in the grid. Content styling (padding,
-          type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>, per-page
-          aside wrappers). The <code>header</code> is the exception: its chrome lives on
+          type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>,
+          <code>.sidebar</code>). The <code>header</code> is the exception: its chrome lives on
           <code>.header</code> because <code>position: fixed</code> at tablet must be on the element itself.
-          Pages provide <code>main</code> content (default slot) and optional <code>aside</code> content
-          (<code>slot="aside"</code>); the
-          <code>header</code> and <code>footer</code> are global and identical on every page.
+          Pages provide <code>main</code> content (default slot); <code>header</code>,
+          <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
+          is <code>Sidebar.astro</code>. A page that wants the full width opts out with
+          <code>&lt;Layout aside=&#123;false&#125;&gt;</code>, which drops the region from the grid
+          entirely rather than leaving an empty card — this page is the only one that does.
         </p>
       </div>
 

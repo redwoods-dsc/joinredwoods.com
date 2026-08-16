@@ -1,0 +1,65 @@
+---
+import EntryCard from './EntryCard.astro';
+
+const articles = [
+  {
+    href: '#',
+    secondaryLabel: 'Ben Callahan',
+    primaryLabel: 'The Question Episode 057 Recap',
+    date: new Date(Date.UTC(2025, 6, 10)),
+  },
+  {
+    href: '#',
+    secondaryLabel: 'Ben Callahan, Brad Frost',
+    primaryLabel: 'The Question Episode 056 Recap',
+    date: new Date(Date.UTC(2025, 5, 27)),
+  },
+  {
+    href: '#',
+    secondaryLabel: 'Ben Callahan',
+    primaryLabel: 'Analysis vs Synthesis',
+    date: new Date(Date.UTC(2024, 2, 5)),
+  },
+];
+---
+
+<div class="sidebar">
+  <section class="sidebar__card">
+    <h2>What we've learned</h2>
+    <div class="sidebar__list">
+      {articles.map((article) => <EntryCard {...article} />)}
+    </div>
+  </section>
+  <section class="sidebar__card">
+    <h2>Where we'll be</h2>
+    <div class="sidebar__list">
+      <EntryCard
+        href="#"
+        tone="woodland"
+        secondaryLabel="Bristol, UK"
+        primaryLabel="Converge, 2025"
+        date={new Date(Date.UTC(2025, 9, 30))}
+        endDate={new Date(Date.UTC(2025, 9, 31))}
+      />
+    </div>
+  </section>
+</div>
+
+<style>
+  .sidebar {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .sidebar__card h2 {
+    margin: 0 0 var(--space-md);
+  }
+
+  .sidebar__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+</style>

@@ -1,15 +1,28 @@
 ---
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import Sidebar from './Sidebar.astro';
+
+interface Props {
+  aside?: boolean;
+}
+
+const { aside = true } = Astro.props;
 ---
 
 <div class="global-wrap">
-  <div class="shell">
+  <div class="shell" data-aside={String(aside)}>
     <div class="shell__header"><Header /></div>
     <div class="shell__main">
       <main class="main-wrap"><slot /></main>
     </div>
-    <aside class="shell__aside"><slot name="aside" /></aside>
+    {
+      aside && (
+        <aside class="shell__aside">
+          <Sidebar />
+        </aside>
+      )
+    }
     <div class="shell__footer"><Footer /></div>
   </div>
   <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
@@ -36,6 +49,15 @@ import Footer from './Footer.astro';
       'aside'
       'footer';
     gap: 0; /* header + main + aside + footer read as one joined column on mobile */
+  }
+
+  /* Pages that opt out of the aside drop its row/column entirely. Without this
+     the track is still allocated and renders as an empty cream card. */
+  .shell[data-aside='false'] {
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
   }
 
   /* At tablet, .header is position: fixed; the cell collapses in flow but the
@@ -92,6 +114,14 @@ import Footer from './Footer.astro';
     .shell__main {
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
+
+    /* Header stays fixed to the left column here, so keep both tracks and just
+       let main + footer share the right one. */
+    .shell[data-aside='false'] {
+      grid-template-areas:
+        'header main'
+        'header footer';
+    }
   }
 
   /* Desktop: header + main are the joined column on the left, aside is its own
@@ -117,6 +147,15 @@ import Footer from './Footer.astro';
     .shell__footer {
       margin-block-start: var(--space-lg);
       border-radius: var(--radius-xl);
+    }
+
+    /* Nothing to sit beside, so the whole shell becomes one full-width stack. */
+    .shell[data-aside='false'] {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'header'
+        'main'
+        'footer';
     }
   }
 
