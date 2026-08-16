@@ -62,6 +62,28 @@ const { tone = 'info' } = Astro.props;
 </style>
 ```
 
+## 📄 Content pages
+
+Prose-led pages (code of conduct, policies, anything that's mostly words) are **Markdown by default**. Drop a `.md` file in `src/pages/` and point its frontmatter at a layout — Astro routes it and passes the frontmatter through as `Astro.props.frontmatter`, which `ContentPage` already handles.
+
+```markdown
+---
+layout: ../layouts/ContentPage.astro
+title: Redwoods Code of Conduct
+subtitle: We take this code of conduct seriously, and we trust that you will too.
+---
+
+### A section heading
+
+Body copy lands in the layout's `<slot />`, so heading spacing and prose styles come for free.
+```
+
+See `src/pages/code-of-conduct.md` for the canonical example.
+
+Reach for `.astro` only when the page needs something Markdown can't express — imported components (`<Button />`), computed frontmatter, `getStaticPaths()`, or bespoke layout. `src/pages/join.astro` qualifies; a wall of prose doesn't. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
+
+Blog articles are different: they live in the `articles` content collection (`src/content/articles/*.mdx`, schema in `src/content.config.ts`) and are rendered by `src/pages/blog/[slug].astro`. Don't add standalone pages to that collection, and don't spin up a new collection for a one-off page.
+
 ## 🧪 Verification before committing
 
 Two easy things that catch almost every regression:
@@ -85,7 +107,7 @@ We also have Prettier configured. Run `pnpm format` if you've touched files; Pre
 
 ## 🧱 Architecture reminders
 
-- File-based routing: `src/pages/foo.astro` → `/foo`. Don't invent routing indirection.
+- File-based routing: `src/pages/foo.md` → `/foo`. Don't invent routing indirection.
 - Layouts (`src/layouts/Layout.astro`) wrap pages via `<slot />`. Everything global (font loading, global stylesheet import) goes there, not in individual pages.
 - `src/assets/` for media processed by Astro's pipeline; `public/` for files served as-is.
 - Build output is fully static — do not introduce a server runtime without discussion.
