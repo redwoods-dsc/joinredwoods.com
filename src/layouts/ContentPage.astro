@@ -29,7 +29,11 @@ const {
           <slot name="breadcrumb" />
           <h2>{title}</h2>
           {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
-          <slot name="meta" />
+          {Astro.slots.has('meta') && (
+            <div class="content-page__meta">
+              <slot name="meta" />
+            </div>
+          )}
         </header>
       )
     }
@@ -108,10 +112,11 @@ const {
     margin-block-end: var(--space-3xl);
   }
 
-  /* A subtitle already gives the intro visual closure, so the big gap
-     meant to separate a bare title from the first content heading reads
-     as too much dead air here — tighten it up. */
-  .content-page__intro:has(.content-page__subtitle) {
+  /* A subtitle or a byline already gives the intro visual closure, so the big
+     gap meant to separate a bare title from the first content heading reads as
+     too much dead air here — tighten it up. */
+  .content-page__intro:has(.content-page__subtitle),
+  .content-page__intro:has(.content-page__meta) {
     margin-block-end: var(--space-xl);
   }
 
@@ -120,12 +125,17 @@ const {
     font-family: var(--font-serif);
   }
 
-  /* Single-column pages open the heading rhythm up beyond the base scale; a
-     lone measure of prose can carry the air. Two-column pages stay on the base
-     rhythm — 64px above every h2 would eat a visible slice of a narrow column
-     and make the two halves harder to balance. */
+  /* Single-column pages carry a little more air above headings than the base
+     scale, since a lone measure of prose can take it — but only a step more.
+     At the prose measure, 64px above an h2 is roughly three lines of body copy
+     and reads as a gap rather than as hierarchy. Two-column pages stay on the
+     base rhythm entirely: that much space would eat a visible slice of a
+     narrow column and make the two halves harder to balance.
+
+     h5 and h6 land on the same 16px as the paragraph gap, which is the point —
+     at those levels the heading is a run-in label, not a section break. */
   .content-page[data-columns='1'] :global(h2) {
-    margin-block-start: var(--space-3xl);
+    margin-block-start: var(--space-2xl);
   }
 
   .content-page[data-columns='1'] .content-page__intro :global(h2) {
@@ -133,17 +143,14 @@ const {
   }
 
   .content-page[data-columns='1'] :global(h3) {
-    margin-block-start: var(--space-2xl);
-  }
-
-  .content-page[data-columns='1'] :global(h4) {
     margin-block-start: var(--space-xl);
   }
 
-  .content-page[data-columns='1'] :global(h5) {
+  .content-page[data-columns='1'] :global(h4) {
     margin-block-start: var(--space-lg);
   }
 
+  .content-page[data-columns='1'] :global(h5),
   .content-page[data-columns='1'] :global(h6) {
     margin-block-start: var(--space-md);
   }
