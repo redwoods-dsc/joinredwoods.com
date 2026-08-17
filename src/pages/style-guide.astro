@@ -213,6 +213,38 @@ const sections = [
           <code class="type-row__token">--font-size-caption</code>
         </div>
       </div>
+
+      <h3 class="subhead">Heading rhythm</h3>
+      <p>
+        In <code>base.css</code> every heading gets <code>--space-lg</code> above it and
+        <code>--space-xs</code> below, with h2 stepped up to <code>--space-xl</code>. The tight
+        space below is deliberate — a heading should sit with the content it introduces rather than
+        float between two blocks.
+      </p>
+      <p>
+        Single-column pages open the space above up a step, since a lone measure of prose can carry
+        it. Two-column pages stay on the base scale: the extra air would eat a visible slice of a
+        narrow column and make the halves harder to balance. Set in <code>ContentPage.astro</code>,
+        keyed on <code>data-columns</code>.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Space above</th><th>One column</th><th>Two columns (base)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>h2</td><td>--space-2xl (48px)</td><td>--space-xl (32px)</td></tr>
+          <tr><td>h3</td><td>--space-xl (32px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>h4</td><td>--space-lg (24px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>h5, h6</td><td>--space-md (16px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>paragraph</td><td>--space-md (16px)</td><td>--space-md (16px)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        In one column h5 and h6 land on the same gap as a paragraph, on purpose: at that depth a
+        heading reads as a run-in label rather than a section break. A page intro carries
+        <code>--space-3xl</code> below it, dropping to <code>--space-xl</code> when it holds a subtitle
+        or a byline — either one closes the block visually, so the larger gap stops earning its place.
+      </p>
     </section>
 
     <section id="links" class="section">
@@ -357,7 +389,7 @@ const sections = [
           <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
         </thead>
         <tbody>
-          <tr><td>--space-sm</td><td>8px</td><td>Tight gaps</td></tr>
+          <tr><td>--space-xs</td><td>8px</td><td>Tight gaps</td></tr>
           <tr><td>--space-md</td><td>16px</td><td>Default spacing</td></tr>
           <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
         </tbody>
