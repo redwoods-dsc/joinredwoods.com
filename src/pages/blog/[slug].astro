@@ -24,7 +24,7 @@ const hasToc = buildTocTree(headings).length > 0;
 
 <ContentPage title={article.data.title} aside={false} toc={hasToc}>
   {hasToc && <TableOfContents slot="toc" headings={headings} />}
-  <BackLink href="/blog/">Back to Blog</BackLink>
+  <BackLink slot="breadcrumb" href="/blog/">Back to Blog</BackLink>
   <div class="meta">
     <span class="authors">
       {
