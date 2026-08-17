@@ -623,12 +623,25 @@ const sections = [
         </p>
       </div>
 
-      <h3 class="subhead">Sample</h3>
+      <h3 class="subhead">Wide column</h3>
       <p>
-        Fed with this page's own sections, so the marker tracks as you scroll. Narrow the window to
-        see it swap to the disclosure.
+        Fed with this page's own sections, so the marker tracks as you scroll. On an article this
+        column is sticky and sits in the gutter beside the prose.
       </p>
       <TableOfContents headings={sections.map((s) => ({ depth: 2, slug: s.id, text: s.label }))} />
+
+      <h3 class="subhead">Narrow column</h3>
+      <p>
+        The same component in a column too narrow for a rail, which is what a phone gets. It becomes
+        a closed disclosure so the list stays reachable without pushing the article down, and it
+        sits in flow under the title and byline rather than beside them. Native
+        <code>&lt;details&gt;</code> — no JavaScript involved.
+      </p>
+      <div class="toc-narrow-demo">
+        <TableOfContents
+          headings={sections.map((s) => ({ depth: 2, slug: s.id, text: s.label }))}
+        />
+      </div>
 
       <h3 class="subhead">Nesting</h3>
       <p>Each level indents against the shared rail rather than starting a new one:</p>
@@ -776,6 +789,14 @@ const sections = [
     display: flex;
     overflow: hidden;
     border-radius: var(--radius-xl);
+  }
+
+  /* The table of contents picks its layout from the width of the nearest
+     container named `main`, so declaring one here at phone width shows the
+     disclosure form on a page whose real column is far too wide for it. */
+  .toc-narrow-demo {
+    container: main / inline-size;
+    max-width: 320px;
   }
 
   /* Footer renders on the cream card surface in the real shell; the demo

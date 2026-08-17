@@ -25,7 +25,7 @@ const hasToc = buildTocTree(headings).length > 0;
 <ContentPage title={article.data.title} aside={false} toc={hasToc}>
   {hasToc && <TableOfContents slot="toc" headings={headings} />}
   <BackLink slot="breadcrumb" href="/blog/">Back to Blog</BackLink>
-  <div class="meta">
+  <div class="meta" slot="meta">
     <span class="authors">
       {
         article.data.authors.map((author, i) => (
@@ -51,11 +51,13 @@ const hasToc = buildTocTree(headings).length > 0;
 </ContentPage>
 
 <style>
+  /* Sits inside the page intro, so separation from the article body is the
+     intro's job — this only needs to clear the title above it. */
   .meta {
     display: flex;
     gap: var(--space-sm);
+    margin-block-start: var(--space-sm);
     font-size: var(--font-size-sm);
     color: var(--color-text);
-    margin-block-end: var(--space-md);
   }
 </style>
