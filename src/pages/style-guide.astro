@@ -609,29 +609,66 @@ const sections = [
       <div class="section__head">
         <h2>Table of contents</h2>
         <p>
-          A right-hand sidebar navigation component for blog articles and long-form content. It
-          renders an automatically-generated nested list of page headings (from h2 through h6) with
-          smooth hover states and proper focus visibility.
+          <code>&lt;TableOfContents headings minDepth maxDepth /&gt;</code>. A rail of page headings
+          for long-form articles, fed by Astro's <code>headings</code> from <code>render()</code>.
+          Nesting is carried by indentation against a single hairline, and the section you're
+          currently reading is marked by an accent segment of that rail. Defaults to h2 through h4.
+        </p>
+        <p>
+          Where the <code>main</code> column is at least 960px wide it renders as the sticky rail below;
+          narrower than that it collapses to a closed disclosure, so the list stays reachable on a phone
+          without pushing the article down. The active marker is progressive enhancement — an <code
+            >IntersectionObserver</code
+          > sets <code>aria-current</code>, and with scripting off every link still works.
         </p>
       </div>
 
       <h3 class="subhead">Sample</h3>
-      <p>Click a link to scroll to that section:</p>
+      <p>
+        Fed with this page's own sections, so the marker tracks as you scroll. Narrow the window to
+        see it swap to the disclosure.
+      </p>
+      <TableOfContents headings={sections.map((s) => ({ depth: 2, slug: s.id, text: s.label }))} />
+
+      <h3 class="subhead">Nesting</h3>
+      <p>Each level indents against the shared rail rather than starting a new one:</p>
       <TableOfContents
         headings={[
-          { level: 2, text: 'Getting started', slug: 'getting-started' },
-          { level: 3, text: 'Prerequisites', slug: 'prerequisites' },
-          { level: 3, text: 'Installation', slug: 'installation' },
-          { level: 2, text: 'Usage', slug: 'usage' },
-          { level: 3, text: 'Basic example', slug: 'basic-example' },
-          { level: 4, text: 'With options', slug: 'with-options' },
-          { level: 2, text: 'API reference', slug: 'api-reference' },
-          { level: 3, text: 'Props', slug: 'props' },
+          { depth: 2, text: 'Getting started', slug: 'getting-started' },
+          { depth: 3, text: 'Prerequisites', slug: 'prerequisites' },
+          { depth: 3, text: 'Installation', slug: 'installation' },
+          { depth: 2, text: 'Usage', slug: 'usage' },
+          { depth: 3, text: 'Basic example', slug: 'basic-example' },
+          { depth: 4, text: 'With options', slug: 'with-options' },
+          { depth: 2, text: 'API reference', slug: 'api-reference' },
+          { depth: 3, text: 'Props', slug: 'props' },
+        ]}
+      />
+
+      <h3 class="subhead">Depth limit</h3>
+      <p>
+        The same headings at <code>maxDepth={3}</code> — the h4 drops out rather than being flattened
+        into its parent:
+      </p>
+      <TableOfContents
+        maxDepth={3}
+        headings={[
+          { depth: 2, text: 'Getting started', slug: 'getting-started' },
+          { depth: 3, text: 'Prerequisites', slug: 'prerequisites' },
+          { depth: 3, text: 'Installation', slug: 'installation' },
+          { depth: 2, text: 'Usage', slug: 'usage' },
+          { depth: 3, text: 'Basic example', slug: 'basic-example' },
+          { depth: 4, text: 'With options', slug: 'with-options' },
+          { depth: 2, text: 'API reference', slug: 'api-reference' },
+          { depth: 3, text: 'Props', slug: 'props' },
         ]}
       />
 
       <h3 class="subhead">Empty state</h3>
-      <p>When no headings are provided, the component hides gracefully:</p>
+      <p>
+        An article with no headings in range renders nothing at all — no empty landmark is left in
+        the accessibility tree:
+      </p>
       <TableOfContents headings={[]} />
     </section>
 

@@ -1,11 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BlogLayout from '../../layouts/BlogLayout.astro';
+import ContentPage from '../../layouts/ContentPage.astro';
 import BackLink from '../../components/BackLink.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
 import { authorSlug } from '../../lib/authors';
+import { buildTocTree } from '../../lib/toc';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', (entry) => !entry.data.draft);
@@ -18,79 +17,40 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { Content, headings } = await render(article);
 
-// Transform headings to include slugs
-const headingsWithSlugs = headings.map((heading) => ({
-  level: heading.depth,
-  text: heading.text,
-  slug: heading.slug,
-}));
+// An article with no headings in range would otherwise still claim the rail's
+// grid column, pushing the prose off-centre against an empty gutter.
+const hasToc = buildTocTree(headings).length > 0;
 ---
 
-<BlogLayout title={article.data.title}>
-  <Header slot="header" />
-  <div class="blog-wrapper">
-    <div class="blog-main">
-      <BackLink href="/blog/">Back to Blog</BackLink>
-      <div class="meta">
-        <span class="authors">
-          {
-            article.data.authors.map((author, i) => (
-              <>
-                {i > 0 && ', '}
-                <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
-              </>
-            ))
-          }
-        </span>
-        <time datetime={article.data.date.toISOString()}>
-          {
-            article.data.date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              timeZone: 'UTC',
-            })
-          }
-        </time>
-      </div>
-      <Content />
-    </div>
-    <div class="blog-toc">
-      <TableOfContents headings={headingsWithSlugs} />
-    </div>
+<ContentPage title={article.data.title} aside={false} toc={hasToc}>
+  {hasToc && <TableOfContents slot="toc" headings={headings} />}
+  <BackLink href="/blog/">Back to Blog</BackLink>
+  <div class="meta">
+    <span class="authors">
+      {
+        article.data.authors.map((author, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
+          </>
+        ))
+      }
+    </span>
+    <time datetime={article.data.date.toISOString()}>
+      {
+        article.data.date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC',
+        })
+      }
+    </time>
   </div>
-  <Footer slot="footer" />
-</BlogLayout>
+  <Content />
+</ContentPage>
 
 <style>
-  .blog-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2xl);
-  }
-
-  .blog-main {
-    min-width: 0;
-  }
-
-  .blog-toc {
-    display: none;
-  }
-
-  @media (min-width: 1200px) {
-    .blog-wrapper {
-      grid-template-columns: 1fr 240px;
-      gap: var(--space-xl);
-    }
-
-    .blog-toc {
-      display: block;
-      position: sticky;
-      top: var(--space-xl);
-      height: fit-content;
-    }
-  }
-
   .meta {
     display: flex;
     gap: var(--space-sm);

@@ -1,63 +1,32 @@
 ---
+import type { MarkdownHeading } from 'astro';
+import TocList from './TocList.astro';
+import { buildTocTree } from '../lib/toc';
+
 interface Props {
-  headings?: Array<{ level: number; text: string; slug: string }>;
+  headings?: MarkdownHeading[];
+  minDepth?: number;
+  maxDepth?: number;
 }
 
-const { headings = [] } = Astro.props;
-
-function buildHeadingTree(headings: Array<{ level: number; text: string; slug: string }>) {
-  const tree: any[] = [];
-  const stack: any[] = [];
-
-  headings.forEach((heading) => {
-    const node = {
-      level: heading.level,
-      text: heading.text,
-      slug: heading.slug,
-      children: [],
-    };
-
-    while (stack.length > 0 && stack[stack.length - 1].level >= heading.level) {
-      stack.pop();
-    }
-
-    if (stack.length === 0) {
-      tree.push(node);
-    } else {
-      stack[stack.length - 1].children.push(node);
-    }
-
-    stack.push(node);
-  });
-
-  return tree;
-}
-
-function renderHeadingTree(nodes: any[]): string {
-  if (nodes.length === 0) return '';
-
-  return `<ul class="toc__list">${nodes
-    .map((node) => {
-      const children = renderHeadingTree(node.children);
-      return `<li class="toc__item toc__item--level-${node.level}"><a href="#${node.slug}">${node.text}</a>${children}</li>`;
-    })
-    .join('')}</ul>`;
-}
-
-const headingTree = buildHeadingTree(headings);
-const isEmpty = headings.length === 0;
+const { headings = [], minDepth = 2, maxDepth = 4 } = Astro.props;
+const tree = buildTocTree(headings, { minDepth, maxDepth });
+const label = 'On this page';
 ---
 
-<nav class="toc" aria-label="Table of contents" class:list={{ 'toc--empty': isEmpty }}>
-  {
-    !isEmpty && (
-      <>
-        <p class="toc__title">On this page</p>
-        <Fragment set:html={renderHeadingTree(headingTree)} />
-      </>
-    )
-  }
-</nav>
+{
+  tree.length > 0 && (
+    <nav class="toc" aria-label="Table of contents" data-toc>
+      <p class="toc__title">{label}</p>
+      <details class="toc__disclosure">
+        <summary class="toc__summary">{label}</summary>
+        <div class="toc__body">
+          <TocList nodes={tree} />
+        </div>
+      </details>
+    </nav>
+  )
+}
 
 <style>
   .toc {
@@ -65,61 +34,131 @@ const isEmpty = headings.length === 0;
     line-height: var(--line-height-snug);
   }
 
-  .toc--empty {
+  .toc__title {
+    display: none;
+    max-width: none;
+  }
+
+  .toc__title,
+  .toc__summary {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .toc__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    padding-block: var(--space-xs);
+    border-block: 1px solid var(--color-border);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .toc__summary::-webkit-details-marker {
     display: none;
   }
 
-  .toc__title {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
-    margin-block-end: var(--space-md);
-    margin: 0 0 var(--space-md) 0;
+  .toc__summary::after {
+    content: '';
+    inline-size: var(--space-xs);
+    block-size: var(--space-xs);
+    border-inline-end: 1px solid currentcolor;
+    border-block-end: 1px solid currentcolor;
+    rotate: 45deg;
+    translate: 0 -25%;
+    transition: rotate var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
-  .toc__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+  .toc__disclosure[open] .toc__summary::after {
+    rotate: 225deg;
+    translate: 0 25%;
   }
 
-  .toc__list .toc__list {
-    gap: 0;
-    margin-block-start: var(--space-xs);
-    padding-inline-start: var(--space-md);
+  .toc__body {
+    margin-block-start: var(--space-sm);
   }
 
-  .toc__item {
-    margin: 0;
-    padding: 0;
-  }
+  /* The disclosure is a narrow-column affordance only. Once the rail has its
+     own column the list is always visible, so the interactive summary is
+     swapped for the static eyebrow — forcing the summary open would leave a
+     control that does nothing when clicked. Guarded on ::details-content
+     because it is the only way to reveal a closed details from CSS; without
+     support the disclosure simply stays at every width, which degrades far
+     better than an invisible list. 960px matches the grid switch in
+     ContentPage.astro — keep the two in sync. */
+  @supports selector(::details-content) {
+    @container main (min-width: 960px) {
+      .toc__title {
+        display: block;
+        margin-block-end: var(--space-sm);
+      }
 
-  .toc__item a {
-    color: var(--color-text);
-    text-decoration: none;
-    display: inline-block;
-    padding-block: var(--space-2xs);
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--motion-duration-fast) var(--motion-ease-standard);
-  }
+      .toc__summary {
+        display: none;
+      }
 
-  .toc__item a:hover {
-    border-bottom-color: var(--color-accent);
-  }
+      .toc__disclosure::details-content {
+        content-visibility: visible;
+        block-size: auto;
+      }
 
-  .toc__item a:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 2px;
-  }
-
-  /* Reduce visual weight for deeply nested items */
-  .toc__item--level-5,
-  .toc__item--level-6 {
-    opacity: 0.75;
+      .toc__body {
+        margin-block-start: 0;
+      }
+    }
   }
 </style>
+
+<script>
+  for (const toc of document.querySelectorAll<HTMLElement>('[data-toc]')) {
+    const links = new Map<string, HTMLAnchorElement>();
+    for (const link of toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')) {
+      const id = decodeURIComponent(link.hash.slice(1));
+      if (id) links.set(id, link);
+    }
+
+    const targets = [...links.keys()]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (targets.length === 0) continue;
+
+    let active: HTMLAnchorElement | null = null;
+    const setActive = (id: string | undefined) => {
+      const next = (id && links.get(id)) || null;
+      if (next === active) return;
+      active?.removeAttribute('aria-current');
+      next?.setAttribute('aria-current', 'location');
+      active = next;
+    };
+
+    const onscreen = new Set<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) onscreen.add(entry.target);
+          else onscreen.delete(entry.target);
+        }
+
+        // Headings sit in a band across the top third of the viewport. Between
+        // two of them the band is empty, so fall back to the last heading
+        // already scrolled past — and above the first heading, to that first
+        // heading — rather than leaving the rail unmarked.
+        const current =
+          targets.find((target) => onscreen.has(target)) ??
+          targets.findLast((target) => target.getBoundingClientRect().top < 0) ??
+          targets[0];
+
+        setActive(current?.id);
+      },
+      { rootMargin: '0px 0px -66% 0px' },
+    );
+
+    for (const target of targets) observer.observe(target);
+  }
+</script>

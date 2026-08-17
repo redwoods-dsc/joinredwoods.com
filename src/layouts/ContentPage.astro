@@ -6,19 +6,36 @@ interface Props {
   subtitle?: string;
   columns?: 1 | 2;
   aside?: boolean;
+  toc?: boolean;
 }
 
-const { title, subtitle, columns = 1, aside = true } = Astro.props.frontmatter ?? Astro.props;
+// `toc` is explicit rather than inferred from Astro.slots.has('toc'), which
+// reports true even when the slotted element sits inside a falsy expression —
+// a headingless article would then reserve the rail's column for nothing.
+const {
+  title,
+  subtitle,
+  columns = 1,
+  aside = true,
+  toc = false,
+} = Astro.props.frontmatter ?? Astro.props;
 ---
 
 <Layout aside={aside}>
-  <div class="content-page" data-columns={columns}>
+  <div class="content-page" data-columns={columns} data-toc={String(toc)}>
     {
       title && (
         <header class="content-page__intro">
           <h2>{title}</h2>
           {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
         </header>
+      )
+    }
+    {
+      toc && (
+        <div class="content-page__rail">
+          <slot name="toc" />
+        </div>
       )
     }
     <div class="content-page__body"><slot /></div>
@@ -29,6 +46,50 @@ const { title, subtitle, columns = 1, aside = true } = Astro.props.frontmatter ?
   .content-page {
     max-width: var(--layout-prose-max);
     margin: 0 auto;
+  }
+
+  /* Narrow, the rail sits in flow between the title and the body, so the
+     reading order is heading → contents → article. Wide, it moves out to the
+     gutter column (below) and this spacing is dropped. */
+  .content-page__rail {
+    margin-block-end: var(--space-xl);
+  }
+
+  /* Container- rather than viewport-driven: the shell hands this column very
+     different widths at the same viewport depending on whether the aside is
+     present, and what decides whether a rail fits is this column's width.
+     960px = --layout-prose-max + --space-2xl + --layout-toc-max, and matches
+     the disclosure switch in TableOfContents.astro — keep the two in sync.
+     Raw px because custom properties can't be used in @container conditions. */
+  @container main (min-width: 960px) {
+    /* The prose measure moves from this element onto its own grid track, so
+       the rail can occupy gutter that the 672px cap would otherwise waste. */
+    .content-page[data-toc='true'] {
+      max-width: none;
+      display: grid;
+      grid-template-columns: minmax(0, var(--layout-prose-max)) minmax(0, var(--layout-toc-max));
+      column-gap: var(--space-2xl);
+      justify-content: center;
+    }
+
+    .content-page[data-toc='true'] .content-page__intro,
+    .content-page[data-toc='true'] .content-page__body {
+      grid-column: 1;
+    }
+
+    /* Spanning every row gives sticky the full article height to travel
+       within; align-self stops the rail stretching to fill it. */
+    .content-page[data-toc='true'] .content-page__rail {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      align-self: start;
+      position: sticky;
+      inset-block-start: var(--space-xl);
+      max-block-size: calc(100dvh - var(--space-2xl));
+      margin-block-end: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
   }
 
   .content-page__intro {
