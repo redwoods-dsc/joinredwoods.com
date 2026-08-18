@@ -64,10 +64,13 @@ const {
   /* Container- rather than viewport-driven: the shell hands this column very
      different widths at the same viewport depending on whether the aside is
      present, and what decides whether a rail fits is this column's width.
-     960px = --layout-prose-max + --space-2xl + --layout-toc-max, and matches
+     944px = --layout-prose-max + --space-xl + --layout-toc-max, and matches
      the disclosure switch in TableOfContents.astro — keep the two in sync.
-     Raw px because custom properties can't be used in @container conditions. */
-  @container main (min-width: 960px) {
+     The column gap is a step tighter than it would otherwise be so the rail
+     still clears this bar beside the shell's aside, which caps the main column
+     at ~955px. Raw px because custom properties can't be used in @container
+     conditions. */
+  @container main (min-width: 944px) {
     /* The prose measure moves from this element onto its own grid track, so
        the rail can occupy gutter that the 672px cap would otherwise waste. */
     .content-page[data-toc='true'] {
@@ -79,7 +82,7 @@ const {
          keeps the title row hugging the title. Left implicit, the rail lands in
          row one alone and its full height stretches the title's row. */
       grid-template-rows: min-content 1fr;
-      column-gap: var(--space-2xl);
+      column-gap: var(--space-xl);
       justify-content: center;
     }
 

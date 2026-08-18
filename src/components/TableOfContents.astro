@@ -89,10 +89,10 @@ const label = 'On this page';
      control that does nothing when clicked. Guarded on ::details-content
      because it is the only way to reveal a closed details from CSS; without
      support the disclosure simply stays at every width, which degrades far
-     better than an invisible list. 960px matches the grid switch in
+     better than an invisible list. 944px matches the grid switch in
      ContentPage.astro — keep the two in sync. */
   @supports selector(::details-content) {
-    @container main (min-width: 960px) {
+    @container main (min-width: 944px) {
       .toc__title {
         display: block;
         margin-block-end: var(--space-sm);

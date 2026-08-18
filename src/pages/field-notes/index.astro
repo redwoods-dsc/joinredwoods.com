@@ -8,13 +8,16 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
 );
 ---
 
-<ContentPage title="Blog" aside={false}>
+<ContentPage
+  title="Field Notes"
+  subtitle="Redwoods is committed to analyzing and synthesizing the things we learn. Everything here is offered back to the wider design system community, freely. Anything drawn from inside Redwoods is anonymized first, out of respect for the trust that makes hard conversations possible."
+>
   <ul class="article-list">
     {
       articles.map((article) => (
         <li>
           <h2>
-            <a href={`/blog/${article.id}/`}>{article.data.title}</a>
+            <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
           </h2>
           {article.data.description && <p>{article.data.description}</p>}
           <div class="meta">
@@ -22,7 +25,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
               {article.data.authors.map((author, i) => (
                 <>
                   {i > 0 && ', '}
-                  <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
+                  <a href={`/field-notes/authors/${authorSlug(author)}/`}>{author}</a>
                 </>
               ))}
             </span>

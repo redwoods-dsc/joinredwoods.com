@@ -22,16 +22,16 @@ const { Content, headings } = await render(article);
 const hasToc = buildTocTree(headings).length > 0;
 ---
 
-<ContentPage title={article.data.title} aside={false} toc={hasToc}>
+<ContentPage title={article.data.title} toc={hasToc}>
   {hasToc && <TableOfContents slot="toc" headings={headings} />}
-  <BackLink slot="breadcrumb" href="/blog/">Back to Blog</BackLink>
+  <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
   <div class="meta" slot="meta">
     <span class="authors">
       {
         article.data.authors.map((author, i) => (
           <>
             {i > 0 && ', '}
-            <a href={`/blog/authors/${authorSlug(author)}/`}>{author}</a>
+            <a href={`/field-notes/authors/${authorSlug(author)}/`}>{author}</a>
           </>
         ))
       }
