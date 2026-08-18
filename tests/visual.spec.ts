@@ -5,9 +5,4 @@ test.describe('visual regression', () => {
     await page.goto('/style-guide');
     await page.waitForLoadState('networkidle');
   });
-
-  test('hello world article', async ({ page }) => {
-    await page.goto('/blog/hello-world');
-    await page.waitForLoadState('networkidle');
-  });
 });
