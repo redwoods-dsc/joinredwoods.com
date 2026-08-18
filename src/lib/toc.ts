@@ -39,3 +39,7 @@ export function buildTocTree(
 
   return tree;
 }
+
+export function countTocNodes(nodes: TocNode[]): number {
+  return nodes.reduce((total, node) => total + 1 + countTocNodes(node.children), 0);
+}
