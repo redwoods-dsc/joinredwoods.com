@@ -108,7 +108,7 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 
 Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 
-Blog articles are different: they live in the `articles` content collection (`src/content/articles/*.mdx`, schema in `src/content.config.ts`) and are rendered by `src/pages/blog/[slug].astro`. Don't add standalone pages to that collection, and don't spin up a new collection for a one-off page.
+Field Notes articles are different: they live in the `articles` content collection (`src/content/articles/*.mdx`, schema in `src/content.config.ts`) and are rendered by `src/pages/field-notes/[slug].astro`. Don't add standalone pages to that collection, and don't spin up a new collection for a one-off page.
 
 ## 🧪 Verification before committing
 

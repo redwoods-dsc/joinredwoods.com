@@ -87,4 +87,5 @@
   --layout-shell-max: 1600px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
+  --layout-toc-max: 240px;
 }

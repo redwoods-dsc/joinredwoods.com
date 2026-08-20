@@ -9,6 +9,7 @@ import Hero from '../components/Hero.astro';
 import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import trees from '../assets/trees-01.png';
 
 const codeSampleJs = `const site = 'https://joinredwoods.com';
@@ -77,6 +78,7 @@ const sections = [
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
+  { id: 'toc', label: 'Table of contents' },
   { id: 'layout', label: 'Layout' },
 ];
 ---
@@ -211,6 +213,38 @@ const sections = [
           <code class="type-row__token">--font-size-caption</code>
         </div>
       </div>
+
+      <h3 class="subhead">Heading rhythm</h3>
+      <p>
+        In <code>base.css</code> every heading gets <code>--space-lg</code> above it and
+        <code>--space-xs</code> below, with h2 stepped up to <code>--space-xl</code>. The tight
+        space below is deliberate — a heading should sit with the content it introduces rather than
+        float between two blocks.
+      </p>
+      <p>
+        Single-column pages open the space above up a step, since a lone measure of prose can carry
+        it. Two-column pages stay on the base scale: the extra air would eat a visible slice of a
+        narrow column and make the halves harder to balance. Set in <code>ContentPage.astro</code>,
+        keyed on <code>data-columns</code>.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Space above</th><th>One column</th><th>Two columns (base)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>h2</td><td>--space-2xl (48px)</td><td>--space-xl (32px)</td></tr>
+          <tr><td>h3</td><td>--space-xl (32px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>h4</td><td>--space-lg (24px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>h5, h6</td><td>--space-md (16px)</td><td>--space-lg (24px)</td></tr>
+          <tr><td>paragraph</td><td>--space-md (16px)</td><td>--space-md (16px)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        In one column h5 and h6 land on the same gap as a paragraph, on purpose: at that depth a
+        heading reads as a run-in label rather than a section break. A page intro carries
+        <code>--space-3xl</code> below it, dropping to <code>--space-xl</code> when it holds a subtitle
+        or a byline — either one closes the block visually, so the larger gap stops earning its place.
+      </p>
     </section>
 
     <section id="links" class="section">
@@ -355,7 +389,7 @@ const sections = [
           <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
         </thead>
         <tbody>
-          <tr><td>--space-sm</td><td>8px</td><td>Tight gaps</td></tr>
+          <tr><td>--space-xs</td><td>8px</td><td>Tight gaps</td></tr>
           <tr><td>--space-md</td><td>16px</td><td>Default spacing</td></tr>
           <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
         </tbody>
@@ -515,9 +549,9 @@ const sections = [
         <h2>Entry card</h2>
         <p>
           <code>&lt;EntryCard href primaryLabel secondaryLabel date endDate tone /&gt;</code>. A
-          card for linking to blog articles and events. The whole card is a single anchor: a date
-          block on the left (its shade calculated from the tone) and a secondary label above a bold
-          primary label on the right. Pass a <code>date</code> alone for a single day, or add
+          card for linking to Field Notes articles and events. The whole card is a single anchor: a
+          date block on the left (its shade calculated from the tone) and a secondary label above a
+          bold primary label on the right. Pass a <code>date</code> alone for a single day, or add
           <code>endDate</code> for a range.
         </p>
       </div>
@@ -601,6 +635,86 @@ const sections = [
       </div>
 
       <div class="footer-demo"><Footer /></div>
+    </section>
+
+    <section id="toc" class="section">
+      <div class="section__head">
+        <h2>Table of contents</h2>
+        <p>
+          <code>&lt;TableOfContents headings minDepth maxDepth /&gt;</code>. A rail of page headings
+          for long-form articles, fed by Astro's <code>headings</code> from <code>render()</code>.
+          Nesting is carried by indentation against a single hairline, and the section you're
+          currently reading is marked by an accent segment of that rail. Defaults to h2 through h4.
+        </p>
+        <p>
+          Where the <code>main</code> column is at least 960px wide it renders as the sticky rail below;
+          narrower than that it collapses to a closed disclosure, so the list stays reachable on a phone
+          without pushing the article down. The active marker is progressive enhancement — an <code
+            >IntersectionObserver</code
+          > sets <code>aria-current</code>, and with scripting off every link still works.
+        </p>
+      </div>
+
+      <h3 class="subhead">Wide column</h3>
+      <p>
+        Fed with this page's own sections, so the marker tracks as you scroll. On an article this
+        column is sticky and sits in the gutter beside the prose.
+      </p>
+      <TableOfContents headings={sections.map((s) => ({ depth: 2, slug: s.id, text: s.label }))} />
+
+      <h3 class="subhead">Narrow column</h3>
+      <p>
+        The same component in a column too narrow for a rail, which is what a phone gets. It becomes
+        a closed disclosure so the list stays reachable without pushing the article down, and it
+        sits in flow under the title and byline rather than beside them. Native
+        <code>&lt;details&gt;</code> — no JavaScript involved.
+      </p>
+      <div class="toc-narrow-demo">
+        <TableOfContents
+          headings={sections.map((s) => ({ depth: 2, slug: s.id, text: s.label }))}
+        />
+      </div>
+
+      <h3 class="subhead">Nesting</h3>
+      <p>Each level indents against the shared rail rather than starting a new one:</p>
+      <TableOfContents
+        headings={[
+          { depth: 2, text: 'Getting started', slug: 'getting-started' },
+          { depth: 3, text: 'Prerequisites', slug: 'prerequisites' },
+          { depth: 3, text: 'Installation', slug: 'installation' },
+          { depth: 2, text: 'Usage', slug: 'usage' },
+          { depth: 3, text: 'Basic example', slug: 'basic-example' },
+          { depth: 4, text: 'With options', slug: 'with-options' },
+          { depth: 2, text: 'API reference', slug: 'api-reference' },
+          { depth: 3, text: 'Props', slug: 'props' },
+        ]}
+      />
+
+      <h3 class="subhead">Depth limit</h3>
+      <p>
+        The same headings at <code>maxDepth={3}</code> — the h4 drops out rather than being flattened
+        into its parent:
+      </p>
+      <TableOfContents
+        maxDepth={3}
+        headings={[
+          { depth: 2, text: 'Getting started', slug: 'getting-started' },
+          { depth: 3, text: 'Prerequisites', slug: 'prerequisites' },
+          { depth: 3, text: 'Installation', slug: 'installation' },
+          { depth: 2, text: 'Usage', slug: 'usage' },
+          { depth: 3, text: 'Basic example', slug: 'basic-example' },
+          { depth: 4, text: 'With options', slug: 'with-options' },
+          { depth: 2, text: 'API reference', slug: 'api-reference' },
+          { depth: 3, text: 'Props', slug: 'props' },
+        ]}
+      />
+
+      <h3 class="subhead">Empty state</h3>
+      <p>
+        An article with no headings in range renders nothing at all — no empty landmark is left in
+        the accessibility tree:
+      </p>
+      <TableOfContents headings={[]} />
     </section>
 
     <section id="layout" class="section">
@@ -707,6 +821,14 @@ const sections = [
     display: flex;
     overflow: hidden;
     border-radius: var(--radius-xl);
+  }
+
+  /* The table of contents picks its layout from the width of the nearest
+     container named `main`, so declaring one here at phone width shows the
+     disclosure form on a page whose real column is far too wide for it. */
+  .toc-narrow-demo {
+    container: main / inline-size;
+    max-width: 320px;
   }
 
   /* Footer renders on the cream card surface in the real shell; the demo
