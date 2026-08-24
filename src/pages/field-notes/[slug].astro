@@ -1,0 +1,76 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentPage from '../../layouts/ContentPage.astro';
+import BackLink from '../../components/BackLink.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { authorSlug } from '../../lib/authors';
+import { buildTocTree, countTocNodes } from '../../lib/toc';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', (entry) => !entry.data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+
+// Below this many jump targets a contents list costs more attention than the
+// scrolling it saves. An article that falls short renders no rail at all,
+// which also leaves the prose centred rather than pushed off against an empty
+// gutter.
+const TOC_MIN_HEADINGS = 4;
+const hasToc = countTocNodes(buildTocTree(headings)) >= TOC_MIN_HEADINGS;
+---
+
+<ContentPage
+  title={article.data.title}
+  description={article.data.description}
+  image={article.data.image}
+  imageAlt={article.data.imageAlt}
+  type="article"
+  publishedTime={article.data.date}
+  modifiedTime={article.data.modifiedDate}
+  authors={article.data.authors}
+  toc={hasToc}
+>
+  {hasToc && <TableOfContents slot="toc" headings={headings} />}
+  <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
+  <div class="meta" slot="meta">
+    <span class="authors">
+      {
+        article.data.authors.map((author, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={`/field-notes/authors/${authorSlug(author)}/`}>{author}</a>
+          </>
+        ))
+      }
+    </span>
+    <time datetime={article.data.date.toISOString()}>
+      {
+        article.data.date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: 'UTC',
+        })
+      }
+    </time>
+  </div>
+  <Content />
+</ContentPage>
+
+<style>
+  /* Sits inside the page intro, so separation from the article body is the
+     intro's job — this only needs to clear the title above it. */
+  .meta {
+    display: flex;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+  }
+</style>

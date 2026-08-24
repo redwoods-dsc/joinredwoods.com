@@ -72,12 +72,20 @@ const { aside = true } = Astro.props;
   .shell__main,
   .shell__aside,
   .shell__footer {
-    overflow: hidden;
     background-color: var(--color-bg);
+  }
+
+  .shell__aside,
+  .shell__footer {
+    overflow: hidden;
   }
 
   .shell__main {
     grid-area: main;
+    /* clip rather than hidden: `hidden` makes this a scroll container, which
+       traps any sticky descendant (the article table of contents) in a box
+       that never scrolls. `clip` still clips to the joining radii. */
+    overflow: clip;
   }
 
   /* Shared semantic landmark and content padding for every page that consumes

@@ -1,32 +1,52 @@
 ---
 import Layout from './Layout.astro';
+import type { Props as SeoProps } from '../components/Seo.astro';
 
-interface Props {
-  title?: string;
+interface Props extends SeoProps {
   subtitle?: string;
   columns?: 1 | 2;
-  /** Meta description. Falls back to the subtitle, then the site default. */
-  description?: string;
-  noindex?: boolean;
+  aside?: boolean;
+  toc?: boolean;
 }
 
+// `toc` is explicit rather than inferred from Astro.slots.has('toc'), which
+// reports true even when the slotted element sits inside a falsy expression —
+// a headingless article would then reserve the rail's column for nothing.
 const {
-  title,
   subtitle,
   columns = 1,
-  description = subtitle,
-  noindex,
+  aside = true,
+  toc = false,
+  // Markdown pages arrive with `layout` alongside their real frontmatter;
+  // it isn't metadata and has no business reaching <head>.
+  layout: _layout,
+  ...seo
 } = Astro.props.frontmatter ?? Astro.props;
+
+const { title } = seo;
 ---
 
-<Layout title={title} description={description} noindex={noindex}>
-  <div class="content-page" data-columns={columns}>
+<Layout {...seo} description={seo.description ?? subtitle} aside={aside}>
+  <div class="content-page" data-columns={columns} data-toc={String(toc)}>
     {
       title && (
         <header class="content-page__intro">
+          <slot name="breadcrumb" />
           <h2>{title}</h2>
           {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+          {Astro.slots.has('meta') && (
+            <div class="content-page__meta">
+              <slot name="meta" />
+            </div>
+          )}
         </header>
+      )
+    }
+    {
+      toc && (
+        <div class="content-page__rail">
+          <slot name="toc" />
+        </div>
       )
     }
     <div class="content-page__body"><slot /></div>
@@ -39,14 +59,72 @@ const {
     margin: 0 auto;
   }
 
+  /* Narrow, the rail sits in flow between the title and the body, so the
+     reading order is heading → contents → article. Wide, it moves out to the
+     gutter column (below) and this spacing is dropped. */
+  .content-page__rail {
+    margin-block-end: var(--space-xl);
+  }
+
+  /* Container- rather than viewport-driven: the shell hands this column very
+     different widths at the same viewport depending on whether the aside is
+     present, and what decides whether a rail fits is this column's width.
+     944px = --layout-prose-max + --space-xl + --layout-toc-max, and matches
+     the disclosure switch in TableOfContents.astro — keep the two in sync.
+     The column gap is a step tighter than it would otherwise be so the rail
+     still clears this bar beside the shell's aside, which caps the main column
+     at ~955px. Raw px because custom properties can't be used in @container
+     conditions. */
+  @container main (min-width: 944px) {
+    /* The prose measure moves from this element onto its own grid track, so
+       the rail can occupy gutter that the 672px cap would otherwise waste. */
+    .content-page[data-toc='true'] {
+      max-width: none;
+      display: grid;
+      grid-template-columns: minmax(0, var(--layout-prose-max)) minmax(0, var(--layout-toc-max));
+      /* Rows are declared rather than left implicit for two reasons: the rail's
+         `-1` end line resolves against the explicit grid, and `min-content`
+         keeps the title row hugging the title. Left implicit, the rail lands in
+         row one alone and its full height stretches the title's row. */
+      grid-template-rows: min-content 1fr;
+      column-gap: var(--space-xl);
+      justify-content: center;
+    }
+
+    /* Placed explicitly so the rows hold even when there is no title and the
+       intro isn't rendered at all. */
+    .content-page[data-toc='true'] .content-page__intro {
+      grid-area: 1 / 1;
+    }
+
+    .content-page[data-toc='true'] .content-page__body {
+      grid-area: 2 / 1;
+    }
+
+    /* Spanning both rows gives sticky the whole article to travel within, and
+       keeps the rail's height out of the prose column's row sizing.
+       align-self stops it stretching to fill that span. */
+    .content-page[data-toc='true'] .content-page__rail {
+      grid-area: 1 / 2 / -1 / 3;
+      align-self: start;
+      position: sticky;
+      inset-block-start: var(--space-xl);
+      max-block-size: calc(100dvh - var(--space-2xl));
+      margin-block-end: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
   .content-page__intro {
     margin-block-end: var(--space-3xl);
   }
 
-  /* A subtitle already gives the intro visual closure, so the big gap
-     meant to separate a bare title from the first content heading reads
-     as too much dead air here — tighten it up. */
-  .content-page__intro:has(.content-page__subtitle) {
+  /* A subtitle or a byline already gives the intro visual closure, so the big
+     gap meant to separate a bare title from the first content heading reads as
+     too much dead air here — tighten it up. */
+  .content-page__intro:has(.content-page__subtitle),
+  .content-page__intro:has(.content-page__meta) {
     margin-block-end: var(--space-xl);
   }
 
@@ -55,12 +133,17 @@ const {
     font-family: var(--font-serif);
   }
 
-  /* Single-column pages open the heading rhythm up beyond the base scale; a
-     lone measure of prose can carry the air. Two-column pages stay on the base
-     rhythm — 64px above every h2 would eat a visible slice of a narrow column
-     and make the two halves harder to balance. */
+  /* Single-column pages carry a little more air above headings than the base
+     scale, since a lone measure of prose can take it — but only a step more.
+     At the prose measure, 64px above an h2 is roughly three lines of body copy
+     and reads as a gap rather than as hierarchy. Two-column pages stay on the
+     base rhythm entirely: that much space would eat a visible slice of a
+     narrow column and make the two halves harder to balance.
+
+     h5 and h6 land on the same 16px as the paragraph gap, which is the point —
+     at those levels the heading is a run-in label, not a section break. */
   .content-page[data-columns='1'] :global(h2) {
-    margin-block-start: var(--space-3xl);
+    margin-block-start: var(--space-2xl);
   }
 
   .content-page[data-columns='1'] .content-page__intro :global(h2) {
@@ -68,17 +151,14 @@ const {
   }
 
   .content-page[data-columns='1'] :global(h3) {
-    margin-block-start: var(--space-2xl);
-  }
-
-  .content-page[data-columns='1'] :global(h4) {
     margin-block-start: var(--space-xl);
   }
 
-  .content-page[data-columns='1'] :global(h5) {
+  .content-page[data-columns='1'] :global(h4) {
     margin-block-start: var(--space-lg);
   }
 
+  .content-page[data-columns='1'] :global(h5),
   .content-page[data-columns='1'] :global(h6) {
     margin-block-start: var(--space-md);
   }

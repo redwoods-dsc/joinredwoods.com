@@ -1,0 +1,76 @@
+---
+import type { TocNode } from '../lib/toc';
+
+interface Props {
+  nodes: TocNode[];
+  depth?: number;
+}
+
+const { nodes, depth = 0 } = Astro.props;
+---
+
+<ul class="toc__list" class:list={{ 'toc__list--root': depth === 0 }}>
+  {
+    nodes.map((node) => (
+      <li class="toc__item">
+        <a class="toc__link" href={`#${node.slug}`} style={`--toc-indent: ${depth}`}>
+          {node.text}
+        </a>
+        {node.children.length > 0 && <Astro.self nodes={node.children} depth={depth + 1} />}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* One hairline spans the whole tree. Nested lists deliberately carry no
+     indentation — the links do, via padding — so every item's inline-start
+     border edge stays on this rail and the active segment needs no per-depth
+     offset. */
+  .toc__list--root {
+    border-inline-start: 1px solid var(--color-border);
+  }
+
+  .toc__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc__link {
+    position: relative;
+    display: block;
+    padding-block: var(--space-2xs);
+    padding-inline: calc((var(--toc-indent, 0) + 1) * var(--space-md)) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    overflow-wrap: break-word;
+    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .toc__link::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: -1px;
+    inline-size: 1px;
+    background-color: transparent;
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .toc__link[aria-current] {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .toc__link[aria-current]::before {
+    background-color: var(--color-accent);
+  }
+</style>

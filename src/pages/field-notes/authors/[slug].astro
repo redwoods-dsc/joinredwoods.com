@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
+import ContentPage from '../../../layouts/ContentPage.astro';
 import BackLink from '../../../components/BackLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
@@ -26,9 +26,11 @@ const articles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title={name} description={`Articles written by ${name} for the Redwoods community.`}>
-  <BackLink href="/blog/">Back to Blog</BackLink>
-  <h2>{name}</h2>
+<ContentPage
+  title={name}
+  description={`Field notes written by ${name} for the Redwoods design system community.`}
+>
+  <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
   <p class="bio">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -39,7 +41,7 @@ const articles = allArticles
     {
       articles.map((article) => (
         <li>
-          <a href={`/blog/${article.id}/`}>{article.data.title}</a>
+          <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
           <time datetime={article.data.date.toISOString()}>
             {article.data.date.toLocaleDateString('en-US', {
               year: 'numeric',
@@ -52,7 +54,7 @@ const articles = allArticles
       ))
     }
   </ul>
-</Layout>
+</ContentPage>
 
 <style>
   .bio {

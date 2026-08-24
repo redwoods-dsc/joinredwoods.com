@@ -87,10 +87,10 @@ The build output in `./dist/` is fully static and can be hosted on any static ho
 
 ## 🔍 SEO and metadata
 
-Page metadata is centralised rather than sprinkled through pages. `src/components/Seo.astro` builds the `<head>` — title, meta description, canonical URL, Open Graph and Twitter cards, and a JSON-LD block — and `Layout.astro` renders it on every page. You don't import it directly; you hand `Layout` (or `ContentPage`, which passes them along) a couple of props:
+Page metadata is centralised rather than sprinkled through pages. `src/components/Seo.astro` builds the `<head>` — title, meta description, canonical URL, Open Graph and Twitter cards, and a JSON-LD block — and `Layout.astro` renders it on every page. You don't import it directly; you hand `Layout` (or `ContentPage`, which forwards its whole prop set through) a couple of props:
 
 ```astro
-<Layout title="Blog" description="Writing from the Redwoods community." />
+<Layout title="Field Notes" description="Analysis and synthesis from the Redwoods community." />
 ```
 
 Markdown and MDX pages do the same thing in frontmatter, where `description` falls back to `subtitle`:
