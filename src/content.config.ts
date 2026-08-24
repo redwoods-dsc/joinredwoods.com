@@ -8,6 +8,9 @@ const articles = defineCollection({
     z.object({
       title: z.string(),
       date: z.coerce.date(),
+      /* Surfaces as article:modified_time and schema.org dateModified. Set it
+         when an edit changes the substance, not for a typo fix. */
+      modifiedDate: z.coerce.date().optional(),
       description: z.string().optional(),
       authors: z.array(z.string()).min(1),
       tags: z.array(z.string()).default([]),

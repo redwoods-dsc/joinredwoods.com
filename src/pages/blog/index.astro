@@ -8,7 +8,10 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
 );
 ---
 
-<Layout>
+<Layout
+  title="Blog"
+  description="Writing from the Redwoods community on design systems, practice and the people behind them."
+>
   <h2>Blog</h2>
   <ul class="article-list">
     {

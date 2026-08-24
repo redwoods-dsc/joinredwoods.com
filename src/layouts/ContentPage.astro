@@ -5,12 +5,21 @@ interface Props {
   title?: string;
   subtitle?: string;
   columns?: 1 | 2;
+  /** Meta description. Falls back to the subtitle, then the site default. */
+  description?: string;
+  noindex?: boolean;
 }
 
-const { title, subtitle, columns = 1 } = Astro.props.frontmatter ?? Astro.props;
+const {
+  title,
+  subtitle,
+  columns = 1,
+  description = subtitle,
+  noindex,
+} = Astro.props.frontmatter ?? Astro.props;
 ---
 
-<Layout>
+<Layout title={title} description={description} noindex={noindex}>
   <div class="content-page" data-columns={columns}>
     {
       title && (

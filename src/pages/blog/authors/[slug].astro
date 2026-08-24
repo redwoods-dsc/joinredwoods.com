@@ -26,7 +26,7 @@ const articles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout>
+<Layout title={name} description={`Articles written by ${name} for the Redwoods community.`}>
   <BackLink href="/blog/">Back to Blog</BackLink>
   <h2>{name}</h2>
   <p class="bio">
