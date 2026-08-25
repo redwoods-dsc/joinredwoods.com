@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
+import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
 import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
@@ -59,6 +60,24 @@ const buttonSizes = ['sm', 'md', 'lg'] as const;
 
 const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 
+// Fixed dates on both sides, so these demos render the same state forever and
+// the Chromatic snapshot can't drift. Passing a question explicitly also opts
+// the card out of browser-side expiry, which is what keeps the open demo open
+// even once the real question has closed.
+const questionOpenSample = {
+  number: 80,
+  question: 'How do we visualise design system health?',
+  cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
+  episodeDate: new Date(Date.UTC(2099, 7, 28)),
+  answerBy: new Date(Date.UTC(2099, 7, 27)),
+  answerUrl: '#question-promo',
+};
+const questionClosedSample = {
+  ...questionOpenSample,
+  episodeDate: new Date(Date.UTC(2020, 7, 28)),
+  answerBy: new Date(Date.UTC(2020, 7, 27)),
+};
+
 const sections = [
   { id: 'colors', label: 'Colors' },
   { id: 'typography', label: 'Typography' },
@@ -68,6 +87,7 @@ const sections = [
   { id: 'button-row', label: 'Button row' },
   { id: 'hero', label: 'Hero' },
   { id: 'entry-card', label: 'Entry card' },
+  { id: 'question-promo', label: 'The Question' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
   { id: 'lists', label: 'Lists' },
@@ -611,6 +631,34 @@ const sections = [
       </div>
     </section>
 
+    <section id="question-promo" class="section">
+      <div class="section__head">
+        <h2>The Question</h2>
+        <p>
+          <code>&lt;QuestionPromo question /&gt;</code>. The sidebar card for The Question, the
+          fortnightly community survey and live discussion Ben runs alongside Redwoods. It has two
+          states, chosen by one field: while the survey's <code>answerBy</code> deadline is in the future
+          it promotes the open question, and afterwards it falls back to the mailing list. The artwork
+          and the link to past episodes both point at Ben's page either way.
+        </p>
+        <p>
+          It reads <code>src/data/the-question.ts</code> by default, which is the only file that changes
+          when a new question goes live — there is no step to take one down. Because the site is statically
+          built and nothing rebuilds it the moment a survey closes, the deadline is re-checked in the
+          browser by an inline script in the document head, which can only ever move the card from open
+          to closed. Deciding it there rather than beside the markup is what stops a closed question flashing
+          on screen. Pass <code>question</code> explicitly — as the two demos below do — to render a fixed
+          state that ignores all of that.
+        </p>
+      </div>
+
+      <h3 class="subhead">Question open</h3>
+      <div class="question-promo-demo"><QuestionPromo question={questionOpenSample} /></div>
+
+      <h3 class="subhead">Question closed</h3>
+      <div class="question-promo-demo"><QuestionPromo question={questionClosedSample} /></div>
+    </section>
+
     <section id="header" class="section">
       <div class="section__head">
         <h2>Header</h2>
@@ -1031,6 +1079,12 @@ const sections = [
     flex-direction: column;
     gap: var(--space-md);
     max-width: 32rem;
+  }
+
+  /* Roughly the width the aside gets at desktop, since that's the only place
+     this card is ever used. */
+  .question-promo-demo {
+    max-width: 26rem;
   }
 
   .link-list {
