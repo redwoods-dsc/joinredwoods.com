@@ -1,4 +1,6 @@
 ---
+import { inlineSlot } from '../lib/inline-slot';
+
 interface Props {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
@@ -20,6 +22,11 @@ const {
 } = Astro.props;
 
 const Tag = href ? 'a' : 'button';
+
+// A label is phrasing content, so the slot can't carry the paragraph MDX wraps
+// it in — a block box inside this inline-flex row breaks the button's layout.
+// See inlineSlot.
+const label = await inlineSlot(Astro.slots);
 ---
 
 <Tag
@@ -31,9 +38,8 @@ const Tag = href ? 'a' : 'button';
   disabled={href ? undefined : disabled}
   aria-disabled={href && disabled ? 'true' : undefined}
   {...rest}
->
-  <slot />
-</Tag>
+  set:html={label}
+/>
 
 <style>
   .btn {

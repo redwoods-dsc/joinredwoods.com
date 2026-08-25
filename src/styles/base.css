@@ -86,10 +86,24 @@ ol {
   padding-inline-start: var(--space-lg);
 }
 
+/**
+ * Serif at a step up from body copy, so a quote reads as a change of voice
+ * rather than indented body text. The attribution stays on the sans body scale:
+ * it is a label about the quote, not part of it, and the contrast is what marks
+ * the boundary between the two.
+ */
 blockquote {
   border-inline-start: 3px solid var(--color-accent);
   padding-inline-start: var(--space-md);
   margin-block: var(--space-md);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+}
+
+blockquote footer {
+  margin-block-start: var(--space-md);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
 }
 
 table {

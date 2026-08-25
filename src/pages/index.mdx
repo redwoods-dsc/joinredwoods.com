@@ -6,28 +6,29 @@ columns: 2
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import Hero from '../components/Hero.astro';
+import Lede from '../components/Lede.astro';
 import Quote from '../components/Quote.astro';
 
-<Hero>
-  Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each
-  other on the journey of design system maturity.
-</Hero>
+<Lede>
+  <Hero>
+    Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting each
+    other on the journey of design system maturity.
+  </Hero>
 
 We're creators, not just consumers. Teachers, not just learners. We're here to challenge and expand
-each other's perspectives and to push the design system community forward in sustainable, meaningful
-ways.
+each other's perspectives and to push the design system community forward in sustainable,
+meaningful ways.
 
-{/* prettier-ignore */}
-<ButtonRow>
-  <Button href="/join" size="sm">Join Redwoods</Button>
-  <Button href="#values" variant="secondary" size="sm">Read our values ↓</Button>
-</ButtonRow>
-
-<Quote cite="ToniAnn" role="Redwoods member">
-  “Redwoods is one of the only communities where I feel like I can not only grow in my own DS
-  practice by learning from others, but also have a hand in shaping the world of design systems at
-  large.”
-</Quote>
+  <ButtonRow>
+    <Button href="/join" size="sm">Join Redwoods</Button>
+    <Button href="#values" variant="secondary" size="sm">Read our values ↓</Button>
+  </ButtonRow>
+  <Quote cite="ToniAnn" role="Redwoods member">
+    “Redwoods is one of the only communities where I feel like I can not only grow in my own DS
+    practice by learning from others, but also have a hand in shaping the world of design systems at
+    large.”
+  </Quote>
+</Lede>
 
 <h2 id="values">Our Values</h2>
 
@@ -74,9 +75,10 @@ promising our companies for years.
 And because we're makers, membership is also a commitment to give back, to synthesize what we're
 learning and share it with the wider design system community.
 
-{/* prettier-ignore */}
 <ButtonRow>
-  <Button href="/join" size="sm">Join Redwoods</Button>
+  <Button href="/join" size="sm">
+    Join Redwoods
+  </Button>
 </ButtonRow>
 
 ## What membership is like
@@ -157,10 +159,13 @@ or education budget.
 - A Collab Figma seat
 - New friends, and much more
 
-{/* prettier-ignore */}
 <ButtonRow>
-  <Button href="/join" size="sm">Join Monthly</Button>
-  <Button href="/join" variant="secondary" size="sm">Join Yearly</Button>
+  <Button href="/join" size="sm">
+    Join Monthly
+  </Button>
+  <Button href="/join" variant="secondary" size="sm">
+    Join Yearly
+  </Button>
 </ButtonRow>
 
 [Questions? Reach out.](https://bencallahan.com/connect)

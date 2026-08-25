@@ -163,12 +163,6 @@ const { title } = seo;
     margin-block-start: var(--space-md);
   }
 
-  /* Untitled pages open straight into body copy, so the gap the intro block
-     would have provided has to come from the body instead. */
-  .content-page:not(:has(.content-page__intro)) .content-page__body {
-    margin-block-start: var(--space-xl);
-  }
-
   /* Two-column pages fill the main column rather than the prose measure —
      each column lands near the prose width on its own. */
   .content-page[data-columns='2'] {

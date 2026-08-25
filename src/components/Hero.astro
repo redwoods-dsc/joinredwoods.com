@@ -1,12 +1,18 @@
 ---
+import { inlineSlot } from '../lib/inline-slot';
+
 interface Props {
   id?: string;
 }
 
 const { id } = Astro.props;
+
+// An <h2> takes phrasing content only, so the slot can't carry the paragraph
+// MDX wraps it in. See inlineSlot.
+const content = await inlineSlot(Astro.slots);
 ---
 
-<h2 class="hero" id={id}><slot /></h2>
+<h2 class="hero" id={id} set:html={content} />
 
 <style>
   .hero {

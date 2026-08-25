@@ -49,6 +49,8 @@ These exist because Lighthouse caught them once. Undoing one costs real score.
 
 - `src/components/` is **flat** — no `primitives/` or `ui/` subfolder. Every reusable Astro component sits at the top level.
 - Every component owns its own scoped `<style>` block. Astro auto-hashes selectors, so styles never leak.
+- **Slotted content doesn't carry the component's hash.** Children passed into a `<slot />` keep the _calling_ page's scope, so a plain `.thing > :last-child` compiles to a selector that can never match — it fails silently and looks like a CSS bug. Any rule reaching into the slot needs `:global()`: `.lede > :global(:last-child)`, `.hero :global(.accent)`. This is what lets a component style content authored in an `.mdx` page without the rules leaking into the layout or the content file. Verify in the browser, not the source — a dead rule looks identical to a live one.
+- **Rendering a phrasing-only element around a slot? Use `inlineSlot`.** MDX parses a component's children as _block_ content whenever they sit on lines of their own, and as _inline_ content when they share a line with the tags — so `<Button>Join</Button>` gives `<a>Join</a>` while the same call wrapped across three lines gives `<a><p>Join</p></a>`. Which one you get is Prettier's line-wrapping decision, not the author's. Inside a heading or a button that paragraph is invalid markup and drags `base.css`'s prose styles in with it. `src/lib/inline-slot.ts` strips it; `Hero` and `Button` both use it. Do **not** reach for a `prettier-ignore` comment to freeze the source formatting instead — we had those, they were fragile in ways that weren't obvious from reading them, and they're gone.
 - Use `<style is:global>` only for genuinely cross-cutting concerns (rare — ask if unsure).
 - Reference tokens with `var(--…)` inside component styles. Don't hard-code.
 - When adding a new component primitive, also add a section for it in `src/pages/style-guide.astro` showing its variants and states.
@@ -107,6 +109,8 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 | `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read.            |
 
 `columns: 2` also keeps headings on the base spacing scale rather than the roomier single-column rhythm — see the comments in `ContentPage.astro`.
+
+A block that shouldn't be chopped into a column — a page's opening headline and intro, say — wraps in `<Lede>`, which gives it `column-span: all`. The multicol flow stays a single self-balancing one; the spanner just takes the full width and the columns restart underneath it. `column-span` is inert outside a multicol, so a `<Lede>` on a `columns: 1` page is a passthrough. `src/pages/index.mdx` is the canonical use.
 
 Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 

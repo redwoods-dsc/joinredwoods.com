@@ -7,6 +7,7 @@ import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
+import Lede from '../components/Lede.astro';
 import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -86,6 +87,7 @@ const sections = [
   { id: 'buttons', label: 'Buttons' },
   { id: 'button-row', label: 'Button row' },
   { id: 'hero', label: 'Hero' },
+  { id: 'lede', label: 'Lede' },
   { id: 'entry-card', label: 'Entry card' },
   { id: 'question-promo', label: 'The Question' },
   { id: 'links', label: 'Links' },
@@ -355,7 +357,14 @@ const sections = [
       <div class="section__head">
         <h2>Blockquotes</h2>
         <p>
-          Left border uses <code>--color-accent</code>. Styled in <code>base.css</code>.
+          Left border uses <code>--color-accent</code>. Styled in <code>base.css</code>, so a
+          Markdown <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
+        </p>
+        <p>
+          The quote sets in <code>--font-serif</code> at <code>--font-size-lg</code> — a step up from
+          body copy, so it reads as a change of voice rather than indented body text. An attribution line
+          stays on the sans body scale: it is a label about the quote, not part of it, and that contrast
+          is what marks the boundary between the two.
         </p>
       </div>
       <blockquote>
@@ -567,6 +576,47 @@ const sections = [
         Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
         each other.
       </Hero>
+    </section>
+
+    <section id="lede" class="section">
+      <div class="section__head">
+        <h2>Lede</h2>
+        <p>
+          <code>&lt;Lede&gt;</code>. Breaks a block out of a multi-column flow. On a page using
+          <code>columns: 2</code>, everything in the body shares one balanced
+          <code>column-count: 2</code> flow — including the opening headline, which lands in a half-width
+          column with no visual entry point. Wrapping the opening block in
+          <code>&lt;Lede&gt;</code> gives it <code>column-span: all</code>: it takes the full width
+          and the rest of the content starts fresh columns beneath it. The flow stays a single
+          self-balancing multicol, so nothing about the <code>columns</code> knob changes.
+          <code>column-span</code> is inert outside a multicol, so a <code>Lede</code> on a single-column
+          page is simply a passthrough.
+        </p>
+        <p>
+          It carries its own block-end margin and zeroes the block-start margin of whatever follows.
+          The first box after a spanner keeps its margin, while every other column's first box has
+          already spent one further up the flow — left alone, the two columns start an
+          <code>h2</code> margin out of line with each other.
+        </p>
+      </div>
+
+      <div class="lede-demo">
+        <Lede>
+          <h3 class="lede-demo__hero">A headline that spans every column</h3>
+          <p>The opening block runs the full width, then the columns begin underneath it.</p>
+        </Lede>
+        <h4>Our Values</h4>
+        <p>
+          Body copy picks up after the spanner and flows into balanced columns, splitting across the
+          gap wherever the browser decides the two halves come out level. Compare the top of this
+          heading with the top of the right-hand column — they should sit on the same line.
+        </p>
+        <h4>Stay in learning mode.</h4>
+        <p>
+          Add or trim a sentence and the break moves on its own — that is the whole reason this is a
+          multi-column flow rather than a two-column grid.
+        </p>
+      </div>
     </section>
 
     <section id="entry-card" class="section">
@@ -984,6 +1034,27 @@ const sections = [
 
   .type-row__sample > * {
     margin: 0;
+  }
+
+  /* A local multicol so the spanner has something to span. The page itself is
+     single-column, where column-span is inert and the demo would show nothing. */
+  .lede-demo {
+    column-count: 2;
+    column-gap: var(--space-xl);
+  }
+
+  /* Mirror ContentPage's column rules, or the demo breaks where the real page
+     wouldn't. No padding or border on this box: a spanner as first child leaves
+     an empty leading fragment, and WebKit renders a bordered one as a stray
+     line above the first column. */
+  .lede-demo :global(h3),
+  .lede-demo :global(h4) {
+    break-after: avoid;
+  }
+
+  .lede-demo__hero {
+    margin-block-start: 0;
+    font-size: var(--font-size-hero);
   }
 
   .type-hero {
