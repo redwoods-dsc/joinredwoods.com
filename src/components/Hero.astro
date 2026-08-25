@@ -1,12 +1,18 @@
 ---
+import { inlineSlot } from '../lib/inline-slot';
+
 interface Props {
   id?: string;
 }
 
 const { id } = Astro.props;
+
+// An <h2> takes phrasing content only, so the slot can't carry the paragraph
+// MDX wraps it in. See inlineSlot.
+const content = await inlineSlot(Astro.slots);
 ---
 
-<h2 class="hero" id={id}><slot /></h2>
+<h2 class="hero" id={id} set:html={content} />
 
 <style>
   .hero {
@@ -26,15 +32,5 @@ const { id } = Astro.props;
      addressed globally to reach a <span> written in the page's Markdown. */
   .hero :global(.accent) {
     color: var(--color-green);
-  }
-
-  /* MDX wraps slotted text that sits on its own lines in a <p> — the same trap
-     ButtonRow documents. Here it lands inside the <h2>, where browsers nest it
-     rather than repair it, and it drags base.css's prose measure and
-     `text-wrap: pretty` along with it: the headline would stay pinned to 672px
-     however wide its column is. The box shouldn't exist, so remove it rather
-     than unpick each property it brought. */
-  .hero :global(p) {
-    display: contents;
   }
 </style>

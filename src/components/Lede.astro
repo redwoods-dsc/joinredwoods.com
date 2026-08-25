@@ -1,17 +1,3 @@
----
-// Callers in .mdx need one `{/* prettier-ignore */}` above the opening tag, not
-// above the ButtonRow inside it. Nested a level deeper Prettier pushes a blank
-// line after an inner ignore comment, which detaches it from the row, rewraps
-// the button labels onto their own lines and springs the <p>-inside-<a> trap
-// ButtonRow documents.
-//
-// The ignore's reach is also sensitive to indentation: the Markdown paragraph
-// inside the block sits at column 0 while its JSX siblings are indented. Indent
-// it to match and Prettier stops honouring the ignore past the first child. It
-// looks like stray formatting; it is load-bearing. Check the built HTML for
-// `<a ...><p>` after touching this block — the source alone won't show it.
----
-
 <div class="lede"><slot /></div>
 
 <style>
