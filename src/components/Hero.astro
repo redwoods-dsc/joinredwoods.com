@@ -27,4 +27,14 @@ const { id } = Astro.props;
   .hero :global(.accent) {
     color: var(--color-green);
   }
+
+  /* MDX wraps slotted text that sits on its own lines in a <p> — the same trap
+     ButtonRow documents. Here it lands inside the <h2>, where browsers nest it
+     rather than repair it, and it drags base.css's prose measure and
+     `text-wrap: pretty` along with it: the headline would stay pinned to 672px
+     however wide its column is. The box shouldn't exist, so remove it rather
+     than unpick each property it brought. */
+  .hero :global(p) {
+    display: contents;
+  }
 </style>

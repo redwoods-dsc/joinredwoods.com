@@ -1,0 +1,68 @@
+---
+// Callers in .mdx need one `{/* prettier-ignore */}` above the opening tag, not
+// above the ButtonRow inside it. Nested a level deeper Prettier pushes a blank
+// line after an inner ignore comment, which detaches it from the row, rewraps
+// the button labels onto their own lines and springs the <p>-inside-<a> trap
+// ButtonRow documents.
+//
+// The ignore's reach is also sensitive to indentation: the Markdown paragraph
+// inside the block sits at column 0 while its JSX siblings are indented. Indent
+// it to match and Prettier stops honouring the ignore past the first child. It
+// looks like stray formatting; it is load-bearing. Check the built HTML for
+// `<a ...><p>` after touching this block — the source alone won't show it.
+---
+
+<div class="lede"><slot /></div>
+
+<style>
+  .lede {
+    /* A multi-column spanner: it fills the whole main column and the columns
+       resume beneath it. No effect where there are no columns — a narrow main
+       column, or a `columns: 1` page — so those get a plain block.
+
+       Keep this box free of border, background and padding. Where a spanner is
+       the first child there is an empty leading fragment, and WebKit renders a
+       bordered one as a stray line above the first column. */
+    column-span: all;
+    /* A spanner already establishes an independent formatting context.
+       Declaring it here too means the last child's trailing margin stays
+       inside this block at every width, not only where the columns are on, so
+       the gap below is the same number in both. */
+    display: flow-root;
+    margin-block-end: var(--space-2xl);
+  }
+
+  /* Slotted children come from the page's Markdown, so they carry the page's
+     scope hash rather than this component's — a bare `.lede > :last-child`
+     compiles to a selector that can never match. Every rule that reaches into
+     the slot has to say :global(), which is what keeps this spacing here in the
+     component rather than leaking into the layout or the content file. */
+
+  /* base.css spaces prose by adjacency (p + p, ul + p), tuned for body copy in
+     a column. This block is a full-width opening statement at display size and
+     wants a looser scale: 8px under a 48px headline reads as a collision. */
+  .lede > :global(* + *) {
+    margin-block-start: var(--space-lg);
+  }
+
+  /* The quote closes the block, so it gets a clear step rather than the same
+     beat as the copy and CTAs above it. */
+  .lede > :global(blockquote) {
+    margin-block-start: var(--space-xl);
+  }
+
+  /* The gap below is this block's own margin, so the last child's trailing
+     margin doesn't add to it — the formatting context traps it inside instead
+     of collapsing it away. */
+  .lede > :global(:last-child) {
+    margin-block-end: 0;
+  }
+
+  /* Content after a spanner opens a fresh column row, and the first box in that
+     row keeps its block-start margin while every other column's first box spent
+     its margin further up the flow. Left alone the columns start an h2 margin
+     out of line, so the space above comes from this block instead. */
+  .lede + :global(*) {
+    margin-block-start: 0;
+  }
+</style>

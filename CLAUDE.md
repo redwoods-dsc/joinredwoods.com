@@ -49,6 +49,7 @@ These exist because Lighthouse caught them once. Undoing one costs real score.
 
 - `src/components/` is **flat** — no `primitives/` or `ui/` subfolder. Every reusable Astro component sits at the top level.
 - Every component owns its own scoped `<style>` block. Astro auto-hashes selectors, so styles never leak.
+- **Slotted content doesn't carry the component's hash.** Children passed into a `<slot />` keep the _calling_ page's scope, so a plain `.thing > :last-child` compiles to a selector that can never match — it fails silently and looks like a CSS bug. Any rule reaching into the slot needs `:global()`: `.lede > :global(:last-child)`, `.hero :global(.accent)`. This is what lets a component style content authored in an `.mdx` page without the rules leaking into the layout or the content file. Verify in the browser, not the source — a dead rule looks identical to a live one.
 - Use `<style is:global>` only for genuinely cross-cutting concerns (rare — ask if unsure).
 - Reference tokens with `var(--…)` inside component styles. Don't hard-code.
 - When adding a new component primitive, also add a section for it in `src/pages/style-guide.astro` showing its variants and states.
@@ -107,6 +108,8 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 | `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read.            |
 
 `columns: 2` also keeps headings on the base spacing scale rather than the roomier single-column rhythm — see the comments in `ContentPage.astro`.
+
+A block that shouldn't be chopped into a column — a page's opening headline and intro, say — wraps in `<Lede>`, which gives it `column-span: all`. The multicol flow stays a single self-balancing one; the spanner just takes the full width and the columns restart underneath it. `column-span` is inert outside a multicol, so a `<Lede>` on a `columns: 1` page is a passthrough. `src/pages/index.mdx` is the canonical use.
 
 Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 
