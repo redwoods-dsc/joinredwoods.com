@@ -25,7 +25,17 @@ const TOC_MIN_HEADINGS = 4;
 const hasToc = countTocNodes(buildTocTree(headings)) >= TOC_MIN_HEADINGS;
 ---
 
-<ContentPage title={article.data.title} toc={hasToc}>
+<ContentPage
+  title={article.data.title}
+  description={article.data.description}
+  image={article.data.image}
+  imageAlt={article.data.imageAlt}
+  type="article"
+  publishedTime={article.data.date}
+  modifiedTime={article.data.modifiedDate}
+  authors={article.data.authors}
+  toc={hasToc}
+>
   {hasToc && <TableOfContents slot="toc" headings={headings} />}
   <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
   <div class="meta" slot="meta">

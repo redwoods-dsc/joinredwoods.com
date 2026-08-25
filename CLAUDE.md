@@ -98,17 +98,40 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 
 `ContentPage` frontmatter knobs, all optional:
 
-| Key        | Default | What it does                                                                                                      |
-| ---------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| `title`    | —       | Renders the intro header. Omit it and the page opens straight into body copy.                                     |
-| `subtitle` | —       | Serif lede under the title. Ignored without a `title`.                                                            |
-| `columns`  | `1`     | `2` drops the prose max-width and flows the body into two balanced CSS columns once the main column passes 640px. |
+| Key           | Default    | What it does                                                                                                      |
+| ------------- | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| `title`       | —          | Renders the intro header. Omit it and the page opens straight into body copy.                                     |
+| `subtitle`    | —          | Serif lede under the title. Ignored without a `title`.                                                            |
+| `columns`     | `1`        | `2` drops the prose max-width and flows the body into two balanced CSS columns once the main column passes 640px. |
+| `description` | `subtitle` | Meta description. Set it when the subtitle is too short or too coy to work as a search snippet.                   |
+| `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read.            |
 
 `columns: 2` also keeps headings on the base spacing scale rather than the roomier single-column rhythm — see the comments in `ContentPage.astro`.
 
 Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 
 Field Notes articles are different: they live in the `articles` content collection (`src/content/articles/*.mdx`, schema in `src/content.config.ts`) and are rendered by `src/pages/field-notes/[slug].astro`. Don't add standalone pages to that collection, and don't spin up a new collection for a one-off page.
+
+## 🔍 SEO and metadata
+
+Every page's `<head>` is assembled by `src/components/Seo.astro`, which `Layout.astro` renders. You never import `Seo` yourself — you pass props to `Layout` (or to `ContentPage`, which forwards its whole prop set through) and it does the rest.
+
+```astro
+<Layout title="Field Notes" description="Analysis and synthesis from the Redwoods community." />
+```
+
+That one call emits the title, meta description, canonical URL, the Open Graph and Twitter card sets, and a JSON-LD block. What's worth knowing:
+
+- **`src/lib/site.ts` holds the defaults** — site name, title, description, locale, and the `sameAs` profiles that go into structured data. Add a social profile there, not in the schema markup.
+- **The canonical origin is deliberately not in `site.ts`.** It's `site` in `astro.config.mjs`, which Astro already needs, and `Seo` reads it back off `Astro.site`. Two copies of an origin is exactly the pair that drifts, and a stale canonical points search engines at the wrong URL.
+- **Give every new page a `title` and a `description`.** The title omits the site name — `Seo` appends it, and skips the suffix when the title already says "Redwoods" so nothing reads `Welcome to Redwoods | Redwoods`. Keep titles under ~60 characters and descriptions between ~70 and ~155, which is roughly what Google shows before truncating.
+- **Markdown pages set both in frontmatter.** `description` falls back to `subtitle`, so a page with a good subtitle usually needs nothing extra.
+- **Articles carry their own metadata** from the collection schema, handed to `ContentPage` by `src/pages/field-notes/[slug].astro`: `description`, `image`, `imageAlt`, `date`, and optional `modifiedDate`. `Seo` turns those into `og:type=article`, `article:published_time`/`modified_time`, per-author `article:author` tags, and a `BlogPosting` block with `Person` authors and Redwoods as publisher. Non-article pages get an `Organization` block instead.
+- **Social cards are generated, never hand-exported.** `src/lib/og-image.ts` runs any `image` through the pipeline at 1200×630. It emits JPEG rather than WebP on purpose — link unfurlers aren't browsers, and several still won't render a WebP card. **Article images must be at least 1200×630**: Astro's sharp service passes `withoutEnlargement`, so a smaller source quietly produces a smaller card while the meta tags still claim 1200×630. Rather than let that ship, `ogImage()` throws and fails the build.
+- **The default card is `src/assets/og-card.png`** — wordmark, tagline and trees on a _transparent_ canvas. The accent behind them is flattened in from `tokens.css` at build time rather than baked into the file, the same move `header-background.ts` makes, so re-theming the accent can't leave a stale orange in the image everyone sees when a link is shared. If you re-cut the card, keep it transparent.
+- **The sitemap is automatic.** `@astrojs/sitemap` walks the built routes, so draft articles are already absent (they never produce a page) and new pages appear without anyone remembering. `/style-guide` is filtered out there and also carries `noindex`. `public/robots.txt` points at `/sitemap-index.xml` — if the domain ever changes, that URL is hard-coded and needs changing by hand.
+
+`Seo` renders nothing visible, so it has no `/style-guide` section. To check your work, run `pnpm build` and read the `<head>` of the relevant file in `dist/`.
 
 ## 🧪 Verification before committing
 

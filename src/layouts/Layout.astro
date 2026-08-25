@@ -20,15 +20,18 @@ import sourceSerifLatin from '@fontsource-variable/source-serif-4/files/source-s
 import sourceSerifLatinItalic from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-italic.woff2?url';
 import '../styles/global.css';
 import Page from '../components/Page.astro';
+import Seo from '../components/Seo.astro';
+import type { Props as SeoProps } from '../components/Seo.astro';
 import { headerBackground } from '../lib/header-background';
+import { site } from '../lib/site';
 import { currentQuestion } from '../data/the-question';
 import { isLive } from '../lib/the-question';
 
-interface Props {
+interface Props extends SeoProps {
   aside?: boolean;
 }
 
-const { aside = true } = Astro.props;
+const { aside = true, ...seo } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const background = await headerBackground();
 // Null once the build itself knows the survey has closed — QuestionPromo then
@@ -38,7 +41,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={site.lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -62,7 +65,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
       media="(min-height: 401px)"
     />
     <meta name="generator" content={Astro.generator} />
-    <title>Redwoods - A Design System Community</title>
+    <Seo {...seo} />
     {
       /* The build bakes in whichever state The Question was in when it ran, but
         the survey closes on a deadline that no rebuild is waiting for, so the
