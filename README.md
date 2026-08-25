@@ -85,6 +85,35 @@ Astro is a static site generator. At build time, every `.astro` file in `src/pag
 
 The build output in `./dist/` is fully static and can be hosted on any static host (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront, etc.).
 
+## 🔍 SEO and metadata
+
+Page metadata is centralised rather than sprinkled through pages. `src/components/Seo.astro` builds the `<head>` — title, meta description, canonical URL, Open Graph and Twitter cards, and a JSON-LD block — and `Layout.astro` renders it on every page. You don't import it directly; you hand `Layout` (or `ContentPage`, which forwards its whole prop set through) a couple of props:
+
+```astro
+<Layout title="Field Notes" description="Analysis and synthesis from the Redwoods community." />
+```
+
+Markdown and MDX pages do the same thing in frontmatter, where `description` falls back to `subtitle`:
+
+```markdown
+---
+layout: ../layouts/ContentPage.astro
+title: Redwoods Code of Conduct
+subtitle: We take this code of conduct seriously, and we trust that you will too.
+---
+```
+
+Titles leave the site name off — `Seo` appends it, and is smart enough not to produce `Welcome to Redwoods | Redwoods`.
+
+A few pieces sit behind that:
+
+- **`src/lib/site.ts`** — the site's name, default title and description, locale, and the social profiles that feed structured data. The canonical origin is _not_ here: it's `site` in `astro.config.mjs`, and `Seo` reads it back off `Astro.site` so the two can't drift.
+- **`src/lib/og-image.ts`** — generates 1200×630 social cards through the image pipeline. Articles use their own `image` (which must be at least 1200×630, or the build stops rather than shipping a card whose meta tags overstate its size); everything else falls back to `src/assets/og-card.png`, the wordmark and trees on a transparent canvas that gets flattened onto the accent colour at build time. They're JPEGs on purpose, because link unfurlers aren't browsers and several still won't render WebP.
+- **Articles** get richer treatment automatically from their collection frontmatter — `og:type=article`, published and modified timestamps, per-author tags, and a `BlogPosting` schema. Other pages get an `Organization` schema.
+- **`sitemap-index.xml`** is generated at build time by `@astrojs/sitemap`, so new pages show up without anyone remembering to add them and drafts never appear. `public/robots.txt` points at it.
+
+To check what a page actually emits, run `pnpm build` and read the `<head>` of the matching file in `dist/`.
+
 ## 🎨 Styling
 
 We use **plain CSS** — no Tailwind, no CSS-in-JS, no Sass. Modern CSS covers everything we need and Astro compiles it with zero config.

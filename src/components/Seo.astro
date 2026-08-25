@@ -1,0 +1,114 @@
+---
+import { site } from '../lib/site';
+import { ogImage, ogImageSize } from '../lib/og-image';
+
+export interface Props {
+  /** Page title, without the site name — Seo appends it. Omit on the homepage. */
+  title?: string;
+  description?: string;
+  /** Social card. Falls back to the branded trees card. */
+  image?: ImageMetadata;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  authors?: string[];
+  /** Pages that shouldn't rank — internal references, thin pages. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image,
+  imageAlt,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  authors,
+  noindex = false,
+} = Astro.props;
+
+/* Astro.site is set in astro.config.mjs and is the single source of the
+   canonical origin. Absolute URLs are non-negotiable here: every OG and
+   schema.org consumer resolves them from its own context, not the page's. */
+const origin = Astro.site!;
+const canonical = new URL(Astro.url.pathname, origin);
+const absolute = (path: string) => new URL(path, origin).href;
+
+/* Suffix the site name unless the title already carries it — "Welcome to
+   Redwoods | Redwoods" reads like a bug in a search result. */
+const pageTitle =
+  !title || title.includes(site.titleSuffix)
+    ? (title ?? site.title)
+    : `${title} | ${site.titleSuffix}`;
+const card = await ogImage(image);
+const cardAlt = imageAlt ?? (image ? title : undefined) ?? site.imageAlt;
+
+const schema =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: title,
+        description,
+        image: absolute(card.src),
+        datePublished: publishedTime?.toISOString(),
+        ...(modifiedTime && { dateModified: modifiedTime.toISOString() }),
+        author: authors?.map((name) => ({ '@type': 'Person', name })),
+        publisher: {
+          '@type': 'Organization',
+          name: site.organization.name,
+          url: origin.href,
+        },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonical.href },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: site.organization.name,
+        url: origin.href,
+        description: site.description,
+        ...(site.organization.sameAs.length && { sameAs: site.organization.sameAs }),
+      };
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical.href} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:url" content={canonical.href} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={absolute(card.src)} />
+<meta property="og:image:alt" content={cardAlt} />
+<meta property="og:image:width" content={String(ogImageSize.width)} />
+<meta property="og:image:height" content={String(ogImageSize.height)} />
+
+{
+  type === 'article' && (
+    <>
+      {publishedTime && (
+        <meta property="article:published_time" content={publishedTime.toISOString()} />
+      )}
+      {modifiedTime && (
+        <meta property="article:modified_time" content={modifiedTime.toISOString()} />
+      )}
+      {authors?.map((author) => (
+        <meta property="article:author" content={author} />
+      ))}
+    </>
+  )
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absolute(card.src)} />
+<meta name="twitter:image:alt" content={cardAlt} />
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />

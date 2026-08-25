@@ -26,7 +26,10 @@ const articles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<ContentPage title={name}>
+<ContentPage
+  title={name}
+  description={`Field notes written by ${name} for the Redwoods design system community.`}
+>
   <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
   <p class="bio">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
