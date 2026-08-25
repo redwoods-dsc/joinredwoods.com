@@ -86,7 +86,7 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     background: var(--entry-bg);
     color: var(--entry-fg);
     text-decoration: none;
@@ -123,13 +123,15 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
   }
 
   .entry-card__day {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-tight);
+    line-height: var(--line-height-micro);
   }
 
   .entry-card__month {
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-micro);
     color: color-mix(in srgb, var(--entry-fg), transparent 25%);
   }
 
@@ -159,12 +161,14 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 
   .entry-card__secondary {
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-none);
     color: color-mix(in srgb, var(--entry-fg), transparent 20%);
   }
 
   .entry-card__primary {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-md);
     font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-snug);
+    line-height: var(--line-height-none);
   }
 </style>
