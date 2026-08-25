@@ -31,5 +31,16 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           playwright: true
+          diagnosticsFile: true
         env:
           CHROMATIC_ARCHIVE_LOCATION: ./test-results
+
+      # TEMPORARY: surfaces Chromatic's build error, which the CLI log omits.
+      # Remove once the "failed to render" build error is resolved.
+      - name: Upload Chromatic diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromatic-diagnostics
+          path: chromatic-diagnostics.json
+          if-no-files-found: warn
