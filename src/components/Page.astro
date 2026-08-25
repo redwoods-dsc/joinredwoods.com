@@ -110,7 +110,7 @@ const { aside = true } = Astro.props;
      (column-gap between left/right, row-gap 0 so the cards meet flush). */
   @media (min-width: 850px) {
     .shell {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 350px 1fr;
       grid-template-areas:
         'header main'
         'header aside'
@@ -120,7 +120,7 @@ const { aside = true } = Astro.props;
     }
 
     .shell__main {
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      border-radius: var(--radius-xl);
     }
 
     /* Header stays fixed to the left column here, so keep both tracks and just
@@ -132,20 +132,12 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* Desktop: header + main are the joined column on the left, aside is its own
-     standalone card on the right (spans both rows), and footer becomes a
-     full-width card sitting beneath the grid. */
-  @media (min-width: 1400px) {
+  @media (min-width: 1300px) {
     .shell {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 350px 1fr 1fr;
       grid-template-areas:
-        'header aside'
-        'main aside'
-        'footer footer';
-    }
-
-    .shell__main {
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        'header main aside'
+        'header footer footer';
     }
 
     .shell__aside {
@@ -156,14 +148,11 @@ const { aside = true } = Astro.props;
       margin-block-start: var(--space-lg);
       border-radius: var(--radius-xl);
     }
+  }
 
-    /* Nothing to sit beside, so the whole shell becomes one full-width stack. */
-    .shell[data-aside='false'] {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'header'
-        'main'
-        'footer';
+  @media (min-width: 1500px) {
+    .shell {
+      grid-template-columns: 350px 1fr 525px;
     }
   }
 

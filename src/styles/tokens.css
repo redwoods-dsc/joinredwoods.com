@@ -84,7 +84,7 @@
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
 
-  --layout-shell-max: 1600px;
+  --layout-shell-max: 1800px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
   --layout-toc-max: 240px;

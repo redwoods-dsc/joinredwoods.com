@@ -82,31 +82,13 @@ const background = await headerBackground();
 
   /* Tablet — fixed card pinned to the viewport. Width matches the left grid
      column: (shell − gap) ÷ 2, where shell = 100vw − 2 × --space-lg. */
-  @media (min-width: 850px) and (max-width: 1399.98px) {
+  /* @media (min-width: 850px) and (max-width: 1399.98px) { */
+  @media (min-width: 850px) {
     .header {
       position: fixed;
-      width: calc((100vw - 3 * var(--space-lg)) / 2);
+      /* width: calc((100vw - 3 * var(--space-lg)) / 2); */
+      /* width: 350px; */
       height: calc(100dvh - 2 * var(--space-lg));
-    }
-  }
-
-  /* Desktop — header rejoins main below it in the left column, so back to
-     top-only border-radius to meet main's bottom-only flush. Height returns
-     to auto so the card sizes from its content (logo + nav); the absolute
-     tagline below then lands cleanly on the nav's bottom baseline. */
-  @media (min-width: 1400px) {
-    .header {
-      height: auto;
-      min-height: 0;
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      background-position-x: center;
-      background-position-y: top;
-    }
-  }
-
-  @media (min-width: 1400px) and (min-height: 650px) {
-    .header {
-      min-height: 420px;
     }
   }
 
@@ -140,7 +122,7 @@ const background = await headerBackground();
 
   .tagline {
     width: 80%;
-    max-width: 350px;
+    max-width: 300px;
     height: auto;
     margin-block-start: auto;
     align-self: flex-start;
@@ -161,14 +143,14 @@ const background = await headerBackground();
 
   /* Desktop — tagline breaks out of the column flow so it sits on the same
      baseline as the bottom of the nav, anchored to the right of the card. */
-  @media (min-width: 1400px) {
+  /* @media (min-width: 1400px) {
     .tagline {
       position: absolute;
       right: var(--space-lg);
       bottom: var(--space-lg);
       margin-block-start: 0;
     }
-  }
+  } */
 
   .nav {
     font-size: var(--font-size-md);

@@ -63,7 +63,9 @@ h6 {
   font-size: var(--font-size-md);
 }
 
-p {
+p,
+ul,
+ol {
   text-wrap: pretty;
   max-width: var(--layout-prose-max);
 }
