@@ -21,6 +21,8 @@ import sourceSerifLatinItalic from '@fontsource-variable/source-serif-4/files/so
 import '../styles/global.css';
 import Page from '../components/Page.astro';
 import { headerBackground } from '../lib/header-background';
+import { currentQuestion } from '../data/the-question';
+import { isLive } from '../lib/the-question';
 
 interface Props {
   aside?: boolean;
@@ -29,6 +31,10 @@ interface Props {
 const { aside = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const background = await headerBackground();
+// Null once the build itself knows the survey has closed — QuestionPromo then
+// renders the closed state outright and the script below has nothing to
+// correct. See the comment on it for why the check lives up here.
+const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toISOString() : null;
 ---
 
 <!doctype html>
@@ -57,6 +63,25 @@ const background = await headerBackground();
     />
     <meta name="generator" content={Astro.generator} />
     <title>Redwoods - A Design System Community</title>
+    {
+      /* The build bakes in whichever state The Question was in when it ran, but
+        the survey closes on a deadline that no rebuild is waiting for, so the
+        sidebar card would go on advertising a closed survey. Re-checking here —
+        before a byte of <body> is parsed, with the stylesheet already inlined
+        above — means the card can't be constructed in the stale state, let
+        alone painted in it. The same work beside the markup would leave a
+        window for the closed question to flash on screen.
+
+        questionAnswerBy is null when the build already knows it has closed, and
+        the guard below is what makes that a no-op. It stays inside the script
+        rather than wrapping it: Prettier's Astro plugin can't parse a raw
+        <script> nested in a JSX conditional. */
+    }
+    <script is:inline define:vars={{ questionAnswerBy }}>
+      if (questionAnswerBy && Date.now() > Date.parse(questionAnswerBy)) {
+        document.documentElement.dataset.questionExpired = '';
+      }
+    </script>
   </head>
   <body>
     <Page aside={aside}>

@@ -1,0 +1,216 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import { currentQuestion } from '../data/the-question';
+import { isLive, MAILING_LIST_URL, PAST_EPISODES_URL, type Question } from '../lib/the-question';
+
+interface Props {
+  question?: Question;
+}
+
+const { question = currentQuestion } = Astro.props;
+
+// Only the real card expires in the browser. A caller that supplied its own
+// question (the style guide) must keep rendering the state it asked for, no
+// matter what the live question has since done.
+const autoExpire = Astro.props.question === undefined;
+const live = isLive(question);
+
+// Globbed rather than imported directly: a static import of a file that isn't
+// there yet is a build error, and the artwork lands separately.
+const artworkModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/the-question.{png,jpg,jpeg,webp,avif,svg}',
+  { eager: true },
+);
+const artwork = Object.values(artworkModules)[0]?.default;
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  timeZone: 'UTC',
+});
+const cohosts = new Intl.ListFormat('en-GB').format(question.cohosts);
+// Formatted up here so the sentence below stays one expression per line. Left
+// as bare text around the <time> tags, Prettier reflows it and pads every
+// boundary with {' '} — and since Astro also emits a space for the line break
+// itself, each gap comes out doubled. Hence the bare strings there, with no
+// spaces of their own: the line breaks supply them, exactly one each.
+const episodeOn = dateFmt.format(question.episodeDate);
+const answerByOn = dateFmt.format(question.answerBy);
+---
+
+<section
+  class="question-promo"
+  data-state={live ? 'live' : 'closed'}
+  data-auto-expire={autoExpire ? '' : undefined}
+>
+  {
+    artwork && (
+      // The image is the whole of this link, so its alt is the link's
+      // accessible name — it has to say where the link goes rather than
+      // describe the artwork. That's why the strapline and the photo of Ben
+      // don't appear in it.
+      <a class="question-promo__art-link" href={PAST_EPISODES_URL}>
+        <Image
+          class="question-promo__art"
+          src={artwork}
+          alt="The Question, on bencallahan.com"
+          width={Math.min(artwork.width, 832)}
+          format={artwork.format === 'svg' ? undefined : 'webp'}
+        />
+      </a>
+    )
+  }
+
+  <h2 class="question-promo__title">The Question</h2>
+  <p class="question-promo__lede">
+    A collaborative learning show about design systems, and winner of Best Podcast in the 2025
+    Design System Awards.
+  </p>
+
+  {
+    live && (
+      <div class="question-promo__live">
+        <h3 class="question-promo__question">{question.question}</h3>
+        <div class="question-promo__details">
+          <p class="question-promo__meta">{`Episode ${question.number} with ${cohosts}.`}</p>
+          <p class="question-promo__meta">
+            {'Live on'}
+            <time datetime={question.episodeDate.toISOString()}>{episodeOn}</time>
+            {'— answer by'}
+            <time datetime={question.answerBy.toISOString()}>{answerByOn}</time>
+            {'to get an invite.'}
+          </p>
+        </div>
+        <Button class="question-promo__cta" href={question.answerUrl}>
+          Answer The Question
+        </Button>
+      </div>
+    )
+  }
+
+  <div class="question-promo__fallback">
+    <p class="question-promo__meta">
+      No question is open right now. Sign up and we'll tell you when the next one lands.
+    </p>
+    <Button class="question-promo__cta" href={MAILING_LIST_URL}>
+      Sign up for the next episode
+    </Button>
+  </div>
+
+  <Button class="question-promo__cta" href={PAST_EPISODES_URL} variant="secondary">
+    Watch past episodes
+  </Button>
+</section>
+
+<style>
+  .question-promo {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+
+  /* Block so the anchor wraps the image tightly — inline would leave a baseline
+     gap under it — and radius so the focus ring follows the artwork's corners
+     rather than the --radius-xs the base layer gives every :focus-visible. */
+  .question-promo__art-link {
+    display: block;
+    border-radius: var(--radius-lg);
+    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
+  }
+
+  .question-promo__art-link:hover {
+    opacity: 0.85;
+  }
+
+  .question-promo__art {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  .question-promo__title {
+    font-size: var(--font-size-xl);
+    margin-block: var(--space-xs) 0;
+  }
+
+  .question-promo__lede {
+    margin: 0;
+  }
+
+  /* An h3 under the card's h2, so base.css already supplies the bold serif —
+     only the things that differ from a page-level h3 are set here. text-wrap
+     is one of them: base.css balances every heading, which on a two-line
+     question in a narrow column splits it at an awkward point. */
+  .question-promo__question {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-snug);
+    text-wrap: wrap;
+  }
+
+  /* One unit of metadata across two lines, so they sit tighter to each other
+     than to the question above or the button below. */
+  .question-promo__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+
+  /* Muted to sit under the question, but only lightly: at body size on the
+     tinted panel below, 20% transparent lands at 4.64:1 — passing, with almost
+     no room to spare. 12% holds the hierarchy at a comfortable 5.6:1. */
+  .question-promo__meta {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-text), transparent 12%);
+  }
+
+  /* One panel shared by both states, so the card keeps its shape when the
+     deadline passes and the swap isn't a change of layout as well as content.
+     It lifts off the cream rather than sitting on a solid green surface: two of
+     those already sit above it in the sidebar, and a third would compete with
+     them rather than read as this card's own detail.
+
+     --color-gray-100 rather than --color-surface-contrast: both resolve to
+     white today, but the latter is a foreground token (it exists because cream
+     text on the green surface misses AA), so re-theming the surface to
+     something light would flip this panel dark. Button.astro's secondary
+     variant reaches for the raw token here for the same reason. */
+  .question-promo__live,
+  .question-promo__fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-gray-100);
+  }
+
+  .question-promo__cta {
+    width: 100%;
+  }
+
+  /* Expiry is one-way and decided in Layout.astro's head script, before any of
+     this markup is parsed — so the swap below can never be seen happening. A
+     closed card renders no live block at all and needs none of these rules. */
+  .question-promo[data-state='live'] .question-promo__fallback {
+    display: none;
+  }
+
+  :global(:root[data-question-expired])
+    .question-promo[data-state='live'][data-auto-expire]
+    .question-promo__live {
+    display: none;
+  }
+
+  :global(:root[data-question-expired])
+    .question-promo[data-state='live'][data-auto-expire]
+    .question-promo__fallback {
+    display: flex;
+  }
+</style>

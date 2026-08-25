@@ -136,6 +136,8 @@ We also have Prettier configured. Run `pnpm format` if you've touched files; Pre
 - File-based routing: `src/pages/foo.md` → `/foo`. Don't invent routing indirection.
 - Layouts (`src/layouts/Layout.astro`) wrap pages via `<slot />`. Everything global (font loading, global stylesheet import) goes there, not in individual pages.
 - `src/assets/` for media processed by Astro's pipeline; `public/` for files served as-is.
+- `src/data/` is hand-maintained content that isn't a page and isn't big enough to be a collection — a typed module with one export and no logic, so a non-developer can edit it without reading around. `src/lib/` holds the types and logic that operate on it. `the-question.ts` exists in both for exactly that split.
+- Anything whose correct state depends on the current time can't be settled by a static build alone. The Question solves this by baking in the build-time state and re-checking the deadline in an inline `<head>` script that can only move the card one way (open → closed) — see "Updating The Question" in the README before adding a second one of these.
 - Build output is fully static — do not introduce a server runtime without discussion.
 
 ## 🔗 Related

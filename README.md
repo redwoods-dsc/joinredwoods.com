@@ -58,6 +58,8 @@ Run everything from the project root.
 │   ├── components/           # Reusable .astro components (flat hierarchy)
 │   │   ├── Button.astro
 │   │   └── Page.astro        # Global chrome — wraps every page (see Architecture)
+│   ├── data/                 # Hand-maintained content that isn't a page
+│   │   └── the-question.ts   # The Question — see "Updating The Question" below
 │   ├── layouts/              # Shared page shells (html, head, body, <slot />)
 │   │   ├── Home.astro
 │   │   └── Layout.astro
@@ -84,6 +86,30 @@ Astro is a static site generator. At build time, every `.astro` file in `src/pag
 - **Assets** in `src/assets/` are optimised by Astro when imported from a component. Files in `public/` are copied to the build as-is — use this for the favicon, `robots.txt`, fonts you want to self-host, and similar static files. See `Layout.astro` for the favicon pattern.
 
 The build output in `./dist/` is fully static and can be hosted on any static host (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront, etc.).
+
+## ❓ Updating The Question
+
+[The Question](https://bencallahan.com/the-question) is the fortnightly community survey and live discussion Ben runs alongside Redwoods. The sidebar advertises it, and **`src/data/the-question.ts` is the only file you need to touch**:
+
+```ts
+export const currentQuestion: Question = {
+  number: 80,
+  question: 'How do we visualise design system health?',
+  cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
+  episodeDate: new Date('2026-08-28T16:00:00Z'), // Fri 28 Aug 2026, noon Eastern
+  answerBy: new Date('2026-08-27T21:00:00Z'), // Wed 27 Aug 2026, 5pm Eastern
+  answerUrl: 'https://bit.ly/4wVx4fe',
+};
+```
+
+Overwrite the fields and push. That's the whole job — **there is no step to take a question down.** `answerBy` is the only thing that decides which state the card shows: while it's in the future the card promotes the open question, and once it passes the card falls back to the mailing-list signup by itself. The link to past episodes is there either way.
+
+That fallback happens in the browser, because it has to. The site is statically built and nothing rebuilds it at the moment a survey closes, so `Layout.astro` writes a few lines of inline script into the document `<head>` that re-check the deadline and, if it has passed, set `data-question-expired` on `<html>`. `QuestionPromo.astro` has both states in the markup and swaps them on that attribute in CSS. Two things follow from that:
+
+- The check runs **before any of the page body is parsed**, which is the point — deciding it further down the page would let a closed question flash on screen first. If you move that script, keep it in the head.
+- It only ever moves the card from open to closed, never the other way. A new question can't appear without a build, so there's nothing to undo.
+
+Both states are on the [style guide](http://localhost:4321/style-guide#question-promo) if you want to look at them side by side.
 
 ## 🎨 Styling
 
