@@ -843,25 +843,28 @@ const sections = [
           reading as one rounded card.
         </li>
         <li>
-          <strong>850–1650px</strong> — the header becomes the rail: a fixed-width (<code
+          <strong>850–1300px</strong> — the header becomes the rail: a fixed-width (<code
             >--layout-rail</code
           >), full-viewport-height card pinned with
           <code>position: fixed</code>, while the right column (main + aside + footer) scrolls past
           underneath as one joined card.
         </li>
         <li>
-          <strong>&gt; 1650px</strong> — the aside leaves the joined column and becomes a third column
+          <strong>&gt; 1300px</strong> — the aside leaves the joined column and becomes a third column
           of its own (<code>--layout-aside</code>), with the footer spanning main and aside beneath
           them. All three become free-standing rounded cards. The shell grows fluidly to
           <code>--layout-shell-max</code>, centered beyond that.
         </li>
       </ul>
       <p>
-        1650px is derived rather than chosen. The rail, the aside, the column gaps and the main
-        column's padding come to roughly 896px, so main only clears
-        <code>--layout-prose-max</code> from about 1632px up. Splitting the aside off any earlier buys
-        a third column by squeezing the reading measure. Change either width and this number moves — recompute
-        it rather than nudging it.
+        1300px is a deliberate trade, and the cost is worth knowing before anyone
+        <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
+        960px, so main only clears <code>--layout-prose-max</code> from about 1632px up. Splitting the
+        aside off at 1300px means main crosses that boundary well short of the measure — 813px down to
+        340px at the switch, taking the hero back through its container query with it. That is accepted:
+        three columns on a 1440px laptop is the shape this layout is for, and a narrow-but-readable main
+        column is the price. Raising the breakpoint to about 1650px buys the measure back; narrowing the
+        rail and aside to roughly 600px combined buys both.
       </p>
     </section>
   </div>
