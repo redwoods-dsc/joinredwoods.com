@@ -861,10 +861,9 @@ const sections = [
         <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
         944px, so main only clears <code>--layout-prose-max</code> from about 1616px up. Splitting the
         aside off at 1300px means main crosses that boundary well short of the measure — 830px down to
-        356px at the switch, taking the hero back through its container query with it. That is accepted:
-        three columns on a 1440px laptop is the shape this layout is for, and a narrow-but-readable main
-        column is the price. Raising the breakpoint to about 1620px buys the measure back; narrowing the
-        rail and aside to roughly 600px combined buys both.
+        356px at the switch. That is accepted: three columns on a 1440px laptop is the shape this layout
+        is for, and a narrow-but-readable main column is the price. Raising the breakpoint to about 1620px
+        buys the measure back; narrowing the rail and aside to roughly 600px combined buys both.
       </p>
     </section>
   </div>
@@ -1038,8 +1037,7 @@ const sections = [
     margin: 0;
   }
 
-  /* A stand-in for <Hero> rather than the component itself, so the demo has to
-     track its breakpoint by hand or it misreports the block at phone widths. */
+  /* Stands in for <Hero>, so it has to track Hero.astro's breakpoint by hand. */
   .lede-demo__hero {
     margin-block-start: 0;
     font-size: var(--font-size-2xl);

@@ -38,10 +38,9 @@ const { aside = true } = Astro.props;
      --layout-rail + --layout-aside + 144px, so main clears
      --layout-prose-max only from about 1616px up. Splitting the aside off at
      1300 means main crosses that boundary well short of the measure — 830px
-     down to 356px at the switch, taking the hero back through its container
-     query with it. That is accepted: three columns on a 1440px laptop is the
-     shape this layout is for, and a narrow-but-readable main column is the
-     price. Raising the breakpoint to ~1620 is what buys the measure back;
+     down to 356px at the switch. That is accepted: three columns on a 1440px
+     laptop is the shape this layout is for, and a narrow-but-readable main
+     column is the price. Raising the breakpoint to ~1620 is what buys the measure back;
      narrowing the rail and aside to about 600px combined is what buys both. */
 
   .global-wrap {
