@@ -51,18 +51,11 @@ const { title } = seo;
 </Layout>
 
 <style>
-  /* Not centred on purpose: the intro, the rail and the body share this one
-     left edge, and centring makes it drift as main outgrows the measure. */
+  /* Not centred: the intro, rail and body share this one left edge. */
   .content-page {
     max-width: var(--layout-prose-max);
   }
 
-  /* The rail sits in flow between the title and the body, so the reading order
-     is heading → contents → article. It used to move out to a gutter column
-     once main was wide enough, which needed --layout-prose-max + --space-xl +
-     240px of rail — 944px. Main tops out at 840px now that the aside has a
-     fixed column, so that never came back on; the grid it switched to is gone
-     rather than left unreachable. Widening main past 944px would earn it back. */
   .content-page__rail {
     margin-block-end: var(--space-xl);
   }
@@ -71,9 +64,7 @@ const { title } = seo;
     margin-block-end: var(--space-3xl);
   }
 
-  /* A subtitle or a byline already gives the intro visual closure, so the big
-     gap meant to separate a bare title from the first content heading reads as
-     too much dead air here — tighten it up. */
+  /* A subtitle or byline already closes the intro, so it needs less air below. */
   .content-page__intro:has(.content-page__subtitle),
   .content-page__intro:has(.content-page__meta) {
     margin-block-end: var(--space-xl);
@@ -84,13 +75,9 @@ const { title } = seo;
     font-family: var(--font-serif);
   }
 
-  /* Content pages carry a little more air above headings than the base scale,
-     since a lone measure of prose can take it — but only a step more. At the
-     prose measure, 64px above an h2 is roughly three lines of body copy and
-     reads as a gap rather than as hierarchy.
-
-     h5 and h6 land on the same 16px as the paragraph gap, which is the point —
-     at those levels the heading is a run-in label, not a section break. */
+  /* One step more air above headings than the base scale — a lone measure of
+     prose can take it, but 64px above an h2 reads as a gap, not hierarchy. h5
+     and h6 sit at the paragraph gap: at those levels they're run-in labels. */
   .content-page :global(h2) {
     margin-block-start: var(--space-2xl);
   }

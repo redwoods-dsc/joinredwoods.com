@@ -150,7 +150,18 @@ We also have Prettier configured. Run `pnpm format` if you've touched files; Pre
 
 - **Do only what was asked.** A bug fix is not a refactor. A feature request for X doesn't mean building Y and Z on speculation. If you think something adjacent needs work, flag it at the end of your response instead of shipping it.
 - **Don't pre-build primitives** (forms, modals, etc.) until a concrete use case lands. We've deleted speculative primitives before.
-- **Don't add code comments that narrate the code.** The code narrates itself. Comments are for non-obvious _why_ (invariants, workarounds, subtle constraints) — not _what_.
+- **Don't add code comments that narrate the code.** See below — this one is easy to get wrong at scale.
+
+## 💬 Comments
+
+CSS attracts commentary, and this repo has had to be weeded once already. The bar:
+
+- **Comment the _why_, never the _what_.** `/* Drop back to two columns */` above a rule that drops back to two columns earns nothing.
+- **A comment earns its place if someone editing the rule would otherwise break something.** `.header`'s `background-color` is load-bearing because the artwork is pre-composited onto it; `overflow: clip` isn't `hidden` because `hidden` traps a sticky descendant. Those need saying. A contrast ratio that stops someone re-tinting a card through AA needs saying. How a spacing scale was arrived at does not.
+- **Not every decision needs recording.** Most of them were the obvious call at the time and will be re-made the same way. Write the ones that look like mistakes without the note.
+- **Keep it to a line or three.** If the explanation wants a paragraph, it's design rationale — it belongs in the PR description, the README, or this file, where people will actually find it.
+- **Don't leave history in the file.** Comments describing what the code used to do, or a variant that has since been deleted, are stale the moment they're written. Git remembers; the stylesheet doesn't need to.
+- **Vendored files keep their own comments.** `normalize.css` is upstream's, licence header included — don't edit it to taste.
 
 ## ✍️ Tone
 

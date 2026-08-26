@@ -31,10 +31,8 @@ const { nodes, depth = 0 } = Astro.props;
     flex-direction: column;
   }
 
-  /* One hairline spans the whole tree. Nested lists deliberately carry no
-     indentation — the links do, via padding — so every item's inline-start
-     border edge stays on this rail and the active segment needs no per-depth
-     offset. */
+  /* One hairline spans the whole tree: nested lists carry no indentation — the
+     links do, via padding — so the active segment needs no per-depth offset. */
   .toc__list--root {
     border-inline-start: 1px solid var(--color-border);
   }

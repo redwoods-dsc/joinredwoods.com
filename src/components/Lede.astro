@@ -1,31 +1,18 @@
 <div class="lede"><slot /></div>
 
 <style>
-  /* The opening block of a page: a headline, the copy under it, and whatever
-     closes it out — CTAs, a pull quote. base.css spaces prose by adjacency
-     (p + p, ul + p), tuned for body copy at the reading measure. This block
-     runs at display size and wants a looser scale: 8px under a 48px headline
-     reads as a collision.
-
-     flow-root so the last child's trailing margin stays inside this block
-     rather than collapsing through it, which keeps the gap below equal to this
+  /* The opening block runs at display size, so it replaces base.css's prose
+     adjacency spacing with a looser scale of its own. flow-root keeps the last
+     child's margin from collapsing through, so the gap below stays this
      element's own margin at every width. */
   .lede {
     display: flow-root;
     margin-block-end: var(--space-2xl);
   }
 
-  /* Slotted children come from the page's Markdown, so they carry the page's
-     scope hash rather than this component's — a bare `.lede > :last-child`
-     compiles to a selector that can never match. Every rule that reaches into
-     the slot has to say :global(), which is what keeps this spacing here in the
-     component rather than leaking into the layout or the content file. */
-  /* The opening block hugs the top of the column, so whatever leads it carries
-     no margin of its own. Worth stating rather than leaving to the child: a
-     layout's prose rhythm reaches slotted content through :global() and lands
-     at a higher specificity than the component's own reset, so a Hero that
-     already zeroes its margin still gets an h2's section spacing pushed onto
-     it. This block owns the space above and below its children. */
+  /* Stated here rather than left to the child: a layout's prose rhythm reaches
+     slotted content through :global() at a higher specificity than the child's
+     own reset, so a Hero that already zeroes its margin still gets pushed down. */
   .lede > :global(:first-child) {
     margin-block-start: 0;
   }
@@ -34,20 +21,15 @@
     margin-block-start: var(--space-lg);
   }
 
-  /* The quote closes the block, so it gets a clear step rather than the same
-     beat as the copy and CTAs above it. */
   .lede > :global(blockquote) {
     margin-block-start: var(--space-xl);
   }
 
-  /* The gap below is this block's own margin, so the last child's trailing
-     margin doesn't add to it. */
+  /* This block owns the gap below it, so neither edge adds a margin on top. */
   .lede > :global(:last-child) {
     margin-block-end: 0;
   }
 
-  /* Likewise below: this block owns the space, so whatever follows doesn't add
-     its own heading margin on top of it. */
   .lede + :global(*) {
     margin-block-start: 0;
   }

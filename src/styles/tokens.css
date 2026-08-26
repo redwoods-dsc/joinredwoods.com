@@ -13,8 +13,7 @@
 
   --color-bg: var(--color-cream);
   --color-surface: var(--color-green);
-  /* White, not cream: cream on the green surface is 3.98:1, which misses AA for
-     normal-size text. White clears it at 4.59:1. */
+  /* White, not cream: cream on the green surface is 3.98:1 and misses AA. */
   --color-surface-contrast: var(--color-gray-100);
   --color-text: var(--color-gray-25);
   --color-border: var(--color-gray-75);
@@ -23,18 +22,10 @@
   --color-focus: var(--color-orange);
 
   /* The `… Variable` names are what the self-hosted @font-face rules register
-     (see Layout.astro); the plain names stay as a fallback for anyone who has
-     the fonts installed locally. */
+     (see Layout.astro); the plain names cover locally installed copies. */
   --font-sans: 'Source Sans 3 Variable', 'Source Sans 3', sans-serif;
   --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', serif;
   --font-mono: monospace;
-
-  /* === Font-size tokens (static rem, 16px root — 1rem = 16px) ===
-
-     The scale is deliberately static: the root font-size is fixed at 1rem so
-     rem stays a stable, predictable unit and tokens never compound. The one
-     responsive type change (the hero) is column-driven via a container query,
-     not baked into these tokens. See Hero.astro / Page.astro. */
 
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-caption: 0.8125rem; /* 13px */
@@ -47,8 +38,7 @@
   --font-size-3xl: 2rem; /* 32px */
   --font-size-4xl: 2.25rem; /* 36px */
 
-  --font-size-hero: 2.5rem; /* 40px — hero; a step clear of --font-size-3xl so the
-                               opening statement never matches a section heading */
+  --font-size-hero: 2.5rem; /* 40px — a step clear of the h1/h2 sizes above */
 
   --line-height-micro: 0.9;
   --line-height-none: 1;
@@ -89,9 +79,8 @@
   --layout-shell-max: 1800px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
-  /* The header card is position: fixed, so it sits outside the grid track it
-     belongs to and cannot inherit its width. Both read this token so the card
-     and its column can't drift apart. */
+  /* The header card is position: fixed, so it can't inherit its track's width —
+     card and column both read this token so they can't drift apart. */
   --layout-rail: 350px;
   --layout-aside: 450px;
 }
