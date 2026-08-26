@@ -20,6 +20,16 @@
      compiles to a selector that can never match. Every rule that reaches into
      the slot has to say :global(), which is what keeps this spacing here in the
      component rather than leaking into the layout or the content file. */
+  /* The opening block hugs the top of the column, so whatever leads it carries
+     no margin of its own. Worth stating rather than leaving to the child: a
+     layout's prose rhythm reaches slotted content through :global() and lands
+     at a higher specificity than the component's own reset, so a Hero that
+     already zeroes its margin still gets an h2's section spacing pushed onto
+     it. This block owns the space above and below its children. */
+  .lede > :global(:first-child) {
+    margin-block-start: 0;
+  }
+
   .lede > :global(* + *) {
     margin-block-start: var(--space-lg);
   }
