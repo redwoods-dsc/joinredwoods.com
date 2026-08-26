@@ -87,5 +87,9 @@
   --layout-shell-max: 1800px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
-  --layout-toc-max: 240px;
+  /* The header card is position: fixed, so it sits outside the grid track it
+     belongs to and cannot inherit its width. Both read this token so the card
+     and its column can't drift apart. */
+  --layout-rail: 350px;
+  --layout-aside: 450px;
 }

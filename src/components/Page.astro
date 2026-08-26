@@ -30,8 +30,15 @@ const { aside = true } = Astro.props;
 
 <style>
   /* Layout breakpoints (raw px — custom properties cannot be used in @media conditions):
-       850px  → single column → two equal columns, header fixed to viewport
-       1400px → two equal columns → 2/3 + 1/3, header back in flow         */
+       850px  → stacked → header rail + one joined content column
+       1650px → aside leaves the joined column and becomes a third column
+
+     1650 is derived, not chosen: the rail, the aside and the gaps take
+     --layout-rail + --layout-aside + 3 × --space-lg + 2 × --space-xl of
+     padding, so main only clears --layout-prose-max from about 1632px up.
+     Splitting the aside off any earlier buys a third column by squeezing the
+     reading measure, which is the trade this layout exists to avoid. Changing
+     either width moves this number — recompute it, don't nudge it. */
 
   .global-wrap {
     position: relative;
@@ -110,7 +117,7 @@ const { aside = true } = Astro.props;
      (column-gap between left/right, row-gap 0 so the cards meet flush). */
   @media (min-width: 850px) {
     .shell {
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: var(--layout-rail) 1fr;
       grid-template-areas:
         'header main'
         'header aside'
@@ -119,8 +126,12 @@ const { aside = true } = Astro.props;
       row-gap: 0;
     }
 
+    /* main, aside and footer are still one joined column here, so main keeps
+       its bottom corners square to meet the aside's flush top edge. Rounding
+       all four takes a bite out of the column at the seam — the two cards are
+       the same cream, but the corner exposes the page behind them. */
     .shell__main {
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
 
     /* Header stays fixed to the left column here, so keep both tracks and just
@@ -132,14 +143,17 @@ const { aside = true } = Astro.props;
     }
   }
 
-  @media (min-width: 1300px) {
+  /* Aside becomes its own column, so the three cards separate: each one is
+     free-standing and fully rounded, and the footer drops below both. */
+  @media (min-width: 1650px) {
     .shell {
-      grid-template-columns: 350px 1fr 1fr;
+      grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
       grid-template-areas:
         'header main aside'
         'header footer footer';
     }
 
+    .shell__main,
     .shell__aside {
       border-radius: var(--radius-xl);
     }
@@ -148,11 +162,14 @@ const { aside = true } = Astro.props;
       margin-block-start: var(--space-lg);
       border-radius: var(--radius-xl);
     }
-  }
 
-  @media (min-width: 1500px) {
-    .shell {
-      grid-template-columns: 350px 1fr 525px;
+    /* No aside to split off, so the third track would be dead space. Drop back
+       to the rail + content pair; main and footer stay separate cards. */
+    .shell[data-aside='false'] {
+      grid-template-columns: var(--layout-rail) 1fr;
+      grid-template-areas:
+        'header main'
+        'header footer';
     }
   }
 

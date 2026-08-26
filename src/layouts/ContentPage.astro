@@ -4,17 +4,14 @@ import type { Props as SeoProps } from '../components/Seo.astro';
 
 interface Props extends SeoProps {
   subtitle?: string;
-  columns?: 1 | 2;
   aside?: boolean;
   toc?: boolean;
 }
 
 // `toc` is explicit rather than inferred from Astro.slots.has('toc'), which
-// reports true even when the slotted element sits inside a falsy expression —
-// a headingless article would then reserve the rail's column for nothing.
+// reports true even when the slotted element sits inside a falsy expression.
 const {
   subtitle,
-  columns = 1,
   aside = true,
   toc = false,
   // Markdown pages arrive with `layout` alongside their real frontmatter;
@@ -27,7 +24,7 @@ const { title } = seo;
 ---
 
 <Layout {...seo} description={seo.description ?? subtitle} aside={aside}>
-  <div class="content-page" data-columns={columns} data-toc={String(toc)}>
+  <div class="content-page">
     {
       title && (
         <header class="content-page__intro">
@@ -59,61 +56,14 @@ const { title } = seo;
     margin: 0 auto;
   }
 
-  /* Narrow, the rail sits in flow between the title and the body, so the
-     reading order is heading → contents → article. Wide, it moves out to the
-     gutter column (below) and this spacing is dropped. */
+  /* The rail sits in flow between the title and the body, so the reading order
+     is heading → contents → article. It used to move out to a gutter column
+     once main was wide enough, which needed --layout-prose-max + --space-xl +
+     240px of rail — 944px. Main tops out at 840px now that the aside has a
+     fixed column, so that never came back on; the grid it switched to is gone
+     rather than left unreachable. Widening main past 944px would earn it back. */
   .content-page__rail {
     margin-block-end: var(--space-xl);
-  }
-
-  /* Container- rather than viewport-driven: the shell hands this column very
-     different widths at the same viewport depending on whether the aside is
-     present, and what decides whether a rail fits is this column's width.
-     944px = --layout-prose-max + --space-xl + --layout-toc-max, and matches
-     the disclosure switch in TableOfContents.astro — keep the two in sync.
-     The column gap is a step tighter than it would otherwise be so the rail
-     still clears this bar beside the shell's aside, which caps the main column
-     at ~955px. Raw px because custom properties can't be used in @container
-     conditions. */
-  @container main (min-width: 944px) {
-    /* The prose measure moves from this element onto its own grid track, so
-       the rail can occupy gutter that the 672px cap would otherwise waste. */
-    .content-page[data-toc='true'] {
-      max-width: none;
-      display: grid;
-      grid-template-columns: minmax(0, var(--layout-prose-max)) minmax(0, var(--layout-toc-max));
-      /* Rows are declared rather than left implicit for two reasons: the rail's
-         `-1` end line resolves against the explicit grid, and `min-content`
-         keeps the title row hugging the title. Left implicit, the rail lands in
-         row one alone and its full height stretches the title's row. */
-      grid-template-rows: min-content 1fr;
-      column-gap: var(--space-xl);
-      justify-content: center;
-    }
-
-    /* Placed explicitly so the rows hold even when there is no title and the
-       intro isn't rendered at all. */
-    .content-page[data-toc='true'] .content-page__intro {
-      grid-area: 1 / 1;
-    }
-
-    .content-page[data-toc='true'] .content-page__body {
-      grid-area: 2 / 1;
-    }
-
-    /* Spanning both rows gives sticky the whole article to travel within, and
-       keeps the rail's height out of the prose column's row sizing.
-       align-self stops it stretching to fill that span. */
-    .content-page[data-toc='true'] .content-page__rail {
-      grid-area: 1 / 2 / -1 / 3;
-      align-self: start;
-      position: sticky;
-      inset-block-start: var(--space-xl);
-      max-block-size: calc(100dvh - var(--space-2xl));
-      margin-block-end: 0;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-    }
   }
 
   .content-page__intro {
@@ -133,61 +83,31 @@ const { title } = seo;
     font-family: var(--font-serif);
   }
 
-  /* Single-column pages carry a little more air above headings than the base
-     scale, since a lone measure of prose can take it — but only a step more.
-     At the prose measure, 64px above an h2 is roughly three lines of body copy
-     and reads as a gap rather than as hierarchy. Two-column pages stay on the
-     base rhythm entirely: that much space would eat a visible slice of a
-     narrow column and make the two halves harder to balance.
+  /* Content pages carry a little more air above headings than the base scale,
+     since a lone measure of prose can take it — but only a step more. At the
+     prose measure, 64px above an h2 is roughly three lines of body copy and
+     reads as a gap rather than as hierarchy.
 
      h5 and h6 land on the same 16px as the paragraph gap, which is the point —
      at those levels the heading is a run-in label, not a section break. */
-  .content-page[data-columns='1'] :global(h2) {
+  .content-page :global(h2) {
     margin-block-start: var(--space-2xl);
   }
 
-  .content-page[data-columns='1'] .content-page__intro :global(h2) {
+  .content-page .content-page__intro :global(h2) {
     margin-block-start: 0;
   }
 
-  .content-page[data-columns='1'] :global(h3) {
+  .content-page :global(h3) {
     margin-block-start: var(--space-xl);
   }
 
-  .content-page[data-columns='1'] :global(h4) {
+  .content-page :global(h4) {
     margin-block-start: var(--space-lg);
   }
 
-  .content-page[data-columns='1'] :global(h5),
-  .content-page[data-columns='1'] :global(h6) {
+  .content-page :global(h5),
+  .content-page :global(h6) {
     margin-block-start: var(--space-md);
   }
-
-  /* Two-column pages fill the main column rather than the prose measure —
-     each column lands near the prose width on its own. */
-  .content-page[data-columns='2'] {
-    max-width: none;
-  }
-
-  /* A native multi-column flow rather than a fixed 2-col grid, so the halves
-     self-balance by height as copy is added or trimmed instead of leaving one
-     column trailing off in whitespace. Section boundaries no longer align with
-     the column break, so keep headings attached to what follows them and keep
-     lists from splitting mid-way. Container-based (see .main-wrap in
-     Page.astro) so it responds to this column's width, not the viewport's. */
-  /* @container main (min-width: 640px) {
-    .content-page[data-columns='2'] .content-page__body {
-      column-count: 2;
-      column-gap: var(--space-xl);
-    }
-
-    .content-page[data-columns='2'] .content-page__body :global(h2),
-    .content-page[data-columns='2'] .content-page__body :global(h3) {
-      break-after: avoid;
-    }
-
-    .content-page[data-columns='2'] .content-page__body :global(ul) {
-      break-inside: avoid;
-    }
-  } */
 </style>
