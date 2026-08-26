@@ -194,18 +194,12 @@ const sections = [
         </p>
       </div>
 
-      <p>
-        The hero is the one size that responds to layout: it sizes against the width of its column
-        (a container query), not the viewport — small in a narrow column, display-scale once the
-        column is wide.
-      </p>
-
       <div class="type-scale">
         <div class="type-row">
           <div class="type-row__sample">
             <p class="type-hero">Hero headline</p>
           </div>
-          <code class="type-row__token">--font-size-hero / --font-size-hero-max</code>
+          <code class="type-row__token">--font-size-hero</code>
         </div>
         {
           typeSamples.map((t) => (
@@ -249,14 +243,12 @@ const sections = [
         float between two blocks.
       </p>
       <p>
-        Single-column pages open the space above up a step, since a lone measure of prose can carry
-        it. Two-column pages stay on the base scale: the extra air would eat a visible slice of a
-        narrow column and make the halves harder to balance. Set in <code>ContentPage.astro</code>,
-        keyed on <code>data-columns</code>.
+        Content pages open the space above up a step from the base scale, since a lone measure of
+        prose can carry it. Set in <code>ContentPage.astro</code>.
       </p>
       <table>
         <thead>
-          <tr><th>Space above</th><th>One column</th><th>Two columns (base)</th></tr>
+          <tr><th>Space above</th><th>Content page</th><th>Base</th></tr>
         </thead>
         <tbody>
           <tr><td>h2</td><td>--space-2xl (48px)</td><td>--space-xl (32px)</td></tr>
@@ -267,8 +259,8 @@ const sections = [
         </tbody>
       </table>
       <p>
-        In one column h5 and h6 land on the same gap as a paragraph, on purpose: at that depth a
-        heading reads as a run-in label rather than a section break. A page intro carries
+        h5 and h6 land on the same gap as a paragraph, on purpose: at that depth a heading reads as
+        a run-in label rather than a section break. A page intro carries
         <code>--space-3xl</code> below it, dropping to <code>--space-xl</code> when it holds a subtitle
         or a byline — either one closes the block visually, so the larger gap stops earning its place.
       </p>
@@ -564,11 +556,13 @@ const sections = [
         <h2>Hero</h2>
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
-          <code>&lt;h2&gt;</code> that steps up from <code>--font-size-hero</code> to
-          <code>--font-size-hero-max</code> once the <em>main column</em> passes 640px — a container query
-          against <code>.main-wrap</code>, not a media query, so it responds to the space it
-          actually has rather than the viewport. Wrap words in
-          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
+          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code>, a step clear of
+          <code>--font-size-3xl</code> so the page's opening statement never matches a section heading.
+          It used to step up again once the main column passed 640px, but that column is not monotonic
+          — it narrows when the rail appears and again when the aside splits off — so the step fired three
+          times across the viewport range. One size holds either way. Wrap words in <code
+            >&lt;span class="accent"&gt;</code
+          > to pick up <code>--color-green</code>.
         </p>
       </div>
 
@@ -582,39 +576,33 @@ const sections = [
       <div class="section__head">
         <h2>Lede</h2>
         <p>
-          <code>&lt;Lede&gt;</code>. Breaks a block out of a multi-column flow. On a page using
-          <code>columns: 2</code>, everything in the body shares one balanced
-          <code>column-count: 2</code> flow — including the opening headline, which lands in a half-width
-          column with no visual entry point. Wrapping the opening block in
-          <code>&lt;Lede&gt;</code> gives it <code>column-span: all</code>: it takes the full width
-          and the rest of the content starts fresh columns beneath it. The flow stays a single
-          self-balancing multicol, so nothing about the <code>columns</code> knob changes.
-          <code>column-span</code> is inert outside a multicol, so a <code>Lede</code> on a single-column
-          page is simply a passthrough.
+          <code>&lt;Lede&gt;</code>. Wraps the opening block of a page — a headline, the copy under
+          it, and whatever closes it out. <code>base.css</code> spaces prose by adjacency, tuned for body
+          copy at the reading measure; this block runs at display size and wants a looser scale, since
+          8px under a 48px headline reads as a collision. Children step apart by
+          <code>--space-lg</code>, and a closing <code>blockquote</code> gets
+          <code>--space-xl</code> so it reads as the end of the block rather than another beat.
         </p>
         <p>
-          It carries its own block-end margin and zeroes the block-start margin of whatever follows.
-          The first box after a spanner keeps its margin, while every other column's first box has
-          already spent one further up the flow — left alone, the two columns start an
-          <code>h2</code> margin out of line with each other.
+          It owns the gap below it: <code>display: flow-root</code> traps the last child's trailing margin
+          inside the block, and the block-start margin of whatever follows is zeroed. So the space under
+          a lede is one number at every width, not a collapsed pair.
+          <code>src/pages/index.mdx</code> is the canonical use.
         </p>
       </div>
 
       <div class="lede-demo">
         <Lede>
-          <h3 class="lede-demo__hero">A headline that spans every column</h3>
-          <p>The opening block runs the full width, then the columns begin underneath it.</p>
+          <h3 class="lede-demo__hero">An opening block at display size</h3>
+          <p>
+            The copy under the headline steps away from it by <code>--space-lg</code> rather than the
+            paragraph gap it would get from the base scale.
+          </p>
         </Lede>
         <h4>Our Values</h4>
         <p>
-          Body copy picks up after the spanner and flows into balanced columns, splitting across the
-          gap wherever the browser decides the two halves come out level. Compare the top of this
-          heading with the top of the right-hand column — they should sit on the same line.
-        </p>
-        <h4>Stay in learning mode.</h4>
-        <p>
-          Add or trim a sentence and the break moves on its own — that is the whole reason this is a
-          multi-column flow rather than a two-column grid.
+          Body copy picks up here. The gap above this heading is the lede's own block-end margin —
+          the heading's <code>margin-block-start</code> is zeroed so the two don't stack.
         </p>
       </div>
     </section>
@@ -851,17 +839,29 @@ const sections = [
           reading as one rounded card.
         </li>
         <li>
-          <strong>850–1400px</strong> — two equal columns. The header becomes a full-viewport-height card
-          pinned with <code>position: fixed</code> while the right column (main + aside + footer) scrolls
-          past underneath as one joined card.
+          <strong>850–1300px</strong> — the header becomes the rail: a fixed-width (<code
+            >--layout-rail</code
+          >), full-viewport-height card pinned with
+          <code>position: fixed</code>, while the right column (main + aside + footer) scrolls past
+          underneath as one joined card.
         </li>
         <li>
-          <strong>&gt; 1400px</strong> — 2/3 + 1/3: header over main on the left, aside spanning the full-height
-          right column, and the footer as a full-width card beneath the grid. The header no longer sticks,
-          and the shell grows fluidly up to a maximum width (<code>--layout-shell-max</code>),
-          centered beyond that.
+          <strong>&gt; 1300px</strong> — the aside leaves the joined column and becomes a third column
+          of its own (<code>--layout-aside</code>), with the footer spanning main and aside beneath
+          them. All three become free-standing rounded cards. The shell grows fluidly to
+          <code>--layout-shell-max</code>, centered beyond that.
         </li>
       </ul>
+      <p>
+        1300px is a deliberate trade, and the cost is worth knowing before anyone
+        <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
+        960px, so main only clears <code>--layout-prose-max</code> from about 1632px up. Splitting the
+        aside off at 1300px means main crosses that boundary well short of the measure — 813px down to
+        340px at the switch, taking the hero back through its container query with it. That is accepted:
+        three columns on a 1440px laptop is the shape this layout is for, and a narrow-but-readable main
+        column is the price. Raising the breakpoint to about 1650px buys the measure back; narrowing the
+        rail and aside to roughly 600px combined buys both.
+      </p>
     </section>
   </div>
 </Layout>
@@ -926,11 +926,9 @@ const sections = [
     border-radius: var(--radius-xl);
   }
 
-  /* The table of contents picks its layout from the width of the nearest
-     container named `main`, so declaring one here at phone width shows the
-     disclosure form on a page whose real column is far too wide for it. */
+  /* The rail is always the disclosure form now, so this only has to stand the
+     demo at a realistic rail width rather than the full content column. */
   .toc-narrow-demo {
-    container: main / inline-size;
     max-width: 320px;
   }
 
@@ -1036,22 +1034,6 @@ const sections = [
     margin: 0;
   }
 
-  /* A local multicol so the spanner has something to span. The page itself is
-     single-column, where column-span is inert and the demo would show nothing. */
-  .lede-demo {
-    column-count: 2;
-    column-gap: var(--space-xl);
-  }
-
-  /* Mirror ContentPage's column rules, or the demo breaks where the real page
-     wouldn't. No padding or border on this box: a spanner as first child leaves
-     an empty leading fragment, and WebKit renders a bordered one as a stray
-     line above the first column. */
-  .lede-demo :global(h3),
-  .lede-demo :global(h4) {
-    break-after: avoid;
-  }
-
   .lede-demo__hero {
     margin-block-start: 0;
     font-size: var(--font-size-hero);
@@ -1152,10 +1134,10 @@ const sections = [
     max-width: 32rem;
   }
 
-  /* Roughly the width the aside gets at desktop, since that's the only place
-     this card is ever used. */
+  /* The width the aside gets once it has its own column, since that's the only
+     place this card is ever used. */
   .question-promo-demo {
-    max-width: 26rem;
+    max-width: var(--layout-aside);
   }
 
   .link-list {

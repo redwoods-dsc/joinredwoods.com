@@ -17,7 +17,6 @@ const label = 'On this page';
 {
   tree.length > 0 && (
     <nav class="toc" aria-label="Table of contents" data-toc>
-      <p class="toc__title">{label}</p>
       <details class="toc__disclosure">
         <summary class="toc__summary">{label}</summary>
         <div class="toc__body">
@@ -34,22 +33,13 @@ const label = 'On this page';
     line-height: var(--line-height-snug);
   }
 
-  .toc__title {
-    display: none;
-    max-width: none;
-  }
-
-  .toc__title,
   .toc__summary {
+    display: flex;
     margin: 0;
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-semibold);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-  }
-
-  .toc__summary {
-    display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-xs);
@@ -83,35 +73,10 @@ const label = 'On this page';
     margin-block-start: var(--space-sm);
   }
 
-  /* The disclosure is a narrow-column affordance only. Once the rail has its
-     own column the list is always visible, so the interactive summary is
-     swapped for the static eyebrow — forcing the summary open would leave a
-     control that does nothing when clicked. Guarded on ::details-content
-     because it is the only way to reveal a closed details from CSS; without
-     support the disclosure simply stays at every width, which degrades far
-     better than an invisible list. 944px matches the grid switch in
-     ContentPage.astro — keep the two in sync. */
-  @supports selector(::details-content) {
-    @container main (min-width: 944px) {
-      .toc__title {
-        display: block;
-        margin-block-end: var(--space-sm);
-      }
-
-      .toc__summary {
-        display: none;
-      }
-
-      .toc__disclosure::details-content {
-        content-visibility: visible;
-        block-size: auto;
-      }
-
-      .toc__body {
-        margin-block-start: 0;
-      }
-    }
-  }
+  /* The always-open variant of this list belonged to the gutter rail, which no
+     longer fits any column the shell hands out — see the note in
+     ContentPage.astro. The rail is always in flow now, so the disclosure is
+     always the right affordance and the static eyebrow has nowhere to appear. */
 </style>
 
 <script>

@@ -71,42 +71,18 @@ const background = await headerBackground();
     }
   }
 
-  /* 850px+ — header card sits in its own column. Fully rounded by default
-     (the desktop block below re-flattens the bottom corners when header
-     rejoins main beneath it in the left column). */
+  /* 850px+ — the card leaves the stack and becomes the rail: free-standing in
+     its own column, so fully rounded, and pinned to the viewport for the whole
+     of the rail's life. Top and left are left to the static position — the grid
+     cell it would have occupied — so only the width has to be restated, and it
+     reads the same token the track does. Leaving width to shrink-to-fit sizes
+     the card from the tagline instead, which lands a couple of pixels off. */
   @media (min-width: 850px) {
     .header {
-      border-radius: var(--radius-xl);
-    }
-  }
-
-  /* Tablet — fixed card pinned to the viewport. Width matches the left grid
-     column: (shell − gap) ÷ 2, where shell = 100vw − 2 × --space-lg. */
-  @media (min-width: 850px) and (max-width: 1399.98px) {
-    .header {
       position: fixed;
-      width: calc((100vw - 3 * var(--space-lg)) / 2);
+      width: var(--layout-rail);
       height: calc(100dvh - 2 * var(--space-lg));
-    }
-  }
-
-  /* Desktop — header rejoins main below it in the left column, so back to
-     top-only border-radius to meet main's bottom-only flush. Height returns
-     to auto so the card sizes from its content (logo + nav); the absolute
-     tagline below then lands cleanly on the nav's bottom baseline. */
-  @media (min-width: 1400px) {
-    .header {
-      height: auto;
-      min-height: 0;
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      background-position-x: center;
-      background-position-y: top;
-    }
-  }
-
-  @media (min-width: 1400px) and (min-height: 650px) {
-    .header {
-      min-height: 420px;
+      border-radius: var(--radius-xl);
     }
   }
 
@@ -138,9 +114,11 @@ const background = await headerBackground();
     padding: 0;
   }
 
+  /* max-width has to stay under --layout-rail minus the card's padding, or the
+     artwork overflows the rail once the card stops sizing itself to fit. */
   .tagline {
     width: 80%;
-    max-width: 350px;
+    max-width: 300px;
     height: auto;
     margin-block-start: auto;
     align-self: flex-start;
@@ -156,17 +134,6 @@ const background = await headerBackground();
   @media (min-width: 850px) {
     .tagline {
       align-self: flex-start;
-    }
-  }
-
-  /* Desktop — tagline breaks out of the column flow so it sits on the same
-     baseline as the bottom of the nav, anchored to the right of the card. */
-  @media (min-width: 1400px) {
-    .tagline {
-      position: absolute;
-      right: var(--space-lg);
-      bottom: var(--space-lg);
-      margin-block-start: 0;
     }
   }
 

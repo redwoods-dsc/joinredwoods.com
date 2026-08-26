@@ -15,17 +15,14 @@ const content = await inlineSlot(Astro.slots);
 <h2 class="hero" id={id} set:html={content} />
 
 <style>
+  /* One size at every width. This used to step up once the main column passed
+     640px, but the column is not monotonic — it narrows when the rail appears
+     at 850px and again when the aside splits off at 1300px — so the step fired
+     three times on the way out, and the small end was --font-size-3xl, which is
+     an h2. A single size a step above the heading scale holds either way. */
   .hero {
     margin-block-start: 0;
     font-size: var(--font-size-hero);
-  }
-
-  /* Grows to display size once the main column itself is wide, not the
-     viewport — see the container on .main-wrap in Page.astro. */
-  @container main (min-width: 640px) {
-    .hero {
-      font-size: var(--font-size-hero-max);
-    }
   }
 
   /* Slotted content is not scoped to this component, so the accent has to be

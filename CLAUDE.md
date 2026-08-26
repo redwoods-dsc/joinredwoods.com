@@ -100,17 +100,17 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 
 `ContentPage` frontmatter knobs, all optional:
 
-| Key           | Default    | What it does                                                                                                      |
-| ------------- | ---------- | ----------------------------------------------------------------------------------------------------------------- |
-| `title`       | —          | Renders the intro header. Omit it and the page opens straight into body copy.                                     |
-| `subtitle`    | —          | Serif lede under the title. Ignored without a `title`.                                                            |
-| `columns`     | `1`        | `2` drops the prose max-width and flows the body into two balanced CSS columns once the main column passes 640px. |
-| `description` | `subtitle` | Meta description. Set it when the subtitle is too short or too coy to work as a search snippet.                   |
-| `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read.            |
+| Key           | Default    | What it does                                                                                           |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------------------ |
+| `title`       | —          | Renders the intro header. Omit it and the page opens straight into body copy.                          |
+| `subtitle`    | —          | Serif lede under the title. Ignored without a `title`.                                                 |
+| `description` | `subtitle` | Meta description. Set it when the subtitle is too short or too coy to work as a search snippet.        |
+| `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read. |
+| `toc`         | `false`    | Renders the `toc` slot above the body. Articles set this; standalone pages rarely need it.             |
 
-`columns: 2` also keeps headings on the base spacing scale rather than the roomier single-column rhythm — see the comments in `ContentPage.astro`.
+Content pages carry a step more air above headings than the base scale — see the comments in `ContentPage.astro`.
 
-A block that shouldn't be chopped into a column — a page's opening headline and intro, say — wraps in `<Lede>`, which gives it `column-span: all`. The multicol flow stays a single self-balancing one; the spanner just takes the full width and the columns restart underneath it. `column-span` is inert outside a multicol, so a `<Lede>` on a `columns: 1` page is a passthrough. `src/pages/index.mdx` is the canonical use.
+A page's opening block — headline, intro copy, and whatever closes it out — wraps in `<Lede>`, which spaces those children at display scale rather than the base prose rhythm and owns the gap below itself. `src/pages/index.mdx` is the canonical use.
 
 Reach for `.astro` only when the page needs something Markdown can't express — computed frontmatter, `getStaticPaths()`, or bespoke layout. Needing a component is _not_ one of those reasons: `.mdx` imports components fine, and `src/pages/index.mdx` uses `<Button />`, `<Hero />` and `<Quote />` that way. If a `.md` page later needs one component, rename it to `.mdx` rather than rewriting it as `.astro`.
 

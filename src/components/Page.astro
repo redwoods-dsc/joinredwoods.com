@@ -30,8 +30,19 @@ const { aside = true } = Astro.props;
 
 <style>
   /* Layout breakpoints (raw px — custom properties cannot be used in @media conditions):
-       850px  → single column → two equal columns, header fixed to viewport
-       1400px → two equal columns → 2/3 + 1/3, header back in flow         */
+       850px  → stacked → header rail + one joined content column
+       1300px → aside leaves the joined column and becomes a third column
+
+     1300 is a deliberate trade, and the cost is worth knowing before anyone
+     "fixes" it. The rail, the aside, the gaps and main's own padding come to
+     --layout-rail + --layout-aside + 160px, so main clears
+     --layout-prose-max only from about 1632px up. Splitting the aside off at
+     1300 means main crosses that boundary well short of the measure — 813px
+     down to 340px at the switch, taking the hero back through its container
+     query with it. That is accepted: three columns on a 1440px laptop is the
+     shape this layout is for, and a narrow-but-readable main column is the
+     price. Raising the breakpoint to ~1650 is what buys the measure back;
+     narrowing the rail and aside to about 600px combined is what buys both. */
 
   .global-wrap {
     position: relative;
@@ -93,9 +104,6 @@ const { aside = true } = Astro.props;
      the shell. Per-page wrappers shouldn't repeat padding rules. */
   .main-wrap {
     padding: var(--space-xl);
-    /* Establishes the query container the hero sizes against, so display type
-       responds to this column's width rather than the viewport. */
-    container: main / inline-size;
   }
 
   .shell__aside {
@@ -111,7 +119,7 @@ const { aside = true } = Astro.props;
      (column-gap between left/right, row-gap 0 so the cards meet flush). */
   @media (min-width: 850px) {
     .shell {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: var(--layout-rail) 1fr;
       grid-template-areas:
         'header main'
         'header aside'
@@ -120,6 +128,10 @@ const { aside = true } = Astro.props;
       row-gap: 0;
     }
 
+    /* main, aside and footer are still one joined column here, so main keeps
+       its bottom corners square to meet the aside's flush top edge. Rounding
+       all four takes a bite out of the column at the seam — the two cards are
+       the same cream, but the corner exposes the page behind them. */
     .shell__main {
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
@@ -133,22 +145,17 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* Desktop: header + main are the joined column on the left, aside is its own
-     standalone card on the right (spans both rows), and footer becomes a
-     full-width card sitting beneath the grid. */
-  @media (min-width: 1400px) {
+  /* Aside becomes its own column, so the three cards separate: each one is
+     free-standing and fully rounded, and the footer drops below both. */
+  @media (min-width: 1300px) {
     .shell {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
       grid-template-areas:
-        'header aside'
-        'main aside'
-        'footer footer';
+        'header main aside'
+        'header footer footer';
     }
 
-    .shell__main {
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-    }
-
+    .shell__main,
     .shell__aside {
       border-radius: var(--radius-xl);
     }
@@ -158,13 +165,13 @@ const { aside = true } = Astro.props;
       border-radius: var(--radius-xl);
     }
 
-    /* Nothing to sit beside, so the whole shell becomes one full-width stack. */
+    /* No aside to split off, so the third track would be dead space. Drop back
+       to the rail + content pair; main and footer stay separate cards. */
     .shell[data-aside='false'] {
-      grid-template-columns: 1fr;
+      grid-template-columns: var(--layout-rail) 1fr;
       grid-template-areas:
-        'header'
-        'main'
-        'footer';
+        'header main'
+        'header footer';
     }
   }
 
