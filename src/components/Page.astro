@@ -29,19 +29,12 @@ const { aside = true } = Astro.props;
 </div>
 
 <style>
-  /* Layout breakpoints (raw px — custom properties cannot be used in @media conditions):
-       850px  → stacked → header rail + one joined content column
-       1300px → aside leaves the joined column and becomes a third column
-
-     1300 is a deliberate trade, and the cost is worth knowing before anyone
-     "fixes" it. The rail, the aside, the gaps and main's own padding come to
-     --layout-rail + --layout-aside + 144px, so main clears
-     --layout-prose-max only from about 1616px up. Splitting the aside off at
-     1300 means main crosses that boundary well short of the measure — 830px
-     down to 356px at the switch. That is accepted: three columns on a 1440px
-     laptop is the shape this layout is for, and a narrow-but-readable main
-     column is the price. Raising the breakpoint to ~1620 is what buys the measure back;
-     narrowing the rail and aside to about 600px combined is what buys both. */
+  /* Breakpoints are raw px because custom properties can't be used in @media
+     conditions: 850px adds the header rail, 1300px splits the aside off.
+     1300 is a deliberate trade — the rail, aside, gaps and padding mean main
+     only clears --layout-prose-max from ~1616px, so three columns on a laptop
+     is bought at the cost of main sitting short of the measure. ~1620 buys it
+     back; narrowing the rail and aside to ~600px combined buys both. */
 
   .global-wrap {
     position: relative;
@@ -59,11 +52,10 @@ const { aside = true } = Astro.props;
       'main'
       'aside'
       'footer';
-    gap: 0; /* header + main + aside + footer read as one joined column on mobile */
+    gap: 0;
   }
 
-  /* Pages that opt out of the aside drop its row/column entirely. Without this
-     the track is still allocated and renders as an empty cream card. */
+  /* Without dropping the area, the track still renders as an empty cream card. */
   .shell[data-aside='false'] {
     grid-template-areas:
       'header'
@@ -71,15 +63,10 @@ const { aside = true } = Astro.props;
       'footer';
   }
 
-  /* At tablet, .header is position: fixed; the cell collapses in flow but the
-     column track is still allocated by grid-template-columns. */
   .shell__header {
     grid-area: header;
   }
 
-  /* Cream cards share the same surface and clip to their rounded corners. The
-     column they belong to changes per breakpoint (see the joining radii below),
-     so radius is set contextually rather than here. */
   .shell__main,
   .shell__aside,
   .shell__footer {
@@ -93,14 +80,11 @@ const { aside = true } = Astro.props;
 
   .shell__main {
     grid-area: main;
-    /* clip rather than hidden: `hidden` makes this a scroll container, which
-       traps any sticky descendant (the article table of contents) in a box
-       that never scrolls. `clip` still clips to the joining radii. */
+    /* clip, not hidden: `hidden` makes this a scroll container and traps the
+       article's sticky table of contents in a box that never scrolls. */
     overflow: clip;
   }
 
-  /* Shared semantic landmark and content padding for every page that consumes
-     the shell. Per-page wrappers shouldn't repeat padding rules. */
   .main-wrap {
     padding: var(--space-lg);
   }
@@ -114,8 +98,7 @@ const { aside = true } = Astro.props;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   }
 
-  /* Tablet: main + aside + footer join into one cream column on the right
-     (column-gap between left/right, row-gap 0 so the cards meet flush). */
+  /* main, aside and footer join into one cream column: row-gap 0 so they meet flush. */
   @media (min-width: 850px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
@@ -127,16 +110,12 @@ const { aside = true } = Astro.props;
       row-gap: 0;
     }
 
-    /* main, aside and footer are still one joined column here, so main keeps
-       its bottom corners square to meet the aside's flush top edge. Rounding
-       all four takes a bite out of the column at the seam — the two cards are
-       the same cream, but the corner exposes the page behind them. */
+    /* Bottom corners stay square to meet the aside flush; rounding them takes
+       a bite out of the column and exposes the page behind the seam. */
     .shell__main {
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
 
-    /* Header stays fixed to the left column here, so keep both tracks and just
-       let main + footer share the right one. */
     .shell[data-aside='false'] {
       grid-template-areas:
         'header main'
@@ -144,8 +123,6 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* Aside becomes its own column, so the three cards separate: each one is
-     free-standing and fully rounded, and the footer drops below both. */
   @media (min-width: 1300px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
@@ -164,8 +141,6 @@ const { aside = true } = Astro.props;
       border-radius: var(--radius-xl);
     }
 
-    /* No aside to split off, so the third track would be dead space. Drop back
-       to the rail + content pair; main and footer stay separate cards. */
     .shell[data-aside='false'] {
       grid-template-columns: var(--layout-rail) 1fr;
       grid-template-areas:
@@ -176,14 +151,11 @@ const { aside = true } = Astro.props;
 
   .copyright {
     position: fixed;
-    /* Physical bottom/right: writing-mode remaps logical insets, so logical
-       props here would resolve against the rotated axis and mis-place the text. */
+    /* Physical insets: writing-mode remaps the logical ones onto the rotated axis. */
     bottom: var(--space-lg);
-    /* Anchored to the wrap's edge, not the viewport's: past --layout-shell-max
-       the two part company and a viewport inset strands the text in the gutter.
-       The plain `right` is the fallback for browsers without anchor positioning,
-       where the wrap's edge is the viewport's up to the point it stops growing.
-       The hairline gap is padding rather than an offset so both paths share it. */
+    /* Anchored to the wrap, not the viewport — past --layout-shell-max the two
+       part company and a viewport inset strands this in the gutter. The plain
+       `right` is the fallback where anchor positioning is unsupported. */
     right: 0;
     right: anchor(--global-wrap right);
     padding-right: var(--space-3xs);

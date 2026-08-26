@@ -81,9 +81,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 <style>
   .entry-card {
     --entry-bg: var(--color-surface);
-    /* The note on --color-surface-contrast in tokens.css applies here too: cream
-       on the green surface is 3.98:1, which misses AA for anything that isn't
-       large text. Every tone's foreground is the one that clears it. */
+    /* Every tone's foreground is the one that clears AA on its background —
+       see the note on --color-surface-contrast in tokens.css. */
     --entry-fg: var(--color-surface-contrast);
 
     display: flex;
@@ -106,8 +105,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     --entry-fg: var(--color-surface-contrast);
   }
 
-  /* Blue is light enough that --color-text only reaches 4.19:1 on the card and
-     3.27:1 on the darker date panel, so this tone reverses to black. */
+  /* Blue is light enough that --color-text lands at 3.27:1 on the date panel,
+     so this tone reverses to black. */
   .entry-card[data-tone='blue'] {
     --entry-bg: var(--color-blue);
     --entry-fg: var(--color-gray-00);
@@ -117,9 +116,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 16%);
   }
 
-  /* The background shift alone is 1.32:1 — perceptible, but not something to
-     rest a state on, and forced-colors discards it entirely. The underline is
-     the cue that survives both. */
+  /* The hover background shift is only 1.32:1 and forced-colors discards it
+     entirely, so the underline carries the state. */
   .entry-card:hover .entry-card__primary,
   .entry-card:focus-visible .entry-card__primary {
     text-decoration: underline;
@@ -173,8 +171,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     padding: var(--space-sm) var(--space-md);
   }
 
-  /* No transparency clears 4.5:1 against the card itself at 14px — even 10% is
-     4.07:1 — so this one is de-emphasised by size and weight alone. */
+  /* No transparency clears 4.5:1 here (even 10% is 4.07:1), so this is
+     de-emphasised by size and weight alone. */
   .entry-card__secondary {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);

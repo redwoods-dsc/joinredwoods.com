@@ -920,32 +920,25 @@ const sections = [
     scroll-margin-block-start: var(--space-xl);
   }
 
-  /* The demo wrapper only needs to clip <Header>'s top-only border-radius at
-     mobile widths to a fully-rounded shape — chrome (bg, padding, min-height)
-     lives on .header itself now. */
   .header-demo {
     display: flex;
     overflow: hidden;
     border-radius: var(--radius-xl);
   }
 
-  /* The rail is always the disclosure form now, so this only has to stand the
-     demo at a realistic rail width rather than the full content column. */
+  /* Stands the demo at a realistic rail width. */
   .toc-narrow-demo {
     max-width: 320px;
   }
 
-  /* Footer renders on the cream card surface in the real shell; the demo
-     reproduces that surface so it reads the same in isolation. */
+  /* Reproduces the cream card surface the footer sits on in the real shell. */
   .footer-demo {
     overflow: hidden;
     background-color: var(--color-bg);
     border-radius: var(--radius-xl);
   }
 
-  /* Header's tablet rule fixes it to the viewport for the real layout. In the
-     style-guide we're showing the component in isolation, so unwind that
-     positioning and let it lay out in flow inside the demo box. */
+  /* Unwind Header's tablet position: fixed so the demo lays out in flow. */
   @media (min-width: 850px) and (max-width: 1399.98px) {
     .header-demo :global(.header) {
       position: static;
@@ -1144,8 +1137,7 @@ const sections = [
     max-width: 32rem;
   }
 
-  /* The width the aside gets once it has its own column, since that's the only
-     place this card is ever used. */
+  /* The width the aside gets once it has its own column. */
   .question-promo-demo {
     max-width: var(--layout-aside);
   }

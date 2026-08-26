@@ -43,13 +43,10 @@ const background = await headerBackground();
     padding: var(--space-lg);
     color: var(--color-accent-contrast);
     /* Load-bearing: the trees image is pre-composited onto this exact colour
-       (see lib/header-background.ts) so it can drop its alpha channel, and it
-       only stays seamless while the card behind it matches. */
+       (see lib/header-background.ts) and only stays seamless while they match. */
     background-color: var(--color-accent);
-    /* URL comes from an ESM import (see the frontmatter) via --bg-image so
-       Astro's pipeline reliably emits the file; a bare url('../assets/…') here
-       compiles to a hashed path that never gets written in the production build.
-       Media-query background-position logic below stays in CSS. */
+    /* URL comes in via --bg-image so Astro's pipeline emits the file — a bare
+       url('../assets/…') compiles to a path the production build never writes. */
     background-image: var(--bg-image);
     background-repeat: no-repeat;
     background-position-y: var(--space-xl);
@@ -57,26 +54,22 @@ const background = await headerBackground();
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   }
 
-  /* tall viewports — anchor the trees to the card bottom */
   @media (min-height: 1024px) {
     .header {
       background-position-y: bottom;
     }
   }
 
-  /* very short viewports — drop the trees so the nav has room to breathe */
+  /* Drop the trees so the nav has room to breathe. */
   @media (max-height: 400px) {
     .header {
       background-image: none;
     }
   }
 
-  /* 850px+ — the card leaves the stack and becomes the rail: free-standing in
-     its own column, so fully rounded, and pinned to the viewport for the whole
-     of the rail's life. Top and left are left to the static position — the grid
-     cell it would have occupied — so only the width has to be restated, and it
-     reads the same token the track does. Leaving width to shrink-to-fit sizes
-     the card from the tagline instead, which lands a couple of pixels off. */
+  /* The card becomes the fixed rail. Top and left fall out of the static
+     position, but a fixed box shrink-to-fits, so width has to be restated —
+     from the same token the grid track reads. */
   @media (min-width: 850px) {
     .header {
       position: fixed;
@@ -114,8 +107,7 @@ const background = await headerBackground();
     padding: 0;
   }
 
-  /* max-width has to stay under --layout-rail minus the card's padding, or the
-     artwork overflows the rail once the card stops sizing itself to fit. */
+  /* Stay under --layout-rail minus the card's padding, or the artwork overflows. */
   .tagline {
     width: 80%;
     max-width: 300px;

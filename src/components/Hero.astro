@@ -17,9 +17,8 @@ const content = await inlineSlot(Astro.slots);
 <style>
   /* Not a container query: the main column isn't monotonic — it narrows when
      the rail appears at 850px and again when the aside splits off at 1300px —
-     so sizing on the column steps the hero three times on the way out.
-     600px is where the column reaches ~480px, under which the hero sets as
-     seven lines or more. */
+     so sizing on the column steps the hero three times on the way out. 600px is
+     where the column reaches ~480px, under which the hero sets as seven lines. */
   .hero {
     margin-block-start: 0;
     font-size: var(--font-size-2xl);
@@ -31,8 +30,6 @@ const content = await inlineSlot(Astro.slots);
     }
   }
 
-  /* Slotted content is not scoped to this component, so the accent has to be
-     addressed globally to reach a <span> written in the page's Markdown. */
   .hero :global(.accent) {
     color: var(--color-green);
   }

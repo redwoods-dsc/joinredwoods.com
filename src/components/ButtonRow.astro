@@ -13,9 +13,8 @@ const { class: className } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
-    /* base.css spaces prose through adjacency (p + p, ul + p). A div breaks
-       those chains, so the row carries its own block margin instead — it
-       collapses against neighbours to the same gaps the chain produced. */
+    /* A div breaks base.css's prose adjacency chains (p + p, ul + p), so the
+       row carries its own margin and collapses to the same gap. */
     margin-block: var(--space-md);
   }
 </style>
