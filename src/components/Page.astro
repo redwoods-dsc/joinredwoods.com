@@ -32,8 +32,9 @@ const { aside = true } = Astro.props;
   /* Breakpoints are raw px because custom properties can't be used in @media
      conditions: 850px adds the header rail, 1300px splits the aside off.
      1300 is a deliberate trade — the rail, aside, gaps and padding mean main
-     only clears --layout-prose-max from ~1632px, so three columns on a laptop
-     is bought at the cost of main sitting short of the measure. */
+     only clears --layout-prose-max from ~1616px, so three columns on a laptop
+     is bought at the cost of main sitting short of the measure. ~1620 buys it
+     back; narrowing the rail and aside to ~600px combined buys both. */
 
   .global-wrap {
     position: relative;
@@ -85,7 +86,7 @@ const { aside = true } = Astro.props;
   }
 
   .main-wrap {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
   }
 
   .shell__aside {

@@ -27,6 +27,10 @@
   --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', serif;
   --font-mono: monospace;
 
+  /* The scale is static by design. The one responsive type change is the hero,
+     which swaps between two of these at a breakpoint rather than adding a
+     fluid token — see Hero.astro. */
+
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-caption: 0.8125rem; /* 13px */
   --font-size-sm: 0.875rem; /* 14px */
