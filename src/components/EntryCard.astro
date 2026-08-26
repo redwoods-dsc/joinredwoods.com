@@ -81,7 +81,10 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 <style>
   .entry-card {
     --entry-bg: var(--color-surface);
-    --entry-fg: var(--color-cream);
+    /* The note on --color-surface-contrast in tokens.css applies here too: cream
+       on the green surface is 3.98:1, which misses AA for anything that isn't
+       large text. Every tone's foreground is the one that clears it. */
+    --entry-fg: var(--color-surface-contrast);
 
     display: flex;
     align-items: stretch;
@@ -95,21 +98,31 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 
   .entry-card[data-tone='surface'] {
     --entry-bg: var(--color-surface);
-    --entry-fg: var(--color-cream);
+    --entry-fg: var(--color-surface-contrast);
   }
 
   .entry-card[data-tone='woodland'] {
     --entry-bg: var(--color-woodland);
-    --entry-fg: var(--color-cream);
+    --entry-fg: var(--color-surface-contrast);
   }
 
+  /* Blue is light enough that --color-text only reaches 4.19:1 on the card and
+     3.27:1 on the darker date panel, so this tone reverses to black. */
   .entry-card[data-tone='blue'] {
     --entry-bg: var(--color-blue);
-    --entry-fg: var(--color-text);
+    --entry-fg: var(--color-gray-00);
   }
 
   .entry-card:hover {
-    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 8%);
+    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 16%);
+  }
+
+  /* The background shift alone is 1.32:1 — perceptible, but not something to
+     rest a state on, and forced-colors discards it entirely. The underline is
+     the cue that survives both. */
+  .entry-card:hover .entry-card__primary,
+  .entry-card:focus-visible .entry-card__primary {
+    text-decoration: underline;
   }
 
   .entry-card__date {
@@ -132,7 +145,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-micro);
-    color: color-mix(in srgb, var(--entry-fg), transparent 25%);
+    /* 15% is what the date panel affords at 14px; 25% lands at 3.54:1. */
+    color: color-mix(in srgb, var(--entry-fg), transparent 15%);
   }
 
   .entry-card__date--split {
@@ -159,11 +173,12 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     padding: var(--space-sm) var(--space-md);
   }
 
+  /* No transparency clears 4.5:1 against the card itself at 14px — even 10% is
+     4.07:1 — so this one is de-emphasised by size and weight alone. */
   .entry-card__secondary {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-none);
-    color: color-mix(in srgb, var(--entry-fg), transparent 20%);
   }
 
   .entry-card__primary {
