@@ -556,11 +556,13 @@ const sections = [
         <h2>Hero</h2>
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
-          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code>, a step clear of
+          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> from 600px up, a step clear of
           <code>--font-size-3xl</code> so the page's opening statement never matches a section heading.
-          It used to step up again once the main column passed 640px, but that column is not monotonic
-          — it narrows when the rail appears and again when the aside splits off — so the step fired three
-          times across the viewport range. One size holds either way. Wrap words in <code
+          Below 600px it drops to <code>--font-size-2xl</code>: at 40px a full hero sentence sets as
+          nine lines in a phone-width column and pushes itself off the screen. The step is a
+          viewport media query, not a container query — the main column is not monotonic (it narrows
+          when the rail appears and again when the aside splits off), so sizing on the column fired
+          the step three times across the viewport range. Wrap words in <code
             >&lt;span class="accent"&gt;</code
           > to pick up <code>--color-green</code>.
         </p>
@@ -818,7 +820,9 @@ const sections = [
           the breakpoint-dependent join <code>border-radius</code>, the cream fill, and clipping —
           because only the shell knows where each card sits in the grid. Content styling (padding,
           type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>,
-          <code>.sidebar</code>). The <code>header</code> is the exception: its chrome lives on
+          <code>.sidebar</code>), and every one of them pads with <code>--space-lg</code> — the same token
+          as the shell gutter and the column gap, so the inset inside a card matches the space between
+          cards. The <code>header</code> is the exception: its chrome lives on
           <code>.header</code> because <code>position: fixed</code> at tablet must be on the element itself.
           Pages provide <code>main</code> content (default slot); <code>header</code>,
           <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
@@ -855,12 +859,11 @@ const sections = [
       <p>
         1300px is a deliberate trade, and the cost is worth knowing before anyone
         <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
-        960px, so main only clears <code>--layout-prose-max</code> from about 1632px up. Splitting the
-        aside off at 1300px means main crosses that boundary well short of the measure — 813px down to
-        340px at the switch, taking the hero back through its container query with it. That is accepted:
-        three columns on a 1440px laptop is the shape this layout is for, and a narrow-but-readable main
-        column is the price. Raising the breakpoint to about 1650px buys the measure back; narrowing the
-        rail and aside to roughly 600px combined buys both.
+        944px, so main only clears <code>--layout-prose-max</code> from about 1616px up. Splitting the
+        aside off at 1300px means main crosses that boundary well short of the measure — 830px down to
+        356px at the switch. That is accepted: three columns on a 1440px laptop is the shape this layout
+        is for, and a narrow-but-readable main column is the price. Raising the breakpoint to about 1620px
+        buys the measure back; narrowing the rail and aside to roughly 600px combined buys both.
       </p>
     </section>
   </div>
@@ -1034,9 +1037,16 @@ const sections = [
     margin: 0;
   }
 
+  /* Stands in for <Hero>, so it has to track Hero.astro's breakpoint by hand. */
   .lede-demo__hero {
     margin-block-start: 0;
-    font-size: var(--font-size-hero);
+    font-size: var(--font-size-2xl);
+  }
+
+  @media (min-width: 600px) {
+    .lede-demo__hero {
+      font-size: var(--font-size-hero);
+    }
   }
 
   .type-hero {
