@@ -194,18 +194,12 @@ const sections = [
         </p>
       </div>
 
-      <p>
-        The hero is the one size that responds to layout: it sizes against the width of its column
-        (a container query), not the viewport — small in a narrow column, display-scale once the
-        column is wide.
-      </p>
-
       <div class="type-scale">
         <div class="type-row">
           <div class="type-row__sample">
             <p class="type-hero">Hero headline</p>
           </div>
-          <code class="type-row__token">--font-size-hero / --font-size-hero-max</code>
+          <code class="type-row__token">--font-size-hero</code>
         </div>
         {
           typeSamples.map((t) => (
@@ -562,11 +556,13 @@ const sections = [
         <h2>Hero</h2>
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
-          <code>&lt;h2&gt;</code> that steps up from <code>--font-size-hero</code> to
-          <code>--font-size-hero-max</code> once the <em>main column</em> passes 640px — a container query
-          against <code>.main-wrap</code>, not a media query, so it responds to the space it
-          actually has rather than the viewport. Wrap words in
-          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
+          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code>, a step clear of
+          <code>--font-size-3xl</code> so the page's opening statement never matches a section heading.
+          It used to step up again once the main column passed 640px, but that column is not monotonic
+          — it narrows when the rail appears and again when the aside splits off — so the step fired three
+          times across the viewport range. One size holds either way. Wrap words in <code
+            >&lt;span class="accent"&gt;</code
+          > to pick up <code>--color-green</code>.
         </p>
       </div>
 
@@ -930,11 +926,9 @@ const sections = [
     border-radius: var(--radius-xl);
   }
 
-  /* The table of contents picks its layout from the width of the nearest
-     container named `main`, so declaring one here at phone width shows the
-     disclosure form on a page whose real column is far too wide for it. */
+  /* The rail is always the disclosure form now, so this only has to stand the
+     demo at a realistic rail width rather than the full content column. */
   .toc-narrow-demo {
-    container: main / inline-size;
     max-width: 320px;
   }
 

@@ -47,8 +47,8 @@
   --font-size-3xl: 2rem; /* 32px */
   --font-size-4xl: 2.25rem; /* 36px */
 
-  --font-size-hero: 2rem; /* 32px — hero, narrow column */
-  --font-size-hero-max: 3rem; /* 48px — hero, wide column */
+  --font-size-hero: 2.5rem; /* 40px — hero; a step clear of --font-size-3xl so the
+                               opening statement never matches a section heading */
 
   --line-height-tight: 1.15;
   --line-height-snug: 1.3;
