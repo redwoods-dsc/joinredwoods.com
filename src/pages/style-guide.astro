@@ -818,7 +818,9 @@ const sections = [
           the breakpoint-dependent join <code>border-radius</code>, the cream fill, and clipping —
           because only the shell knows where each card sits in the grid. Content styling (padding,
           type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>,
-          <code>.sidebar</code>). The <code>header</code> is the exception: its chrome lives on
+          <code>.sidebar</code>), and every one of them pads with <code>--space-lg</code> — the same token
+          as the shell gutter and the column gap, so the inset inside a card matches the space between
+          cards. The <code>header</code> is the exception: its chrome lives on
           <code>.header</code> because <code>position: fixed</code> at tablet must be on the element itself.
           Pages provide <code>main</code> content (default slot); <code>header</code>,
           <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
@@ -855,11 +857,11 @@ const sections = [
       <p>
         1300px is a deliberate trade, and the cost is worth knowing before anyone
         <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
-        960px, so main only clears <code>--layout-prose-max</code> from about 1632px up. Splitting the
-        aside off at 1300px means main crosses that boundary well short of the measure — 813px down to
-        340px at the switch, taking the hero back through its container query with it. That is accepted:
+        944px, so main only clears <code>--layout-prose-max</code> from about 1616px up. Splitting the
+        aside off at 1300px means main crosses that boundary well short of the measure — 830px down to
+        356px at the switch, taking the hero back through its container query with it. That is accepted:
         three columns on a 1440px laptop is the shape this layout is for, and a narrow-but-readable main
-        column is the price. Raising the breakpoint to about 1650px buys the measure back; narrowing the
+        column is the price. Raising the breakpoint to about 1620px buys the measure back; narrowing the
         rail and aside to roughly 600px combined buys both.
       </p>
     </section>
