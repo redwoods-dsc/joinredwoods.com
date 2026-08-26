@@ -35,6 +35,7 @@ const { aside = true } = Astro.props;
 
   .global-wrap {
     position: relative;
+    anchor-name: --global-wrap;
     max-width: var(--layout-shell-max);
     margin-inline: auto;
     padding: var(--space-lg);
@@ -172,7 +173,14 @@ const { aside = true } = Astro.props;
     /* Physical bottom/right: writing-mode remaps logical insets, so logical
        props here would resolve against the rotated axis and mis-place the text. */
     bottom: var(--space-lg);
-    right: var(--space-3xs);
+    /* Anchored to the wrap's edge, not the viewport's: past --layout-shell-max
+       the two part company and a viewport inset strands the text in the gutter.
+       The plain `right` is the fallback for browsers without anchor positioning,
+       where the wrap's edge is the viewport's up to the point it stops growing.
+       The hairline gap is padding rather than an offset so both paths share it. */
+    right: 0;
+    right: anchor(--global-wrap right);
+    padding-right: var(--space-3xs);
     margin: 0;
     writing-mode: vertical-rl;
     font-size: var(--font-size-caption);
