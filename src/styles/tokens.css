@@ -33,8 +33,9 @@
 
      The scale is deliberately static: the root font-size is fixed at 1rem so
      rem stays a stable, predictable unit and tokens never compound. The one
-     responsive type change (the hero) is column-driven via a container query,
-     not baked into these tokens. See Hero.astro / Page.astro. */
+     responsive type change is the hero, which swaps between two of these
+     tokens at a viewport breakpoint rather than interpolating a token of its
+     own. See Hero.astro. */
 
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-caption: 0.8125rem; /* 13px */

@@ -15,14 +15,32 @@ const content = await inlineSlot(Astro.slots);
 <h2 class="hero" id={id} set:html={content} />
 
 <style>
-  /* One size at every width. This used to step up once the main column passed
-     640px, but the column is not monotonic — it narrows when the rail appears
-     at 850px and again when the aside splits off at 1300px — so the step fired
-     three times on the way out, and the small end was --font-size-3xl, which is
-     an h2. A single size a step above the heading scale holds either way. */
+  /* Two sizes, one step, at a viewport breakpoint rather than a container one.
+
+     This used to step up once the main *column* passed 640px, and that was
+     removed because the column is not monotonic — it narrows when the rail
+     appears at 850px and again when the aside splits off at 1300px — so the
+     step fired three times on the way out. That reasoning still holds: don't
+     put this back on a container query.
+
+     A viewport query below 850px doesn't have the problem. In the stacked
+     layout the column is just the viewport minus the wrap and card padding, so
+     the two move together and the step fires exactly once. 600px is where the
+     column reaches ~480px, which is where the homepage hero stops setting as a
+     seven-line tower and starts reading as a headline; below it, on a phone,
+     40px runs to nine lines and pushes the opening statement off the screen.
+
+     Raw px because custom properties can't be used in @media conditions — the
+     same reason the shell's 850 and 1300 are written out in Page.astro. */
   .hero {
     margin-block-start: 0;
-    font-size: var(--font-size-hero);
+    font-size: var(--font-size-2xl);
+  }
+
+  @media (min-width: 600px) {
+    .hero {
+      font-size: var(--font-size-hero);
+    }
   }
 
   /* Slotted content is not scoped to this component, so the accent has to be
