@@ -1,47 +1,30 @@
 ---
+import { getCollection } from 'astro:content';
 import EntryCard from './EntryCard.astro';
 import QuestionPromo from './QuestionPromo.astro';
 
-const articles = [
-  {
-    href: '#',
-    secondaryLabel: 'Ben Callahan',
-    primaryLabel: 'The Question Episode 057 Recap',
-    date: new Date(Date.UTC(2025, 6, 10)),
-  },
-  {
-    href: '#',
-    secondaryLabel: 'Ben Callahan, Brad Frost',
-    primaryLabel: 'The Question Episode 056 Recap',
-    date: new Date(Date.UTC(2025, 5, 27)),
-  },
-  {
-    href: '#',
-    secondaryLabel: 'Ben Callahan',
-    primaryLabel: 'Analysis vs Synthesis',
-    date: new Date(Date.UTC(2024, 2, 5)),
-  },
-];
+// The sidebar is a taster, not an index — /field-notes carries the full list.
+const MAX_ARTICLES = 3;
+
+const articles = (await getCollection('articles', (entry) => !entry.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, MAX_ARTICLES);
 ---
 
 <div class="sidebar">
   <section class="sidebar__card">
-    <h2>What we've learned</h2>
+    <h2>From the Fieldnotes</h2>
     <div class="sidebar__list">
-      {articles.map((article) => <EntryCard {...article} />)}
-    </div>
-  </section>
-  <section class="sidebar__card">
-    <h2>Where we'll be</h2>
-    <div class="sidebar__list">
-      <EntryCard
-        href="#"
-        tone="woodland"
-        secondaryLabel="Bristol, UK"
-        primaryLabel="Converge, 2025"
-        date={new Date(Date.UTC(2025, 9, 30))}
-        endDate={new Date(Date.UTC(2025, 9, 31))}
-      />
+      {
+        articles.map((article) => (
+          <EntryCard
+            href={`/field-notes/${article.id}/`}
+            secondaryLabel={article.data.authors.join(', ')}
+            primaryLabel={article.data.title}
+            date={article.data.date}
+          />
+        ))
+      }
     </div>
   </section>
   <QuestionPromo />
