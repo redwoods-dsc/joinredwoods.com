@@ -5,7 +5,7 @@ interface Props {
   secondaryLabel: string;
   date: Date;
   endDate?: Date;
-  tone?: 'surface' | 'woodland' | 'blue';
+  tone?: 'green' | 'blue';
   class?: string;
   [key: string]: unknown;
 }
@@ -16,7 +16,7 @@ const {
   secondaryLabel,
   date,
   endDate,
-  tone = 'surface',
+  tone = 'green',
   class: className,
   ...rest
 } = Astro.props;
@@ -80,40 +80,38 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 
 <style>
   .entry-card {
-    --entry-bg: var(--color-surface);
+    --entry-bg: var(--color-green);
     /* Every tone's foreground is the one that clears AA on its background —
        see the note on --color-surface-contrast in tokens.css. */
     --entry-fg: var(--color-surface-contrast);
+    /* The background actually being painted: the tone at rest, the tone
+       darkened while hovered. The date panel mixes down from this rather than
+       from --entry-bg, so it takes the same shift the rest of the card does
+       instead of sitting still and closing the step between them. */
+    --entry-bg-current: var(--entry-bg);
 
     display: flex;
     align-items: stretch;
     overflow: hidden;
     border-radius: var(--radius-md);
-    background: var(--entry-bg);
+    background: var(--entry-bg-current);
     color: var(--entry-fg);
     text-decoration: none;
     transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
-  .entry-card[data-tone='surface'] {
-    --entry-bg: var(--color-surface);
+  .entry-card[data-tone='green'] {
+    --entry-bg: var(--color-green);
     --entry-fg: var(--color-surface-contrast);
   }
 
-  .entry-card[data-tone='woodland'] {
-    --entry-bg: var(--color-woodland);
-    --entry-fg: var(--color-surface-contrast);
-  }
-
-  /* Blue is light enough that --color-text lands at 3.27:1 on the date panel,
-     so this tone reverses to black. */
   .entry-card[data-tone='blue'] {
     --entry-bg: var(--color-blue);
-    --entry-fg: var(--color-gray-00);
+    --entry-fg: var(--color-surface-contrast);
   }
 
   .entry-card:hover {
-    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 16%);
+    --entry-bg-current: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 16%);
   }
 
   /* The hover background shift is only 1.32:1 and forced-colors discards it
@@ -130,7 +128,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     gap: var(--space-3xs);
     min-width: 5rem;
     padding: var(--space-sm) var(--space-md);
-    background: color-mix(in srgb, var(--entry-bg), var(--color-gray-00) 12%);
+    background: color-mix(in srgb, var(--entry-bg-current), var(--color-gray-00) 12%);
+    transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   .entry-card__day {

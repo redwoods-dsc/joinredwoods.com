@@ -140,6 +140,24 @@ That fallback happens in the browser, because it has to. The site is statically 
 
 Both states are on the [style guide](http://localhost:4321/style-guide#question-promo) if you want to look at them side by side.
 
+## 📝 Writing a Field Note
+
+Articles are MDX files in `src/content/articles/`. The filename becomes the URL — `analysis-vs-synthesis.mdx` renders at `/field-notes/analysis-vs-synthesis/`. Frontmatter is validated against the schema in `src/content.config.ts`, so a missing or misspelled field stops the build rather than shipping a broken page:
+
+```mdx
+---
+title: 'Analysis vs Synthesis'
+date: 2026-03-05
+authors: ['Ben Callahan']
+description: 'Why the two halves of the work need different rooms.'
+draft: false
+---
+```
+
+`title`, `date` and `authors` are the only required fields; everything else has a default or is optional. Set `modifiedDate` when an edit changes the substance rather than fixing a typo, `tags` to group pieces, `image` and `imageAlt` for a custom social card (at least 1200×630, or the build stops), and `draft: true` to keep something out entirely — drafts never produce a route, so they stay out of the sitemap for free.
+
+**`tone` picks the colour of the entry card** the piece gets in the sidebar. `green` is for articles and `blue` is for news and events, so most Field Notes want `green` — which is the default, and can be left out. Only the exceptions need saying, as `tone: blue`. The schema only accepts those two, so a typo fails the build instead of quietly rendering the default card. Both are side by side on the [style guide](http://localhost:4321/style-guide#entry-card).
+
 ## 🎨 Styling
 
 We use **plain CSS** — no Tailwind, no CSS-in-JS, no Sass. Modern CSS covers everything we need and Astro compiles it with zero config.
@@ -168,7 +186,7 @@ Layers let us control the cascade without specificity wars or `!important`. One 
 
 All design decisions live in `src/styles/tokens.css` as CSS custom properties on `:root`. Components reference them with `var(--color-accent)` and similar — never hard-coded values.
 
-- **Named colors** — `--color-orange`, `--color-woodland`, `--color-green`, `--color-blue`, `--color-cream`
+- **Named colors** — `--color-orange`, `--color-green`, `--color-blue`, `--color-cream`
 - **Gray scale** — `--color-gray-00` (black) through `--color-gray-100` (white)
 - **Semantic aliases** — `--color-bg`, `--color-surface`, `--color-text`, `--color-border`, `--color-accent`, `--color-accent-contrast`, `--color-focus`
 - **Type** — `--font-sans`, `--font-serif`, `--font-mono`, plus `--font-size-*` (rem), `--font-weight-*`, `--line-height-*`
