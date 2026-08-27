@@ -645,6 +645,14 @@ const sections = [
       </div>
 
       <h3 class="subhead">Tones</h3>
+      <p>
+        The choice is editorial, not decorative: <code>green</code> is for articles,
+        <code>blue</code> is for news and events. An article carries its own in frontmatter —
+        <code>tone: blue</code> — which the collection schema validates before
+        <code>Sidebar.astro</code> hands it to the card. Leave it out and the entry is
+        <code>green</code>, so only the exceptions need saying. Outside the collection, pass the
+        prop directly.
+      </p>
       <div class="entry-card-demo">
         <EntryCard
           href="#entry-card"
@@ -657,7 +665,7 @@ const sections = [
           href="#entry-card"
           tone="blue"
           secondaryLabel="tone: blue"
-          primaryLabel="Analysis vs Synthesis"
+          primaryLabel="Converge, 2025"
           date={entryToneSample}
         />
       </div>
