@@ -168,7 +168,7 @@ Layers let us control the cascade without specificity wars or `!important`. One 
 
 All design decisions live in `src/styles/tokens.css` as CSS custom properties on `:root`. Components reference them with `var(--color-accent)` and similar — never hard-coded values.
 
-- **Named colors** — `--color-orange`, `--color-woodland`, `--color-green`, `--color-blue`, `--color-cream`
+- **Named colors** — `--color-orange`, `--color-green`, `--color-blue`, `--color-cream`
 - **Gray scale** — `--color-gray-00` (black) through `--color-gray-100` (white)
 - **Semantic aliases** — `--color-bg`, `--color-surface`, `--color-text`, `--color-border`, `--color-accent`, `--color-accent-contrast`, `--color-focus`
 - **Type** — `--font-sans`, `--font-serif`, `--font-mono`, plus `--font-size-*` (rem), `--font-weight-*`, `--line-height-*`

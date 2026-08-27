@@ -5,7 +5,7 @@ interface Props {
   secondaryLabel: string;
   date: Date;
   endDate?: Date;
-  tone?: 'surface' | 'woodland' | 'blue';
+  tone?: 'surface' | 'green' | 'blue';
   class?: string;
   [key: string]: unknown;
 }
@@ -100,8 +100,8 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
     --entry-fg: var(--color-surface-contrast);
   }
 
-  .entry-card[data-tone='woodland'] {
-    --entry-bg: var(--color-woodland);
+  .entry-card[data-tone='green'] {
+    --entry-bg: var(--color-green);
     --entry-fg: var(--color-surface-contrast);
   }
 
@@ -109,7 +109,7 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
      so this tone reverses to black. */
   .entry-card[data-tone='blue'] {
     --entry-bg: var(--color-blue);
-    --entry-fg: var(--color-gray-00);
+    --entry-fg: var(--color-surface-contrast);
   }
 
   .entry-card:hover {
