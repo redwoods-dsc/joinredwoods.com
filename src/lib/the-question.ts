@@ -15,9 +15,7 @@ export interface Question {
 
 export const PAST_EPISODES_URL = 'https://bencallahan.com/the-question';
 
-// Ben's page subscribes through an inline form rather than a standalone page,
-// so this is the closest stable target until there's a real signup URL.
-export const MAILING_LIST_URL = 'https://bencallahan.com/the-question#subscribe';
+export const MAILING_LIST_URL = 'https://bencallahan.com/the-question#signup';
 
 /**
  * A question is live until its survey closes. Deliberately the single rule the
