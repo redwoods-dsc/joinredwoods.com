@@ -87,12 +87,12 @@ const label = await inlineSlot(Astro.slots);
   }
 
   .btn[data-variant='primary'] {
-    background-color: var(--color-accent);
-    color: var(--color-accent-contrast);
+    background-color: var(--color-blue);
+    color: var(--color-surface-contrast);
   }
 
   .btn[data-variant='primary']:where(:not(:disabled, [aria-disabled='true'])):hover {
-    background-color: color-mix(in srgb, var(--color-accent) 85%, var(--color-gray-00));
+    background-color: color-mix(in srgb, var(--color-blue) 85%, var(--color-gray-00));
   }
 
   .btn[data-variant='secondary'] {

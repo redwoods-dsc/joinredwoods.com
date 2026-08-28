@@ -1,33 +1,95 @@
 ---
 layout: ../layouts/ContentPage.astro
 title: Join Redwoods
-subtitle: Membership is available monthly or yearly, and many organizations cover the cost through a training or education budget.
+subtitle: Membership is available monthly or yearly, and most members cover the cost through their organization's training or education budget.
 ---
 
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
+import Quote from '../components/Quote.astro';
+import {
+  MONTHLY_CHECKOUT_URL,
+  MONTHLY_PRICE,
+  YEARLY_CHECKOUT_URL,
+  YEARLY_PRICE,
+} from '../data/membership';
 
-**What you get:**
-
-- Daily Slack conversations
-- Weekly video calls
-- Presentation coaching
-- Co-publishing opportunities
-- Design system peer reviews
-- Member showcases
-- Research collaborations
-- Focused problem solving
-- Free access to The Redwoods Quarterly
-- Discounts to industry events and online courses
-- A Collab Figma seat
-- New friends, and much more
+The cost to join is currently {MONTHLY_PRICE} per month or {YEARLY_PRICE} per year. Once you join, you'll be locked in at that price. Membership fees are used to cover the cost of our tooling, administration of the community, and the occasional fun bit of swag.
 
 <ButtonRow>
-  <Button href="#" variant="primary">
-    Join Monthly
+  <Button href={MONTHLY_CHECKOUT_URL} size="md">
+    Join Monthly: {MONTHLY_PRICE}
   </Button>
-  <Button href="#" variant="secondary">
-    Join Yearly
+  <Button href={YEARLY_CHECKOUT_URL} size="md" variant="secondary">
+    Join Yearly: {YEARLY_PRICE}
+  </Button>
+</ButtonRow>
+
+### What membership is like
+
+Redwoods runs on a consistent but flexible rhythm. Each week has a loose structure, but we also leave room for spur-of-the-moment connections. Some folks are very active and others join in when their schedules allow. Here are the ways to show up.
+
+#### Daily
+
+We use Slack to hang out, catch up, and connect. There are channels for discussion, events, action groups, and a handful of other kinds of communication. We keep it professional, but try not to take ourselves too seriously.
+
+#### Weekly
+
+- **Standup:** Early each week, we share a success, a challenge, and what we're working on in
+  the weekly standup channel. This gives us the raw material for more intentional conversation.
+- **Weekly call:** We join a one-hour video call every Tuesday at noon Eastern. Come to as many as you like,
+  and volunteer to facilitate or demo. As we grow we'll add calls and adjust for other time zones.
+
+#### Monthly
+
+- **Take Root:** Once each month, those interested are paired with one or two other members for a low-pressure, informal chat. This is just a fun way to continue to get to know each other.
+- **All-Redwoods call:** The first Friday of each month at noon Eastern we get together on a big Zoom call. This is an opportunity to hear what's happening, meet new members, and find opportunities to get more involved. We occasionally invite an outside expert in for an AMA for these calls.
+- **Action channels:** Each month we run action channels for people who want to create something
+  together. Each action channel has a primary goal, a (roughly) 30-day deadline, and an owner. These channels co-publish
+  learnings, build tools and templates, create talks, and find other ways to share what we're learning back with the community.
+
+#### Quarterly
+
+- **The Redwoods Quarterly:** We occasionally produce an online design system event covering the
+  recent shifts in the DS space. It gives us something to work toward and a stage to share our
+  biggest takeaways. A subset of Redwoods membership presents and everyone else attends free.
+
+#### Also included
+
+- Discount codes for industry events and online courses.
+- A Collab Figma seat as part of your membership.
+- Behind-the-scenes access to [The Question](https://bencallahan.com/the-question), a live design
+  system research show.
+- Discounts on individual coaching and strategy sessions.
+- Opportunities to speak or co-publish.
+- Demos and discounts from design system tooling companies.
+
+### Is Redwoods for you?
+
+Redwoods is structured to prioritize anyone who:
+
+- Aligns with [our values](/#values)
+- Wants to grow in their craft
+- Wants to make a sustainable impact on the industry
+
+We have researchers, product managers, designers, ux-ers, developers...you name it. If you're a
+part-time design system team of one, or one of 30 systems practitioners working at enterprise scale,
+Redwoods has a place for you.
+
+Consultants and folks at product companies are welcome too, just know this is a space for mutual
+support, not sales.
+
+<Quote cite="Robin" role="Redwoods member">
+  “The community of Redwoods is made of great people from whom I've learned so much through the
+  years.”
+</Quote>
+
+<ButtonRow>
+  <Button href={MONTHLY_CHECKOUT_URL} size="md">
+    Join Monthly: {MONTHLY_PRICE}
+  </Button>
+  <Button href={YEARLY_CHECKOUT_URL} size="md" variant="secondary">
+    Join Yearly: {YEARLY_PRICE}
   </Button>
 </ButtonRow>
 
