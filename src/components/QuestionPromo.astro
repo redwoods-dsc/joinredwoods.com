@@ -20,17 +20,19 @@ const live = isLive(question);
 // Globbed rather than imported directly: a static import of a file that isn't
 // there yet is a build error, and the artwork lands separately.
 const artworkModules = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/the-question.{png,jpg,jpeg,webp,avif,svg}',
+  '../assets/_the-q-sidebar.{png,jpg,jpeg,webp,avif,svg}',
   { eager: true },
 );
 const artwork = Object.values(artworkModules)[0]?.default;
 
-const dateFmt = new Intl.DateTimeFormat('en-GB', {
+// en-US for month-then-day ("August 29"), which is how the show's own dates
+// read. UTC because the data is written in UTC — see src/data/the-question.ts.
+const dateFmt = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
   month: 'long',
   timeZone: 'UTC',
 });
-const cohosts = new Intl.ListFormat('en-GB').format(question.cohosts);
+const cohosts = new Intl.ListFormat('en-US').format(question.cohosts);
 // Formatted up here so the sentence below stays one expression per line. Left
 // as bare text around the <time> tags, Prettier reflows it and pads every
 // boundary with {' '} — and since Astro also emits a space for the line break
@@ -38,6 +40,13 @@ const cohosts = new Intl.ListFormat('en-GB').format(question.cohosts);
 // spaces of their own: the line breaks supply them, exactly one each.
 const episodeOn = dateFmt.format(question.episodeDate);
 const answerByOn = dateFmt.format(question.answerBy);
+
+// Three digits, the way the show numbers itself — "Episode 081", not 81.
+const episodeNo = (n: number) => String(n).padStart(3, '0');
+const thisEpisode = episodeNo(question.number);
+// The fallback names the episode after this one, since it only ever appears
+// once this question has closed.
+const nextEpisode = episodeNo(question.number + 1);
 ---
 
 <section
@@ -45,6 +54,16 @@ const answerByOn = dateFmt.format(question.answerBy);
   data-state={live ? 'live' : 'closed'}
   data-auto-expire={autoExpire ? '' : undefined}
 >
+  {
+    /* Both words ship when the build says live, so the head script's one-way
+      expiry can move the title to Closed without a rebuild — same reason the
+      two panels below are both in the markup. */
+  }
+  <h2 class="question-promo__title">
+    The Question is{' '}
+    {live && <span class="question-promo__status question-promo__status--open">Open</span>}
+    <span class="question-promo__status question-promo__status--closed">Closed</span>
+  </h2>
   {
     artwork && (
       // The image is the whole of this link, so its alt is the link's
@@ -63,27 +82,24 @@ const answerByOn = dateFmt.format(question.answerBy);
     )
   }
 
-  <h2 class="question-promo__title">The Question</h2>
-  <p class="question-promo__lede">
-    A collaborative learning show about design systems, and winner of Best Podcast in the 2025
-    Design System Awards.
-  </p>
-
   {
     live && (
       <div class="question-promo__live">
-        <h3 class="question-promo__question">{question.question}</h3>
+        <h3 class="question-promo__question">
+          Episode {thisEpisode}: {question.question}
+        </h3>
         <div class="question-promo__details">
-          <p class="question-promo__meta">{`Episode ${question.number} with ${cohosts}.`}</p>
           <p class="question-promo__meta">
-            {'Live on'}
-            <time datetime={question.episodeDate.toISOString()}>{episodeOn}</time>
-            {'— answer by'}
+            <i>with {cohosts}</i>
+          </p>
+          <p class="question-promo__meta">
+            {'Answer by'}
             <time datetime={question.answerBy.toISOString()}>{answerByOn}</time>
-            {'to get an invite.'}
+            {'to get your invite to the deep dive on'}
+            <time datetime={question.episodeDate.toISOString()}>{episodeOn}</time>!
           </p>
         </div>
-        <Button class="question-promo__cta" href={question.answerUrl}>
+        <Button class="question-promo__cta" href={question.answerUrl} size="lg">
           Answer The Question
         </Button>
       </div>
@@ -92,16 +108,12 @@ const answerByOn = dateFmt.format(question.answerBy);
 
   <div class="question-promo__fallback">
     <p class="question-promo__meta">
-      No question is open right now. Sign up and we'll tell you when the next one lands.
+      Never fear, Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
     </p>
-    <Button class="question-promo__cta" href={MAILING_LIST_URL}>
-      Sign up for the next episode
+    <Button class="question-promo__cta" href={MAILING_LIST_URL} size="lg">
+      Get The Question via Email
     </Button>
   </div>
-
-  <Button class="question-promo__cta" href={PAST_EPISODES_URL} variant="secondary">
-    Watch past episodes
-  </Button>
 </section>
 
 <style>
@@ -113,22 +125,23 @@ const answerByOn = dateFmt.format(question.answerBy);
   }
 
   /* Block so the anchor wraps the image tightly, and a matching radius so the
-     focus ring follows the artwork rather than the base layer's --radius-xs. */
+     focus ring follows the artwork rather than the base layer's --radius-xs.
+
+     The negative margin cancels the column gap so the panel below sits flush
+     against the artwork and the two read as one card. It lives here rather
+     than on the panels because the artwork is globbed: with no image to find,
+     nothing renders and there is no gap to cancel. */
   .question-promo__art-link {
     display: block;
-    border-radius: var(--radius-lg);
-    transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
-  }
-
-  .question-promo__art-link:hover {
-    opacity: 0.85;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    margin-block-end: calc(-1 * var(--space-sm));
   }
 
   .question-promo__art {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
 
   /* Matches the section headings in Sidebar.astro, not a page-level h2. */
@@ -137,14 +150,15 @@ const answerByOn = dateFmt.format(question.answerBy);
     margin-block: var(--space-xs) 0;
   }
 
-  .question-promo__lede {
-    margin: 0;
-  }
-
   /* base.css balances every heading, which splits a two-line question in a
-     narrow column at an awkward point. */
+     narrow column at an awkward point.
+
+     The negative bottom margin trims the panel's gap down to the one the
+     details block uses internally, so the heading and the lines under it read
+     as one group while the CTA keeps the full gap. */
   .question-promo__question {
     margin: 0;
+    margin-block-end: calc(var(--space-2xs) - var(--space-sm));
     font-size: var(--font-size-lg);
     line-height: var(--line-height-snug);
     text-wrap: wrap;
@@ -156,19 +170,21 @@ const answerByOn = dateFmt.format(question.answerBy);
     gap: var(--space-2xs);
   }
 
-  /* Only lightly muted: on the panel below, 20% transparent scrapes AA at
-     4.64:1, where 12% holds the hierarchy at a comfortable 5.6:1. */
+  /* Only lightly muted, and the panel's tint decides how far it can go: on the
+     panel below, 20% transparent drops to 4.15:1 and misses AA, where 12%
+     clears it at 4.94:1. Darkening the panel moves both numbers. */
   .question-promo__meta {
     margin: 0;
     color: color-mix(in srgb, var(--color-text), transparent 12%);
   }
 
   /* One panel shared by both states, so the deadline passing swaps content
-     without changing the card's shape.
+     without changing the card's shape. Square across the top because it butts
+     up against the artwork — the rounding there belongs to the image.
 
-     --color-gray-100 rather than --color-surface-contrast: both are white
-     today, but the latter is a foreground token, so re-theming the surface
-     light would flip this panel dark. Button.astro's secondary does the same. */
+     The same 12%-toward-black step EntryCard puts between its date block and
+     its body, mixed from --color-bg rather than picked by hand so the two stay
+     in step if the page is ever re-tinted. */
   .question-promo__live,
   .question-promo__fallback {
     display: flex;
@@ -176,9 +192,8 @@ const answerByOn = dateFmt.format(question.answerBy);
     align-items: stretch;
     gap: var(--space-sm);
     padding: var(--space-md);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-gray-100);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg), var(--color-gray-00) 12%);
   }
 
   .question-promo__cta {
@@ -186,15 +201,25 @@ const answerByOn = dateFmt.format(question.answerBy);
   }
 
   /* Expiry is one-way and decided in Layout.astro's head script, before this
-     markup is parsed, so the swap below can never be seen happening. */
-  .question-promo[data-state='live'] .question-promo__fallback {
+     markup is parsed, so the swaps below can never be seen happening. */
+  .question-promo[data-state='live'] .question-promo__fallback,
+  .question-promo[data-state='live'] .question-promo__status--closed {
     display: none;
   }
 
   :global(:root[data-question-expired])
     .question-promo[data-state='live'][data-auto-expire]
-    .question-promo__live {
+    .question-promo__live,
+  :global(:root[data-question-expired])
+    .question-promo[data-state='live'][data-auto-expire]
+    .question-promo__status--open {
     display: none;
+  }
+
+  :global(:root[data-question-expired])
+    .question-promo[data-state='live'][data-auto-expire]
+    .question-promo__status--closed {
+    display: inline;
   }
 
   :global(:root[data-question-expired])
