@@ -14,7 +14,7 @@ export const currentQuestion: Question = {
   number: 80,
   question: 'Visualizing Design System Health',
   cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
-  episodeDate: new Date('2026-09-28T16:00:00Z'),
-  answerBy: new Date('2026-08-29T21:00:00Z'),
+  episodeDate: new Date('2026-08-28T16:00:00Z'),
+  answerBy: new Date('2026-08-26T21:00:00Z'),
   answerUrl: 'https://bit.ly/4wVx4fe',
 };
