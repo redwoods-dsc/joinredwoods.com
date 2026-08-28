@@ -7,14 +7,14 @@ import type { Question } from '../lib/the-question';
 // state on its own, in the browser, without a rebuild.
 //
 // Dates are written in UTC because that is what `new Date(...)` parses
-// unambiguously. Ben runs the show on Eastern time, so convert first — the
-// trailing comments record the local time each value came from.
+// unambiguously. Ben runs the show on Eastern time, so convert before writing
+// them here — noon Eastern is 16:00Z, 5pm Eastern is 21:00Z.
 
 export const currentQuestion: Question = {
   number: 80,
-  question: 'How do we visualise design system health?',
+  question: 'Visualizing Design System Health',
   cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
-  episodeDate: new Date('2026-08-28T16:00:00Z'), // Fri 28 Aug 2026, noon Eastern
-  answerBy: new Date('2026-08-27T21:00:00Z'), // Wed 27 Aug 2026, 5pm Eastern
+  episodeDate: new Date('2026-09-28T16:00:00Z'),
+  answerBy: new Date('2026-08-29T21:00:00Z'),
   answerUrl: 'https://bit.ly/4wVx4fe',
 };
