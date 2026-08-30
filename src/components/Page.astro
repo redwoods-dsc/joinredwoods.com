@@ -73,9 +73,14 @@ const { aside = true } = Astro.props;
     background-color: var(--color-bg);
   }
 
-  .shell__aside,
   .shell__footer {
     overflow: hidden;
+  }
+
+  /* clip, not hidden, for the same reason as .shell__main below: `hidden`
+     makes this a scroll container, and the sidebar sticks inside it. */
+  .shell__aside {
+    overflow: clip;
   }
 
   .shell__main {
