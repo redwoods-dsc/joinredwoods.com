@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ContentPage from '../../../layouts/ContentPage.astro';
-import BackLink from '../../../components/BackLink.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
 export async function getStaticPaths() {
@@ -30,7 +30,9 @@ const articles = allArticles
   title={name}
   description={`Field notes written by ${name} for the Redwoods design system community.`}
 >
-  <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
+  <ArrowLink slot="breadcrumb" href="/field-notes/" size="smaller" margin="md"
+    >Back to Field Notes</ArrowLink
+  >
   <p class="bio">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
     labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco

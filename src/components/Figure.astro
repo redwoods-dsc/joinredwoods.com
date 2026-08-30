@@ -1,0 +1,32 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /* Only when the caption should say something the alt doesn't — a date, a
+     place, a credit. Leave it off and the alt becomes the caption, which is
+     what `![alt](src)` does in markdown. */
+  caption?: string;
+  /* Off for artwork that already carries its own edge — a flat ground, a drawn
+     border — where a second rule around it just reads as a double line. */
+  border?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { src, alt, caption, border = true, class: className, ...rest } = Astro.props;
+
+/* With no caption of its own the alt is displayed instead, and the image's own
+   alt is emptied: left in place a screen reader announces the same sentence
+   twice, once describing the image and once reading the caption beneath it.
+   Given both, they say different things and both are worth keeping. */
+const captionText = caption ?? alt;
+const imageAlt = caption === undefined ? '' : alt;
+---
+
+<figure class={className} data-border={border ? undefined : 'false'}>
+  <Image src={src} alt={imageAlt} format={src.format === 'svg' ? undefined : 'webp'} {...rest} />
+  {captionText && <figcaption>{captionText}</figcaption>}
+</figure>

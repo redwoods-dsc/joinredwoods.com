@@ -15,6 +15,8 @@ export interface Question {
 
 export const PAST_EPISODES_URL = 'https://bencallahan.com/the-question';
 
+export const PREVIOUS_EPISODES_URL = 'https://bencallahan.com/the-question#previous-episodes';
+
 export const MAILING_LIST_URL = 'https://bencallahan.com/the-question#signup';
 
 /**

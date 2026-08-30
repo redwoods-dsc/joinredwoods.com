@@ -83,6 +83,33 @@ img {
   height: auto;
 }
 
+/* Markdown images become figures — see rehypeFigureCaptions in astro.config.mjs.
+   The alt is emptied there and rendered here instead, so the sentence is
+   announced once rather than twice. */
+figure {
+  margin-block: var(--space-lg);
+  margin-inline: 0;
+}
+
+figure img {
+  display: block;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+/* Figure's `border={false}`. Lives here rather than in the component because
+   markdown images are turned into figures by rehype and never pass through it,
+   so both routes have to read the same rule. */
+figure[data-border='false'] img {
+  border-color: transparent;
+}
+
+figcaption {
+  margin-block-start: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: color-mix(in srgb, var(--color-text), transparent 12%);
+}
+
 ul,
 ol {
   padding-inline-start: var(--space-lg);
@@ -131,15 +158,32 @@ hr {
   margin-block: var(--space-lg);
 }
 
+/* On the resting state, not on :hover, so the ground fades out as well as in.
+   The underline isn't in the list because text-decoration is discrete — it has
+   no in-between to animate. */
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
+  transition:
+    color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
 a:hover {
   color: var(--color-focus);
   text-decoration: none;
+}
+
+/* The white ground is what carries the hover once the underline drops away.
+   Two exceptions: links that are wholly an image (the logo, the Question
+   artwork), where a panel behind the picture is just a flash of white; and
+   anything inside a <nav>, where a row of links each growing its own card
+   reads as chrome rather than emphasis. Components that paint their own hover
+   (Button, EntryCard) sit outside the layers and win regardless. */
+a:not(:has(img)):not(nav a):hover {
+  background-color: color-mix(in srgb, var(--color-gray-100) 50%, transparent);
+  border-radius: var(--radius-xs);
 }
 
 :focus-visible {

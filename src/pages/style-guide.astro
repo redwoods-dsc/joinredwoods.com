@@ -2,9 +2,11 @@
 import { Code } from 'astro:components';
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import ArrowLink from '../components/ArrowLink.astro';
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
+import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
 import Lede from '../components/Lede.astro';
@@ -58,6 +60,9 @@ const radiiSteps = ['xs', 'sm', 'md', 'lg', 'xl', 'full'];
 const buttonVariants = ['primary', 'secondary', 'ghost', 'danger'] as const;
 const buttonSizes = ['sm', 'md', 'lg'] as const;
 
+const arrowLinkMargins = ['none', 'sm', 'md', 'lg'] as const;
+const arrowLinkSizes = ['smaller', 'body', 'larger'] as const;
+
 const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 
 // Fixed dates on both sides, so these demos render the same state forever and
@@ -85,6 +90,7 @@ const sections = [
   { id: 'radii', label: 'Radii' },
   { id: 'buttons', label: 'Buttons' },
   { id: 'button-row', label: 'Button row' },
+  { id: 'arrow-link', label: 'Arrow link' },
   { id: 'hero', label: 'Hero' },
   { id: 'lede', label: 'Lede' },
   { id: 'entry-card', label: 'Entry card' },
@@ -96,6 +102,7 @@ const sections = [
   { id: 'rules', label: 'Horizontal rules' },
   { id: 'tables', label: 'Tables' },
   { id: 'images', label: 'Images' },
+  { id: 'figure', label: 'Figure' },
   { id: 'code', label: 'Code' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
@@ -434,6 +441,46 @@ const sections = [
       <Image src={trees} alt="Illustrated redwood trees" width={320} />
     </section>
 
+    <section id="figure" class="section">
+      <div class="section__head">
+        <h2>Figure</h2>
+        <p>
+          <code>&lt;Figure src alt caption /&gt;</code>. An article image with a caption under it.
+          Everything after <code>alt</code> and <code>caption</code> passes straight through to Astro's
+          <code>&lt;Image&gt;</code>, so <code>width</code>, <code>quality</code> and the rest are available
+          — which is the reason to reach for this over markdown's
+          <code>![alt](src)</code>, since that syntax takes no options at all.
+        </p>
+        <p>
+          Leave <code>caption</code> off and the <code>alt</code> is displayed as the caption, with the
+          image's own alt emptied so a screen reader reads the sentence once rather than twice. Pass both
+          when they should say different things — an alt describing what is pictured, a caption adding
+          a date or a credit — and both are kept. Markdown images get the same treatment automatically;
+          see <code>rehypeFigureCaptions</code> in
+          <code>astro.config.mjs</code>.
+        </p>
+      </div>
+
+      <h3 class="subhead">Alt as caption</h3>
+      <Figure src={trees} alt="Illustrated redwood trees" width={480} />
+
+      <h3 class="subhead">Without the border</h3>
+      <Figure
+        src={trees}
+        alt="Illustrated redwood trees, no rule around them"
+        width={480}
+        border={false}
+      />
+
+      <h3 class="subhead">Separate alt and caption</h3>
+      <Figure
+        src={trees}
+        alt="Two illustrated redwood trees against a cream ground"
+        caption="Coastal redwoods, drawn for the site header."
+        width={480}
+      />
+    </section>
+
     <section id="code" class="section">
       <div class="section__head">
         <h2>Code</h2>
@@ -548,6 +595,52 @@ const sections = [
         <Button href="#button-row" size="sm">Join Redwoods</Button>
         <Button href="#button-row" variant="secondary" size="sm">Read our values ↓</Button>
       </ButtonRow>
+    </section>
+
+    <section id="arrow-link" class="section">
+      <div class="section__head">
+        <h2>Arrow link</h2>
+        <p>
+          <code>&lt;ArrowLink href direction margin /&gt;</code>. A small text link carrying a
+          directional arrow — for stepping back out of a page, or on to a fuller list. Colour,
+          underline and hover all come from <code>base.css</code>, so it reads as a link everywhere
+          a link reads as one.
+        </p>
+        <p>
+          The arrow is <code>aria-hidden</code>, so the accessible name is the text alone.
+          <code>margin</code> takes a size and the component decides the side from
+          <code>direction</code>: a left arrow precedes what it points at and takes its space below,
+          a right arrow follows and takes its space above.
+        </p>
+      </div>
+
+      <h3 class="subhead">Direction</h3>
+      <div class="stack">
+        <ArrowLink href="#arrow-link">Back to Field Notes</ArrowLink>
+        <ArrowLink href="#arrow-link" direction="right">Read all Field Notes</ArrowLink>
+      </div>
+
+      <h3 class="subhead">Size</h3>
+      <div class="stack">
+        {
+          arrowLinkSizes.map((z) => (
+            <ArrowLink href="#arrow-link" direction="right" size={z} margin="sm">
+              size: {z}
+            </ArrowLink>
+          ))
+        }
+      </div>
+
+      <h3 class="subhead">Margin</h3>
+      <div class="stack">
+        {
+          arrowLinkMargins.map((m) => (
+            <ArrowLink href="#arrow-link" direction="right" margin={m}>
+              margin: {m}
+            </ArrowLink>
+          ))
+        }
+      </div>
     </section>
 
     <section id="hero" class="section">
@@ -1128,6 +1221,14 @@ const sections = [
 
   .cluster--baseline {
     align-items: baseline;
+  }
+
+  /* Deliberately no gap: the arrow link's own margin is what separates these,
+     which is the thing the demo is showing. */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
   }
 
   .entry-card-demo {
