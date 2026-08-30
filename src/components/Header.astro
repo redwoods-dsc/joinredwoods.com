@@ -110,16 +110,12 @@ const background = await headerBackground();
     align-self: flex-start;
   }
 
+  /* Past this the artwork fits at its own size, so the percentage cap comes off.
+     Alignment doesn't change with it — the tagline stays on the left edge the
+     logo and nav share, at every width. */
   @media (min-width: 740px) {
     .tagline {
       width: auto;
-      align-self: flex-end;
-    }
-  }
-
-  @media (min-width: 850px) {
-    .tagline {
-      align-self: flex-start;
     }
   }
 
