@@ -49,15 +49,14 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
      and locks there, so its own end is always reachable.
 
      min() picks between the two on its own. The second term is the lock line
-     for the tall case and goes negative as the sidebar outgrows the window, at
-     which point it wins; while the sidebar fits, the term stays larger than the
-     gap and the gap wins. No branch, no measuring in CSS.
+     for the tall case and goes negative exactly as the sidebar outgrows the
+     window, at which point it wins; while the sidebar fits, zero wins.
 
-     Only the top term carries a gap. Locked at the bottom the card sits flush
-     to the viewport floor, because its own --space-lg padding is already the
-     breathing room there — insetting it as well would read as double. At the
-     top the gap matches where the aside starts on an unscrolled page, so
-     nothing jumps as it takes hold.
+     Both edges lock flush, with no inset either way: the card's own --space-lg
+     padding is the breathing room, and insetting on top of it would read as
+     double. Flush at the top also means the sidebar always travels the 24px
+     the page's padding puts above it before it takes hold, rather than
+     appearing to catch before it has moved at all.
 
      It has to be `top` in both cases. A bottom inset only pulls a box up when
      it would fall below the line — it never pushes one down to hold it there,
@@ -73,7 +72,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
   @media (min-width: 1300px) {
     .sidebar {
       position: sticky;
-      top: min(var(--space-lg), calc(100dvh - var(--sidebar-height)));
+      top: min(0px, calc(100dvh - var(--sidebar-height)));
     }
   }
 
