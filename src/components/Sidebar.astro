@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import ArrowLink from './ArrowLink.astro';
 import EntryCard from './EntryCard.astro';
 import QuestionPromo from './QuestionPromo.astro';
 
@@ -13,7 +14,7 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
 
 <div class="sidebar">
   <section class="sidebar__card">
-    <h2>From the Fieldnotes</h2>
+    <h2>From the Field Notes</h2>
     <div class="sidebar__list">
       {
         articles.map((article) => (
@@ -27,6 +28,9 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
         ))
       }
     </div>
+    <ArrowLink href="/field-notes/" direction="right" size="smaller" margin="md"
+      >Read all Field Notes</ArrowLink
+    >
   </section>
   <QuestionPromo />
 </div>

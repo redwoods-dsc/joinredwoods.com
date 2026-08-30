@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentPage from '../../layouts/ContentPage.astro';
-import BackLink from '../../components/BackLink.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import { authorSlug } from '../../lib/authors';
 import { buildTocTree, countTocNodes } from '../../lib/toc';
@@ -42,7 +42,9 @@ const hasToc = TOC_ENABLED && countTocNodes(buildTocTree(headings)) >= TOC_MIN_H
   toc={hasToc}
 >
   {hasToc && <TableOfContents slot="toc" headings={headings} />}
-  <BackLink slot="breadcrumb" href="/field-notes/">Back to Field Notes</BackLink>
+  <ArrowLink slot="breadcrumb" href="/field-notes/" size="smaller" margin="md"
+    >Back to Field Notes</ArrowLink
+  >
   <div class="meta" slot="meta">
     <span class="authors">
       {

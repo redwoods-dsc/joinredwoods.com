@@ -3,6 +3,53 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
+/**
+ * Turns `![caption](image.jpg)` into a figure with the alt text as its caption,
+ * so authors keep writing plain markdown and get a captioned image.
+ *
+ * The alt is emptied on the way past. Left in place a screen reader announces
+ * the same sentence twice — once as the image's description, once as the
+ * caption sitting right below it. Only markdown images are touched: an <Image>
+ * written in MDX is JSX by the time this runs, not an `img` element.
+ */
+function rehypeFigureCaptions() {
+  return (tree) => {
+    const walk = (node) => {
+      if (!node.children) return;
+      node.children = node.children.map((child) => {
+        walk(child);
+        const isLoneImage =
+          child.type === 'element' &&
+          child.tagName === 'p' &&
+          child.children.filter((c) => c.type !== 'text' || c.value.trim()).length === 1 &&
+          child.children.some((c) => c.type === 'element' && c.tagName === 'img');
+        if (!isLoneImage) return child;
+
+        const img = child.children.find((c) => c.type === 'element' && c.tagName === 'img');
+        const caption = img.properties.alt;
+        if (!caption) return child;
+        img.properties.alt = '';
+
+        return {
+          type: 'element',
+          tagName: 'figure',
+          properties: {},
+          children: [
+            img,
+            {
+              type: 'element',
+              tagName: 'figcaption',
+              properties: {},
+              children: [{ type: 'text', value: caption }],
+            },
+          ],
+        };
+      });
+    };
+    walk(tree);
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://joinredwoods.com',
@@ -24,6 +71,7 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   markdown: {
+    rehypePlugins: [rehypeFigureCaptions],
     shikiConfig: {
       theme: 'github-light-high-contrast',
     },

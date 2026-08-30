@@ -1,0 +1,98 @@
+---
+import { inlineSlot } from '../lib/inline-slot';
+
+interface Props {
+  href: string;
+  direction?: 'left' | 'right';
+  margin?: 'none' | 'sm' | 'md' | 'lg';
+  size?: 'smaller' | 'body' | 'larger';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  direction = 'left',
+  margin = 'none',
+  size = 'body',
+  class: className,
+  ...rest
+} = Astro.props;
+
+// An anchor's content model is phrasing only, so the slot can't carry the
+// paragraph MDX wraps it in when Prettier happens to break the call across
+// lines. See inlineSlot.
+const label = await inlineSlot(Astro.slots);
+---
+
+<a
+  class:list={['arrow-link', className]}
+  href={href}
+  data-direction={direction}
+  data-margin={margin}
+  data-size={size}
+  {...rest}
+>
+  {
+    direction === 'left' && (
+      <>
+        <span aria-hidden="true">&larr;</span>{' '}
+      </>
+    )
+  }<Fragment set:html={label} />{
+    direction === 'right' && (
+      <>
+        {' '}
+        <span aria-hidden="true">&rarr;</span>
+      </>
+    )
+  }
+</a>
+
+<style>
+  /* Colour, underline and hover come from base.css. A link that reads as a link
+     everywhere else should read as one here too. */
+  .arrow-link {
+    --arrow-link-space: 0;
+
+    display: inline-block;
+    /* A flex or grid parent blockifies this and stretches it to the full column
+       — QuestionPromo's panels do exactly that. Shrink to the text instead, so
+       the link is the same width wherever it lands. Inert outside flex/grid. */
+    align-self: start;
+    font-size: var(--font-size-md);
+  }
+
+  /* Body copy by default, so a link set in a paragraph's flow matches it. The
+     two steps either side are the neighbouring type-scale sizes, not new ones. */
+  .arrow-link[data-size='smaller'] {
+    font-size: var(--font-size-sm);
+  }
+
+  .arrow-link[data-size='larger'] {
+    font-size: var(--font-size-lg);
+  }
+
+  .arrow-link[data-margin='sm'] {
+    --arrow-link-space: var(--space-sm);
+  }
+
+  .arrow-link[data-margin='md'] {
+    --arrow-link-space: var(--space-md);
+  }
+
+  .arrow-link[data-margin='lg'] {
+    --arrow-link-space: var(--space-lg);
+  }
+
+  /* A left arrow precedes what it points at, so its space belongs underneath;
+     a right arrow follows, so its space belongs above. One size prop lands on
+     the correct side without a second prop naming it. */
+  .arrow-link[data-direction='left'] {
+    margin-block-end: var(--arrow-link-space);
+  }
+
+  .arrow-link[data-direction='right'] {
+    margin-block-start: var(--arrow-link-space);
+  }
+</style>

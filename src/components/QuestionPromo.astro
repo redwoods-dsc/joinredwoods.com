@@ -1,9 +1,16 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
+import ArrowLink from './ArrowLink.astro';
 import Button from './Button.astro';
 import { currentQuestion } from '../data/the-question';
-import { isLive, MAILING_LIST_URL, PAST_EPISODES_URL, type Question } from '../lib/the-question';
+import {
+  isLive,
+  MAILING_LIST_URL,
+  PAST_EPISODES_URL,
+  PREVIOUS_EPISODES_URL,
+  type Question,
+} from '../lib/the-question';
 
 interface Props {
   question?: Question;
@@ -102,6 +109,9 @@ const nextEpisode = episodeNo(question.number + 1);
         <Button class="question-promo__cta" href={question.answerUrl} size="lg">
           Answer The Question
         </Button>
+        <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller">
+          See Previous Episodes
+        </ArrowLink>
       </div>
     )
   }
@@ -113,6 +123,9 @@ const nextEpisode = episodeNo(question.number + 1);
     <Button class="question-promo__cta" href={MAILING_LIST_URL} size="lg">
       Get The Question via Email
     </Button>
+    <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller"
+      >See Previous Episodes</ArrowLink
+    >
   </div>
 </section>
 
