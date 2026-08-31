@@ -14,7 +14,7 @@ const articles = defineCollection({
       description: z.string().optional(),
       authors: z.array(z.string()).min(1),
       tags: z.array(z.string()).default([]),
-      tone: z.enum(['green', 'blue']).default('green'),
+      tone: z.enum(['green', 'blue', 'orange']).default('green'),
       image: image().optional(),
       imageAlt: z.string().optional(),
       draft: z.boolean().default(false),

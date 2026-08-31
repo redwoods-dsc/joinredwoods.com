@@ -5,7 +5,7 @@ interface Props {
   secondaryLabel: string;
   date: Date;
   endDate?: Date;
-  tone?: 'green' | 'blue';
+  tone?: 'green' | 'blue' | 'orange';
   class?: string;
   [key: string]: unknown;
 }
@@ -108,6 +108,14 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
   .entry-card[data-tone='blue'] {
     --entry-bg: var(--color-blue);
     --entry-fg: var(--color-surface-contrast);
+  }
+
+  /* Cream rather than white, unlike the other two: --color-accent-contrast is
+     the foreground this palette already pairs with orange, in the header and
+     anywhere else the accent carries text. It clears AA here at 5.13:1. */
+  .entry-card[data-tone='orange'] {
+    --entry-bg: var(--color-accent);
+    --entry-fg: var(--color-accent-contrast);
   }
 
   .entry-card:hover {
