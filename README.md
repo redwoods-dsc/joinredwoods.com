@@ -54,10 +54,15 @@ Run everything from the project root.
 ├── public/                   # Static files copied verbatim to the build root
 │   └── favicon.svg
 ├── src/
-│   ├── assets/               # Images/media processed by Astro's asset pipeline
+│   ├── assets/               # Site-wide images/media, processed by Astro's pipeline
 │   ├── components/           # Reusable .astro components (flat hierarchy)
 │   │   ├── Button.astro
 │   │   └── Page.astro        # Global chrome — wraps every page (see Architecture)
+│   ├── content/              # Content collections
+│   │   └── field-notes/      # One directory per article, images beside it
+│   │       └── a-field-note/
+│   │           ├── images/
+│   │           └── index.mdx
 │   ├── data/                 # Hand-maintained content that isn't a page
 │   │   └── the-question.ts   # The Question — see "Updating The Question" below
 │   ├── layouts/              # Shared page shells (html, head, body, <slot />)
@@ -83,7 +88,7 @@ Astro is a static site generator. At build time, every `.astro` file in `src/pag
 - **Layouts** (`src/layouts/Layout.astro`) are page shells that supply the surrounding `<html>`, `<head>`, and `<body>`. A page imports a layout and drops its content into the layout's `<slot />`. `Home.astro` is a page-specific layout that adds the homepage header on top of `Layout`.
 - **The Page component** (`src/components/Page.astro`) is the global visual chrome that wraps every page — an outer padded frame, a rounded inner surface that holds the actual page content, and the vertical copyright mark. `Layout.astro` drops `<Page>` around its `<slot />`, so anything rendered through the default layout automatically picks up the chrome. If you ever need a full-bleed page (a landing hero, an OG image route), bypass the default layout rather than fighting the Page wrapper.
 - **Components** (`src/components/`) are reusable `.astro` fragments — buttons, cards, navigation, etc. They are server-rendered by default and ship zero JavaScript unless a [`client:*` directive](https://docs.astro.build/en/reference/directives-reference/#client-directives) is explicitly added.
-- **Assets** in `src/assets/` are optimised by Astro when imported from a component. Files in `public/` are copied to the build as-is — use this for the favicon, `robots.txt`, fonts you want to self-host, and similar static files. See `Layout.astro` for the favicon pattern.
+- **Assets** in `src/assets/` are optimised by Astro when imported from a component. That directory is for artwork the site as a whole uses — an article's own images live with the article (see [Writing a Field Note](#-writing-a-field-note)). Files in `public/` are copied to the build as-is — use this for the favicon, `robots.txt`, fonts you want to self-host, and similar static files. See `Layout.astro` for the favicon pattern.
 
 The build output in `./dist/` is fully static and can be hosted on any static host (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront, etc.).
 
@@ -142,7 +147,19 @@ Both states are on the [style guide](http://localhost:4321/style-guide#question-
 
 ## 📝 Writing a Field Note
 
-Articles are MDX files in `src/content/articles/`. The filename becomes the URL — `analysis-vs-synthesis.mdx` renders at `/field-notes/analysis-vs-synthesis/`. Frontmatter is validated against the schema in `src/content.config.ts`, so a missing or misspelled field stops the build rather than shipping a broken page:
+Each article is a directory under `src/content/field-notes/`, holding an `index.mdx` and whatever images it uses:
+
+```text
+src/content/field-notes/
+└── analysis-vs-synthesis/
+    ├── images/
+    │   └── two-rooms.jpg
+    └── index.mdx
+```
+
+The directory name becomes the URL — that one renders at `/field-notes/analysis-vs-synthesis/`. Nothing else in the directory is routed; the loader only picks up `index.mdx`, so a scratch file sitting next to an article stays a scratch file.
+
+Everything the article references is a relative path — `./images/two-rooms.jpg` in the body, in an `import`, and in the `image` frontmatter field. Astro's pipeline optimises them the same as anything in `src/assets/`, which is where artwork shared across the site still belongs. Frontmatter is validated against the schema in `src/content.config.ts`, so a missing or misspelled field stops the build rather than shipping a broken page:
 
 ```mdx
 ---

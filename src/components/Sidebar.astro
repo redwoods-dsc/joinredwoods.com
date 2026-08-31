@@ -7,7 +7,7 @@ import QuestionPromo from './QuestionPromo.astro';
 // The sidebar is a taster, not an index — /field-notes carries the full list.
 const MAX_ARTICLES = 6;
 
-const articles = (await getCollection('articles', (entry) => !entry.data.draft))
+const articles = (await getCollection('field-notes', (entry) => !entry.data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, MAX_ARTICLES);
 ---

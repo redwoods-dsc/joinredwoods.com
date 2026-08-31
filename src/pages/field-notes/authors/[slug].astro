@@ -5,7 +5,7 @@ import ArrowLink from '../../../components/ArrowLink.astro';
 import { authorSlug } from '../../../lib/authors';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles', (entry) => !entry.data.draft);
+  const articles = await getCollection('field-notes', (entry) => !entry.data.draft);
   const authorMap = new Map<string, string>();
   for (const article of articles) {
     for (const author of article.data.authors) {
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 
 const { name } = Astro.props;
 
-const allArticles = await getCollection('articles', (entry) => !entry.data.draft);
+const allArticles = await getCollection('field-notes', (entry) => !entry.data.draft);
 const articles = allArticles
   .filter((a) => a.data.authors.includes(name))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
