@@ -64,12 +64,14 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
      element's own height puts the lock where its bottom meets the viewport
      floor, which is why the script publishes a measured height.
 
-     Only from 1300px, where the aside becomes a column of its own; below that
-     it sits under main with nothing to stay alongside. The aside stretches to
-     the row's height, so this rides inside it and the cream card is unaffected.
+     Only from 1000px, where the aside becomes a column of its own; below that
+     it sits under main with nothing to stay alongside. Same number as the aside
+     column in Page.astro — move one and this has to move with it. The aside
+     stretches to the row's height, so this rides inside it and the cream card
+     is unaffected.
      Without JS --sidebar-height is absent, `top` computes to auto and the
      sidebar simply scrolls. */
-  @media (min-width: 1300px) {
+  @media (min-width: 1000px) {
     .sidebar {
       position: sticky;
       top: min(0px, calc(100dvh - var(--sidebar-height)));

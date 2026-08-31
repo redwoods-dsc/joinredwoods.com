@@ -85,5 +85,8 @@
   /* The header card is position: fixed, so it can't inherit its track's width —
      card and column both read this token so they can't drift apart. */
   --layout-rail: 350px;
+  /* The header card's short height: the floor it never drops below stacked, and
+     the exact height it takes as the band between 1000 and 1300. */
+  --layout-header-min: 360px;
   --layout-aside: 30%;
 }

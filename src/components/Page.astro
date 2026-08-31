@@ -30,11 +30,12 @@ const { aside = true } = Astro.props;
 
 <style>
   /* Breakpoints are raw px because custom properties can't be used in @media
-     conditions: 850px adds the header rail, 1300px splits the aside off.
-     1300 is a deliberate trade — the rail, aside, gaps and padding mean main
-     only clears --layout-prose-max from ~1616px, so three columns on a laptop
-     is bought at the cost of main sitting short of the measure. ~1620 buys it
-     back; narrowing the rail and aside to ~600px combined buys both. */
+     conditions: 850 adds the header rail, 1000 lies it down into a band so the
+     aside can sit beside main instead of under it, 1300 stands it back up as a
+     third column. The band is bounded on both sides, so the rail states either
+     side of it need no undoing — .98 rather than a whole pixel so no width
+     falls between two blocks. The cost of the 1300 split is documented in the
+     style guide's Layout section. */
 
   .global-wrap {
     position: relative;
@@ -104,7 +105,7 @@ const { aside = true } = Astro.props;
   }
 
   /* main, aside and footer join into one cream column: row-gap 0 so they meet flush. */
-  @media (min-width: 850px) {
+  @media (min-width: 850px) and (max-width: 999.98px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
       grid-template-areas:
@@ -128,22 +129,46 @@ const { aside = true } = Astro.props;
     }
   }
 
+  /* From here up the cards stand free in both the band and the three-column
+     state, and only the tracks under them differ. */
+  @media (min-width: 1000px) {
+    .shell {
+      gap: var(--space-lg);
+    }
+
+    .shell__main,
+    .shell__aside,
+    .shell__footer {
+      border-radius: var(--radius-xl);
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1299.98px) {
+    .shell {
+      grid-template-columns: 1fr var(--layout-aside);
+      grid-template-areas:
+        'header header'
+        'main   aside'
+        'footer footer';
+    }
+
+    /* The columns go with the area: dropping the area alone leaves a 30% track
+       holding nothing. */
+    .shell[data-aside='false'] {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'header'
+        'main'
+        'footer';
+    }
+  }
+
   @media (min-width: 1300px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
       grid-template-areas:
         'header main aside'
         'header footer footer';
-    }
-
-    .shell__main,
-    .shell__aside {
-      border-radius: var(--radius-xl);
-    }
-
-    .shell__footer {
-      margin-block-start: var(--space-lg);
-      border-radius: var(--radius-xl);
     }
 
     .shell[data-aside='false'] {

@@ -898,11 +898,20 @@ const sections = [
         <p>
           <code>&lt;Header /&gt;</code>. A single site header — the same logo, nav, and tagline
           render on every page. It's mounted once by the layout shell (see Layout below), so pages
-          never import it themselves. The trees backdrop is a background image; on tall viewports (<code
+          never import it themselves. The card has two shapes: a full-height rail at
+          850&ndash;1000px and again above 1300px, and a full-width card everywhere else &mdash;
+          stacked below 850px, spanning the grid between 1000 and 1300px. Both full-width states
+          share the same contents and stacking, and differ in three ways that all follow from the
+          extra width between 1000 and 1300px: all four corners round, because the card stands free
+          above main and aside instead of meeting them; the height pins to
+          <code>--layout-header-min</code> rather than growing with the viewport; and the artwork holds
+          the right edge, so it isn't stranded beside a slab of flat colour. The crop stays the same canopy
+          the stacked card shows. The trees backdrop is a background image; on tall viewports (<code
             >min-height: 1024px</code
           >) it anchors to the bottom of the card, and on very short ones (<code
             >max-height: 400px</code
-          >) it drops out entirely.
+          >) it drops out entirely. The band restates both axes, so on a tall window it keeps the
+          canopy rather than flipping to the trunks.
         </p>
       </div>
 
@@ -915,8 +924,9 @@ const sections = [
         <p>
           <code>&lt;Footer /&gt;</code>. A single site footer carrying the maintainer and community
           attribution. Like the header, it's mounted once by the layout shell and identical on every
-          page. In the shell it renders on the cream card surface — full-width beneath the grid at
-          desktop, and flush at the bottom of the joined column below that.
+          page. In the shell it renders on the cream card surface — a free-standing card spanning
+          the columns from 1000px up, flush at the bottom of the joined column at 850&ndash;1000px,
+          and flush at the bottom of the single stacked card below that.
         </p>
       </div>
 
@@ -1016,8 +1026,9 @@ const sections = [
           <code>.sidebar</code>), and every one of them pads with <code>--space-lg</code> — the same token
           as the shell gutter and the column gap, so the inset inside a card matches the space between
           cards. The <code>header</code> is the exception: its chrome lives on
-          <code>.header</code> because <code>position: fixed</code> at tablet must be on the element itself.
-          Pages provide <code>main</code> content (default slot); <code>header</code>,
+          <code>.header</code> because <code>position: fixed</code> in the rail states must be on the
+          element itself. Pages provide <code>main</code> content (default slot); <code>header</code
+          >,
           <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
           is <code>Sidebar.astro</code>. A page that wants the full width opts out with
           <code>&lt;Layout aside=&#123;false&#125;&gt;</code>, which drops the region from the grid
@@ -1027,8 +1038,10 @@ const sections = [
 
       <h3 class="subhead">Breakpoints</h3>
       <p>
-        Driven by two breakpoints. These are raw <code>px</code> values rather than tokens because CSS
-        custom properties cannot be used inside <code>@media</code> conditions.
+        Driven by three breakpoints. These are raw <code>px</code> values rather than tokens because CSS
+        custom properties cannot be used inside <code>@media</code> conditions. The middle state is bounded
+        at both ends (<code>1299.98px</code>, so no width falls between two blocks), which is why
+        the rail states either side of it need no unwinding.
       </p>
       <ul>
         <li>
@@ -1036,27 +1049,38 @@ const sections = [
           reading as one rounded card.
         </li>
         <li>
-          <strong>850–1300px</strong> — the header becomes the rail: a fixed-width (<code
+          <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (<code
             >--layout-rail</code
           >), full-viewport-height card pinned with
           <code>position: fixed</code>, while the right column (main + aside + footer) scrolls past
           underneath as one joined card.
         </li>
         <li>
-          <strong>&gt; 1300px</strong> — the aside leaves the joined column and becomes a third column
-          of its own (<code>--layout-aside</code>), with the footer spanning main and aside beneath
-          them. All three become free-standing rounded cards. The shell grows fluidly to
-          <code>--layout-shell-max</code>, centered beyond that.
+          <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width card
+          it is below 850px, now spanning the top of the grid, capped at
+          <code>--layout-header-min</code> and in normal flow so it scrolls with the page, and main and
+          aside sit beside it as two columns with the footer spanning both. All four are free-standing
+          rounded cards. The aside is the reason: in the joined column it takes the full width beside
+          the rail, which by 1300px is 878px — far wider than the sidebar's cards are drawn for.
+        </li>
+        <li>
+          <strong>&gt; 1300px</strong> — the rail returns, and the aside keeps its own column (<code
+            >--layout-aside</code
+          >) with the footer spanning main and aside beneath them. The shell grows fluidly to <code
+            >--layout-shell-max</code
+          >, centered beyond that.
         </li>
       </ul>
       <p>
         1300px is a deliberate trade, and the cost is worth knowing before anyone
-        <q>fixes</q> it. The rail, the aside, the column gaps and the main column's padding come to roughly
-        944px, so main only clears <code>--layout-prose-max</code> from about 1616px up. Splitting the
-        aside off at 1300px means main crosses that boundary well short of the measure — 830px down to
-        356px at the switch. That is accepted: three columns on a 1440px laptop is the shape this layout
-        is for, and a narrow-but-readable main column is the price. Raising the breakpoint to about 1620px
-        buys the measure back; narrowing the rail and aside to roughly 600px combined buys both.
+        <q>fixes</q> it. Bringing the rail back costs main its width plus a gap, so main only clears
+        <code>--layout-prose-max</code> from about 1645px up. At the switch itself main drops from 804px
+        to 430px — well short of the measure. That is accepted: three columns on a 1440px laptop is the
+        shape this layout is for, and a narrow-but-readable main column is the price. Raising the breakpoint
+        to about 1645px buys the measure back; narrowing the rail and aside to roughly 600px combined
+        buys both. The aside no longer jumps here — it is ~327px just below and ~328px just above, because
+        the band state already gives it a <code>--layout-aside</code>
+        column.
       </p>
     </section>
   </div>
@@ -1141,8 +1165,9 @@ const sections = [
     border-radius: var(--radius-xl);
   }
 
-  /* Unwind Header's tablet position: fixed so the demo lays out in flow. */
-  @media (min-width: 850px) and (max-width: 1399.98px) {
+  /* Unwind Header's fixed rail so the demo lays out in flow. Same two ranges as
+     Header.astro — between them the card is already in flow. */
+  @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
     .header-demo :global(.header) {
       position: static;
       width: auto;

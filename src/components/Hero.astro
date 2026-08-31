@@ -15,10 +15,11 @@ const content = await inlineSlot(Astro.slots);
 <h2 class="hero" id={id} set:html={content} />
 
 <style>
-  /* Not a container query: the main column isn't monotonic — it narrows when
-     the rail appears at 850px and again when the aside splits off at 1300px —
-     so sizing on the column steps the hero three times on the way out. 600px is
-     where the column reaches ~480px, under which the hero sets as seven lines. */
+  /* Not a container query: the main column isn't monotonic — it narrows when the
+     rail appears at 850px, widens again when the rail lies down at 1000px, and
+     narrows once more when the rail returns at 1300px — so sizing on the column
+     steps the hero on the way out. 600px is where the column reaches ~480px,
+     under which the hero sets as seven lines. */
   .hero {
     margin-block-start: 0;
     font-size: var(--font-size-2xl);
