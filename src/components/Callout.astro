@@ -36,6 +36,22 @@ const { tone = 'green', class: className, ...rest } = Astro.props;
     color: var(--callout-fg);
   }
 
+  /* Stacked callouts read as one run of ground, not two blocks with the page
+     showing through for a gap. Only the margins go — each keeps its own
+     padding, so the seam falls where the tones meet rather than where the
+     content does.
+
+     Both sides, because these margins collapse to the larger of the pair:
+     zeroing one alone leaves the other's 48px standing and looks like the rule
+     never matched. */
+  .callout + .callout {
+    margin-block-start: 0;
+  }
+
+  .callout:has(+ .callout) {
+    margin-block-end: 0;
+  }
+
   .callout::before {
     content: '';
     position: absolute;

@@ -85,5 +85,5 @@
   /* The header card is position: fixed, so it can't inherit its track's width —
      card and column both read this token so they can't drift apart. */
   --layout-rail: 350px;
-  --layout-aside: 450px;
+  --layout-aside: 30%;
 }

@@ -1,9 +1,22 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import Layout from './Layout.astro';
+import Note from '../components/Note.astro';
 import type { Props as SeoProps } from '../components/Seo.astro';
 
 interface Props extends SeoProps {
   subtitle?: string;
+  /* Filename of artwork in src/assets, set behind the title and off to its
+     right. A name rather than an import because a Markdown page can only hand
+     this layout frontmatter, and frontmatter can't carry a module. The title
+     stays live text either way, so its size is the type scale's rather than a
+     consequence of how wide the column happens to be. */
+  headingImage?: string;
+  /* A caveat or aside closing the intro, set apart from the subtitle. Kept out
+     of `subtitle` so it stays out of the meta description too, where a note
+     about method spends characters the search snippet needs for the subject. */
+  note?: string;
   aside?: boolean;
   toc?: boolean;
 }
@@ -12,6 +25,8 @@ interface Props extends SeoProps {
 // reports true even when the slotted element sits inside a falsy expression.
 const {
   subtitle,
+  headingImage,
+  note,
   aside = true,
   toc = false,
   // Markdown pages arrive with `layout` alongside their real frontmatter;
@@ -21,6 +36,27 @@ const {
 } = Astro.props.frontmatter ?? Astro.props;
 
 const { title } = seo;
+
+// A CSS background is invisible to the preload scanner, so it's resolved here
+// and handed to the stylesheet as a URL rather than written into it — the same
+// move header-background.ts makes for the trees.
+const artwork = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{png,jpg,jpeg,webp,avif}',
+  { eager: true },
+);
+
+function resolveHeadingArt(name: string): ImageMetadata {
+  const found = Object.entries(artwork).find(([path]) => path.endsWith(`/${name}`));
+  // Loudly, rather than rendering a title with nothing behind it: a filename
+  // that no longer resolves is a typo or a deleted file, and both should stop
+  // the build rather than quietly ship a page missing its artwork.
+  if (!found) throw new Error(`headingImage "${name}" is not in src/assets.`);
+  return found[1].default;
+}
+
+const headingArt = headingImage
+  ? await getImage({ src: resolveHeadingArt(headingImage), format: 'webp', width: 320 })
+  : undefined;
 ---
 
 <Layout {...seo} description={seo.description ?? subtitle} aside={aside}>
@@ -29,8 +65,9 @@ const { title } = seo;
       title && (
         <header class="content-page__intro">
           <slot name="breadcrumb" />
-          <h2>{title}</h2>
+          <h2 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h2>
           {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+          {note && <Note>{note}</Note>}
           {Astro.slots.has('meta') && (
             <div class="content-page__meta">
               <slot name="meta" />
@@ -84,6 +121,38 @@ const { title } = seo;
 
   .content-page .content-page__intro :global(h2) {
     margin-block-start: 0;
+  }
+
+  /* Artwork behind the title rather than in place of it, so the heading stays
+     live text at the size the type scale gives it — an <img> would have scaled
+     with the column and taken the apparent size of the title with it.
+
+     Decorative, so it belongs in CSS: there is nothing here a screen reader
+     should announce, and the h2 keeps its own text either way. The custom
+     property is only set when a page supplies one, so the rule is inert
+     elsewhere. */
+  .content-page__intro h2 {
+    --heading-art-size: 8rem;
+
+    /* The page's title is the largest thing on it, which is the role
+       --font-size-hero already names — 2.5rem, a step clear of the h2 the base
+       scale would otherwise give this. Shared rather than duplicated: a second
+       token at the same value is a pair that drifts. */
+    font-size: var(--font-size-hero);
+    display: flex;
+    align-items: center;
+    min-height: var(--heading-art-size);
+    padding-inline-end: calc(var(--heading-art-size) + var(--space-md));
+    background-image: var(--heading-art, none);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+  }
+
+  /* Nothing to reserve room for without artwork. */
+  .content-page__intro h2:not([style]) {
+    min-height: 0;
+    padding-inline-end: 0;
   }
 
   .content-page :global(h3) {

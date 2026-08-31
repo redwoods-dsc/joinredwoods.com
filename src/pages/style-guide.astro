@@ -11,6 +11,7 @@ import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
 import Lede from '../components/Lede.astro';
+import Note from '../components/Note.astro';
 import Quote from '../components/Quote.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -705,6 +706,30 @@ const sections = [
       </div>
     </section>
 
+    <section id="note" class="section">
+      <div class="section__head">
+        <h2>Note</h2>
+        <p>
+          <code>&lt;Note&gt;</code>. A caveat or aside closing a page's intro — a step larger than
+          body copy and italic, set apart from the subtitle above it. The italic comes from CSS
+          rather than an <code>&lt;em&gt;</code>: this is an aside set apart by eye, not a phrase
+          the sentence stresses, and nothing a screen reader should announce differently.
+        </p>
+        <p>
+          <code>ContentPage</code> takes a <code>note</code> string in frontmatter and renders this same
+          component, so plain sentences never touch the body. Reach for the component directly when the
+          sentence interpolates a value — frontmatter is YAML and would flatten
+          <code>{'{MONTHLY_PRICE}'}</code> into a hard-coded number. <code>src/pages/join.mdx</code> is
+          the canonical use.
+        </p>
+      </div>
+
+      <Note>
+        Anything drawn from inside Redwoods is anonymized first, out of respect for the trust that
+        makes hard conversations possible.
+      </Note>
+    </section>
+
     <section id="callout" class="section">
       <div class="section__head">
         <h2>Callout</h2>
@@ -729,24 +754,44 @@ const sections = [
         </p>
       </div>
 
-      {
-        calloutTones.map((t) => (
-          <Callout tone={t}>
-            <h3>tone: {t}</h3>
-            <p>
-              Body copy on the {t} ground, with <a href="#callout">a link</a> to show how it reads.
-            </p>
-            <ButtonRow>
-              <Button href="#callout" size="sm">
-                Primary
-              </Button>
-              <Button href="#callout" variant="secondary" size="sm">
-                Secondary
-              </Button>
-            </ButtonRow>
-          </Callout>
-        ))
-      }
+      <div class="callout-tones">
+        {
+          calloutTones.map((t) => (
+            <Callout tone={t}>
+              <h3>tone: {t}</h3>
+              <p>
+                Body copy on the {t} ground, with <a href="#callout">a link</a> to show how it
+                reads.
+              </p>
+              <ButtonRow>
+                <Button href="#callout" size="sm">
+                  Primary
+                </Button>
+                <Button href="#callout" variant="secondary" size="sm">
+                  Secondary
+                </Button>
+              </ButtonRow>
+            </Callout>
+          ))
+        }
+      </div>
+
+      <h3>Stacked</h3>
+      <p>
+        Two callouts in a row bump up against each other — the margins between them go, so the seam
+        falls where the tones meet rather than where the content does. Each keeps its own padding.
+        Both sides have to be zeroed: these margins collapse to the larger of the pair, so dropping
+        one alone leaves the other's standing and looks like the rule never matched.
+      </p>
+
+      <div class="callout-stack">
+        <Callout tone="white">
+          <p>The first of a stacked pair. Its block-end margin is zeroed.</p>
+        </Callout>
+        <Callout tone="blue">
+          <p>The second picks up flush against it, with no page ground showing through.</p>
+        </Callout>
+      </div>
     </section>
 
     <section id="entry-card" class="section">
@@ -1066,6 +1111,16 @@ const sections = [
     flex-direction: column;
     gap: var(--space-xl);
     scroll-margin-block-start: var(--space-xl);
+  }
+
+  /* .section is a flex column, so stacked callouts would keep its gap between them
+     and their own zeroed margins would show nothing. The specimens get spacing of
+     their own; the stacked pair gets a plain block parent so the margins collapse
+     the way they do in a page body. */
+  .callout-tones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
   }
 
   .header-demo {
