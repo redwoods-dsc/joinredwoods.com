@@ -95,16 +95,29 @@ const label = await inlineSlot(Astro.slots);
     background-color: color-mix(in srgb, var(--color-blue) 85%, var(--color-gray-00));
   }
 
+  /* Sits at the page colour rather than on it, so at rest the border is what
+     draws the button and the fill stays out of the way. --color-bg rather than
+     --color-cream: it should follow the page, not a particular colour.
+
+     Which puts the whole boundary on the border, so it takes gray-50 rather
+     than --color-border. That token is 1.40:1 against the page — fine for the
+     rules and separators it draws elsewhere, which 1.4.11 doesn't govern, but
+     short of the 3:1 a control's edge is asked for. gray-50 clears it on both
+     fills: 3.08:1 at rest, 3.54:1 hovered. */
   .btn[data-variant='secondary'] {
-    background-color: var(--color-gray-100);
+    background-color: var(--color-bg);
     color: var(--color-text);
-    border-color: var(--color-border);
+    border-color: var(--color-gray-50);
   }
 
+  /* Lifts off the page instead of pressing into it: the fill brightens past the
+     background rather than darkening below it, which is the direction that
+     reads as "this responds". Label contrast rises with it, 8.46:1 to 9.74:1.
+
+     No border-color here — the rule this replaced set --color-gray-75, which is
+     what --color-border already resolves to. */
   .btn[data-variant='secondary']:where(:not(:disabled, [aria-disabled='true'])):hover {
-    background-color: var(--color-gray-25);
-    color: var(--color-gray-100);
-    border-color: var(--color-gray-75);
+    background-color: var(--color-gray-100);
   }
 
   .btn[data-variant='ghost'] {
