@@ -139,6 +139,12 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-block: var(--space-md);
+  /* A table can't shrink past the sum of its columns' min-content, and the card
+     it sits in clips rather than scrolls — so on a narrow screen the last column
+     is cut off. `block` makes the table its own scroll container; it still fills
+     the column wherever there's room for it. */
+  display: block;
+  overflow-x: auto;
 }
 
 th,

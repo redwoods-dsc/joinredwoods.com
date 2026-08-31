@@ -72,6 +72,12 @@ const { aside = true } = Astro.props;
   .shell__aside,
   .shell__footer {
     background-color: var(--color-bg);
+    /* A grid item's automatic minimum is its content's min-content width unless
+       it's a scroll container, and `clip` below deliberately isn't one — so one
+       long code line was widening the whole shell past the viewport. Anything
+       that genuinely needs the room scrolls on its own; the shell doesn't grow
+       for it. */
+    min-width: 0;
   }
 
   .shell__footer {
@@ -104,10 +110,23 @@ const { aside = true } = Astro.props;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   }
 
+  /* The rail stands the full viewport whether or not the page fills it, so the
+     shell has to stand it too — otherwise a short page stops the column short
+     and leaves the page showing through beside the rail, with the fixed
+     copyright stranded in the gap. The slack goes to the row above the footer,
+     which puts the footer on the rail's bottom edge rather than sharing the
+     space out and leaving a tall empty footer card. */
+  @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
+    .shell {
+      min-height: var(--layout-rail-height);
+    }
+  }
+
   /* main, aside and footer join into one cream column: row-gap 0 so they meet flush. */
   @media (min-width: 850px) and (max-width: 999.98px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
+      grid-template-rows: auto 1fr auto;
       grid-template-areas:
         'header main'
         'header aside'
@@ -123,6 +142,7 @@ const { aside = true } = Astro.props;
     }
 
     .shell[data-aside='false'] {
+      grid-template-rows: 1fr auto;
       grid-template-areas:
         'header main'
         'header footer';
@@ -166,6 +186,7 @@ const { aside = true } = Astro.props;
   @media (min-width: 1300px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
+      grid-template-rows: 1fr auto;
       grid-template-areas:
         'header main aside'
         'header footer footer';

@@ -70,7 +70,7 @@ const background = await headerBackground();
     .header {
       position: fixed;
       width: var(--layout-rail);
-      height: calc(100dvh - 2 * var(--space-lg));
+      height: var(--layout-rail-height);
       border-radius: var(--radius-xl);
     }
   }
@@ -103,22 +103,15 @@ const background = await headerBackground();
     padding: 0;
   }
 
-  /* Stay under --layout-rail minus the card's padding, or the artwork overflows. */
+  /* Fills its box, up to --layout-rail minus the card's padding — past which the
+     artwork would overflow the rail. Alignment never changes: the tagline stays
+     on the left edge the logo and nav share, at every width. */
   .tagline {
-    width: 80%;
+    width: 100%;
     max-width: 300px;
     height: auto;
     margin-block-start: auto;
     align-self: flex-start;
-  }
-
-  /* Past this the artwork fits at its own size, so the percentage cap comes off.
-     Alignment doesn't change with it — the tagline stays on the left edge the
-     logo and nav share, at every width. */
-  @media (min-width: 740px) {
-    .tagline {
-      width: auto;
-    }
   }
 
   .nav {

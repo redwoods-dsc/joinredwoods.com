@@ -418,7 +418,9 @@ const sections = [
         <h2>Tables</h2>
         <p>
           Full-width with collapsed borders. Rows separated by <code>--color-border</code>. Styled
-          in <code>base.css</code>.
+          in <code>base.css</code>. A table can't shrink past the sum of its columns' min-content,
+          so it's its own horizontal scroll container &mdash; on a narrow screen it scrolls rather
+          than being clipped by the card around it.
         </p>
       </div>
       <table>
@@ -1071,6 +1073,14 @@ const sections = [
           >, centered beyond that.
         </li>
       </ul>
+      <p>
+        In both rail states the shell carries a <code>min-height</code> of
+        <code>--layout-rail-height</code> &mdash; the same value the rail itself stands. The rail is fixed
+        and viewport-tall whether or not the page fills it, so without this a short page stops the column
+        well above the rail's foot and leaves the page showing through beside it, with the fixed copyright
+        stranded in the gap. The slack goes to the row above the footer, so the footer lands on the rail's
+        bottom edge rather than the space being shared out into a tall empty footer card.
+      </p>
       <p>
         1300px is a deliberate trade, and the cost is worth knowing before anyone
         <q>fixes</q> it. Bringing the rail back costs main its width plus a gap, so main only clears
