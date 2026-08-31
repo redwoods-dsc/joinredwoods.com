@@ -43,6 +43,8 @@ const background = await headerBackground();
     min-height: var(--layout-header-min);
     padding: var(--space-lg);
     color: var(--color-accent-contrast);
+    --selection-bg: var(--color-accent-contrast);
+    --selection-fg: var(--color-accent);
     /* Load-bearing: the trees image is pre-composited onto this exact colour
        (see lib/header-background.ts) and only stays seamless while they match. */
     background-color: var(--color-accent);

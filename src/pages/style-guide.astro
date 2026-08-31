@@ -191,6 +191,16 @@ const sections = [
           ))
         }
       </div>
+
+      <h3 class="subhead">Selection</h3>
+      <p>
+        <code>--selection-bg</code> and <code>--selection-fg</code> are what <code>::selection</code
+        > paints with — a wash of <code>--color-focus</code> over the page's own text by default. The
+        pseudo-element inherits custom properties from the element it originates on, so a block that reverses
+        its ground sets the pair once and every selection inside it follows; the callout tones, entry
+        cards and the header each do. Select this paragraph and then some copy inside a
+        <a href="#callout">callout</a> to see the difference.
+      </p>
     </section>
 
     <section id="typography" class="section">
@@ -743,8 +753,9 @@ const sections = [
           The four coloured tones reverse what sits inside them: prose and headings inherit the
           light foreground, a quote's rule takes it instead of the accent, the button pair inverts,
           and the focus ring switches off <code>--color-focus</code> — orange on the orange tone is 1.00:1,
-          an indicator nobody can see. <code>white</code> reverses nothing, since the base styles are
-          already right.
+          an indicator nobody can see. Text selection swaps the tone's own pair too, since the page's
+          orange wash disappears on the orange tone and drops dark text onto the dark one.
+          <code>white</code> reverses nothing, since the base styles are already right.
         </p>
       </div>
 
