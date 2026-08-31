@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ArrowLink from '../components/ArrowLink.astro';
 import Button from '../components/Button.astro';
+import Callout from '../components/Callout.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
 import Figure from '../components/Figure.astro';
@@ -63,6 +64,8 @@ const buttonSizes = ['sm', 'md', 'lg'] as const;
 const arrowLinkMargins = ['none', 'sm', 'md', 'lg'] as const;
 const arrowLinkSizes = ['smaller', 'body', 'larger'] as const;
 
+const calloutTones = ['green', 'blue', 'orange', 'dark', 'white'] as const;
+
 const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 
 // Fixed dates on both sides, so these demos render the same state forever and
@@ -93,6 +96,7 @@ const sections = [
   { id: 'arrow-link', label: 'Arrow link' },
   { id: 'hero', label: 'Hero' },
   { id: 'lede', label: 'Lede' },
+  { id: 'callout', label: 'Callout' },
   { id: 'entry-card', label: 'Entry card' },
   { id: 'question-promo', label: 'The Question' },
   { id: 'links', label: 'Links' },
@@ -699,6 +703,50 @@ const sections = [
           the heading's <code>margin-block-start</code> is zeroed so the two don't stack.
         </p>
       </div>
+    </section>
+
+    <section id="callout" class="section">
+      <div class="section__head">
+        <h2>Callout</h2>
+        <p>
+          <code>&lt;Callout tone /&gt;</code>. Sets a run of body content on its own ground, filling
+          the content card edge to edge. Wrap it around whole sections in <code>.mdx</code> — headings,
+          prose, quotes and buttons all come along.
+        </p>
+        <p>
+          Only the colour reaches the card's edges; the box stays on the column so prose keeps its
+          measure. A box wide enough to reach the edge would set its text that wide too, so the
+          ground rides on a pseudo-element that overruns to the right until
+          <code>.shell__main</code>'s <code>overflow: clip</code> trims it. That clip is load-bearing
+          for this as well as for the article contents rail.
+        </p>
+        <p>
+          The four coloured tones reverse what sits inside them: prose and headings inherit the
+          light foreground, a quote's rule takes it instead of the accent, the button pair inverts,
+          and the focus ring switches off <code>--color-focus</code> — orange on the orange tone is 1.00:1,
+          an indicator nobody can see. <code>white</code> reverses nothing and is excluded from all of
+          it, since the base styles are already right there.
+        </p>
+      </div>
+
+      {
+        calloutTones.map((t) => (
+          <Callout tone={t}>
+            <h3>tone: {t}</h3>
+            <p>
+              Body copy on the {t} ground, with <a href="#callout">a link</a> to show how it reads.
+            </p>
+            <ButtonRow>
+              <Button href="#callout" size="sm">
+                Primary
+              </Button>
+              <Button href="#callout" variant="secondary" size="sm">
+                Secondary
+              </Button>
+            </ButtonRow>
+          </Callout>
+        ))
+      }
     </section>
 
     <section id="entry-card" class="section">

@@ -1,0 +1,160 @@
+---
+interface Props {
+  tone?: 'green' | 'blue' | 'orange' | 'dark' | 'white';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { tone = 'green', class: className, ...rest } = Astro.props;
+---
+
+<section class:list={['callout', className]} data-tone={tone} {...rest}>
+  <div class="callout__inner"><slot /></div>
+</section>
+
+<style>
+  /* Fills the cream card edge to edge. Left is simple — pull back the column's
+     own padding. Right can't be, because .content-page caps at the prose
+     measure while the card keeps growing, so one padding wider than the text
+     stops meaning the card's edge somewhere past 1600px.
+
+     So only the paint overruns, never the box. A box wide enough to reach the
+     card would set its prose to the same width, and at narrow widths would push
+     text out past the card to be clipped. The colour rides on a pseudo-element
+     instead, running off to the right until .shell__main's `overflow: clip`
+     trims it — exact at every width, with the text still laid out in a column
+     the card can hold.
+
+     That makes this depend on the clip: without it the overrun becomes
+     page-wide horizontal scroll. It is already load-bearing there for the
+     article's contents rail, and noted as such. */
+  .callout {
+    position: relative;
+    margin-inline: calc(-1 * var(--space-lg));
+    padding: var(--space-2xl) var(--space-lg);
+    margin-block: var(--space-2xl);
+    color: var(--callout-fg);
+  }
+
+  .callout::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 100vw;
+    background: var(--callout-bg);
+  }
+
+  /* Positioned so it paints over the background: an absolutely positioned
+     pseudo-element otherwise sits above static content whatever the DOM order. */
+  .callout__inner {
+    position: relative;
+    max-width: var(--layout-prose-max);
+  }
+
+  .callout[data-tone='green'] {
+    --callout-bg: var(--color-green);
+    --callout-fg: var(--color-surface-contrast);
+  }
+
+  .callout[data-tone='blue'] {
+    --callout-bg: var(--color-blue);
+    --callout-fg: var(--color-surface-contrast);
+  }
+
+  /* Cream on orange, the pairing this palette already uses for the accent. */
+  .callout[data-tone='orange'] {
+    --callout-bg: var(--color-accent);
+    --callout-fg: var(--color-accent-contrast);
+  }
+
+  .callout[data-tone='dark'] {
+    --callout-bg: var(--color-gray-25);
+    --callout-fg: var(--color-gray-100);
+  }
+
+  /* The quiet one. White on cream is only 1.15:1, so this reads as a lift in
+     the page rather than a block dropped into it — the text keeps its ordinary
+     colour because nothing is reversed here. */
+  .callout[data-tone='white'] {
+    --callout-bg: var(--color-gray-100);
+    --callout-fg: var(--color-text);
+  }
+
+  /* Slotted content keeps the calling page's scope, so every rule reaching into
+     it needs :global() — without it these compile to selectors that can never
+     match, and fail silently.
+
+     Headings and prose inherit the colour set above; links don't, because
+     base.css gives them one of their own. The hover ground goes with them: a
+     white panel behind pale text on a dark block inverts the emphasis. None of
+     that applies on white, where base.css's own link treatment is already
+     right — hence the exclusion rather than a second set of overrides. */
+  .callout:not([data-tone='white']) :global(a) {
+    color: inherit;
+  }
+
+  .callout:not([data-tone='white']) :global(a:hover) {
+    color: inherit;
+    background-color: color-mix(in srgb, var(--callout-fg) 20%, transparent);
+  }
+
+  /* base.css marks a quote with the accent, which is a page colour and reads as
+     an intrusion once the ground changes. */
+  .callout:not([data-tone='white']) :global(blockquote) {
+    border-inline-start-color: var(--callout-fg);
+  }
+
+  /* The pair inverts on a coloured ground: the primary becomes the light,
+     solid one and the secondary falls back to an outline of the same colour as
+     the text. Both are painted from the two tone variables, so a new tone needs
+     no button rules of its own. */
+  .callout:not([data-tone='white']) :global(.btn[data-variant='primary']) {
+    background-color: var(--callout-fg);
+    color: var(--callout-bg);
+  }
+
+  /* The ground dims only slightly and the label carries most of the shift.
+     Green and blue clear white by just 0.08, so dimming the ground alone drops
+     the label under AA — every variant tested landed between 3.2 and 4.2.
+     Moving both, 6% against 20%, leaves contrast rising into the hover rather
+     than falling: 5.70:1 at worst, from 4.58:1 at rest. */
+  .callout:not([data-tone='white'])
+    :global(.btn[data-variant='primary']:where(:not(:disabled, [aria-disabled='true'])):hover) {
+    background-color: color-mix(in srgb, var(--callout-fg), var(--color-gray-00) 6%);
+    color: color-mix(in srgb, var(--callout-bg), var(--color-gray-00) 20%);
+  }
+
+  .callout:not([data-tone='white']) :global(.btn[data-variant='secondary']) {
+    background-color: transparent;
+    color: var(--callout-fg);
+    border-color: var(--callout-fg);
+  }
+
+  /* Fills with the tone one step down rather than inverting: the same
+     12%-toward-black step EntryCard puts behind its date, so a panel lifting
+     out of a coloured ground reads the same way in both places. */
+  .callout:not([data-tone='white'])
+    :global(.btn[data-variant='secondary']:where(:not(:disabled, [aria-disabled='true'])):hover) {
+    background-color: color-mix(in srgb, var(--callout-bg), var(--color-gray-00) 12%);
+    color: var(--callout-fg);
+    border-color: var(--callout-fg);
+  }
+
+  /* --color-focus is orange, which lands at 1.00:1 on the orange tone and 1.29:1
+     on green — an indicator nobody can see. The header solves the same problem
+     the same way. */
+  .callout:not([data-tone='white']) :global(:focus-visible) {
+    outline-color: var(--callout-fg);
+  }
+
+  /* The block's padding is the space above and below its content; the first
+     heading's own margin would double it. */
+  .callout__inner > :global(:first-child) {
+    margin-block-start: 0;
+  }
+
+  .callout__inner > :global(:last-child) {
+    margin-block-end: 0;
+  }
+</style>
