@@ -87,5 +87,8 @@
      nor the shell's height. Card, track and shell read these so they can't drift. */
   --layout-rail: 350px;
   --layout-rail-height: calc(100dvh - 2 * var(--space-lg));
-  --layout-aside: 30%;
+  /* Floored because 30% of the shell is under 400px for the whole band range and
+     the sidebar's cards don't take being squeezed. Keeps the track continuous
+     across 1300, where the percentage would otherwise still be under the floor. */
+  --layout-aside: max(400px, 30%);
 }

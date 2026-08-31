@@ -1071,9 +1071,11 @@ const sections = [
       </p>
       <p>
         1300px is a deliberate trade, worth knowing before anyone <q>fixes</q> it. Bringing the rail back
-        costs main its width plus a gap, dropping it from 804px to 430px, and main only clears
+        costs main its width plus a gap, dropping it from 779px to 407px, and main only clears
         <code>--layout-prose-max</code> again from about 1645px up. Three columns on a 1440px laptop is
-        the shape this layout is for, and a narrow main column is the price.
+        the shape this layout is for, and a narrow main column is the price. The aside doesn't move:
+        <code>--layout-aside</code> is floored at 400px, which is above the percentage either side of
+        the switch.
       </p>
     </section>
   </div>
@@ -1365,8 +1367,8 @@ const sections = [
     max-width: 32rem;
   }
 
-  /* About what --layout-aside comes to on a laptop. Not the token: it's a
-     percentage, and here it would resolve against this column, not the shell. */
+  /* About what --layout-aside comes to on a laptop. Not the token: its percentage
+     would resolve against this column rather than the shell. */
   .question-promo-demo {
     max-width: 370px;
   }
