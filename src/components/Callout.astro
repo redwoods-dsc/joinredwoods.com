@@ -115,6 +115,14 @@ const { tone = 'green', class: className, ...rest } = Astro.props;
     background-color: color-mix(in srgb, var(--callout-fg) 20%, transparent);
   }
 
+  /* The page's selection wash is the accent: it disappears on the orange tone and
+     drops dark text onto the dark one. The tone's own pair can't — its ratio is the
+     one the resting text already clears. */
+  .callout:not([data-tone='white']) {
+    --selection-bg: var(--callout-fg);
+    --selection-fg: var(--callout-bg);
+  }
+
   /* base.css marks a quote with the accent, which is a page colour and reads as
      an intrusion once the ground changes. */
   .callout:not([data-tone='white']) :global(blockquote) {

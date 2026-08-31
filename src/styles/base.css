@@ -193,8 +193,8 @@ a:not(:has(img)):not(nav a):hover {
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-focus) 30%, transparent);
-  color: var(--color-text);
+  background-color: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 code,
