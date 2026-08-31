@@ -144,14 +144,12 @@ const background = await headerBackground();
     font-style: italic;
   }
 
-  /* Between the rail states the card is the stacked one, full width. max-height
-     meets the base rule's min-height, so it lands exactly there rather than
-     merely under it; the y is restated so the min-height: 1024px flip below
-     can't swap the canopy for the trunks. */
   @media (min-width: 1000px) and (max-width: 1299.98px) {
     .header {
+      /* Meets the base rule's min-height, so the card lands exactly here. */
       max-height: var(--layout-header-min);
       border-radius: var(--radius-xl);
+      /* Restated so the min-height: 1024px flip can't swap canopy for trunks. */
       background-position: right var(--space-xl);
     }
   }
