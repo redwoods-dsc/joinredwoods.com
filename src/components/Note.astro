@@ -1,0 +1,27 @@
+---
+import { inlineSlot } from '../lib/inline-slot';
+
+interface Props {
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+// A paragraph can't hold the paragraph MDX wraps block children in. See
+// inlineSlot — Button and ArrowLink guard the same way.
+const body = await inlineSlot(Astro.slots);
+---
+
+<p class:list={['note', className]} {...rest} set:html={body} />
+
+<style>
+  /* Italic from CSS rather than an <em>: an aside set apart by eye, not a
+     phrase the sentence stresses, and nothing a screen reader should announce
+     differently from the copy around it. */
+  .note {
+    margin-block-start: var(--space-md);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+  }
+</style>
