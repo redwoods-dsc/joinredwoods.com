@@ -157,9 +157,16 @@ const { aside = true } = Astro.props;
     }
 
     .shell__main,
-    .shell__aside,
     .shell__footer {
       border-radius: var(--radius-xl);
+    }
+
+    /* The aside's surface moves onto .sidebar for the same reason the header's
+       lives on .header: the card holds its own position here, and a sticky box
+       that isn't the painted one leaves its background scrolling out from under
+       it. This track just holds the space it travels in. */
+    .shell__aside {
+      background-color: transparent;
     }
   }
 

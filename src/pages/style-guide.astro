@@ -1027,10 +1027,14 @@ const sections = [
           type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>,
           <code>.sidebar</code>), and every one of them pads with <code>--space-lg</code> — the same token
           as the shell gutter and the column gap, so the inset inside a card matches the space between
-          cards. The <code>header</code> is the exception: its chrome lives on
-          <code>.header</code> because <code>position: fixed</code> in the rail states must be on the
-          element itself. Pages provide <code>main</code> content (default slot); <code>header</code
-          >,
+          cards. Two regions are exceptions, for the same underlying reason &mdash; a card that holds
+          its own position has to be the painted box, or its background scrolls out from under its contents.
+          The <code>header</code>'s chrome lives on <code>.header</code> because
+          <code>position: fixed</code> in the rail states must be on the element itself; from 1000px the
+          aside's moves to <code>.sidebar</code>, which is the sticky one, leaving
+          <code>.shell__aside</code> holding only the space it travels in. Pages provide <code
+            >main</code
+          > content (default slot); <code>header</code>,
           <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
           is <code>Sidebar.astro</code>. A page that wants the full width opts out with
           <code>&lt;Layout aside=&#123;false&#125;&gt;</code>, which drops the region from the grid
