@@ -141,10 +141,11 @@ That one call emits the title, meta description, canonical URL, the Open Graph a
 
 ## 🧪 Verification before committing
 
-Two easy things that catch almost every regression:
+Three easy things that catch almost every regression:
 
 1. **Grep for what you removed.** If your change is supposed to delete a token, class, or symbol, grep for it under `src/` before committing. Don't trust the diff alone — it only shows what changed in this session, not what's still referenced elsewhere.
-2. **`pnpm build`** must succeed. Run it before pushing.
+2. **Re-read the comments in your diff.** Every one you added: delete it if it restates the rule under it. Every one you didn't: check it's still true — a rule you changed can leave the comment above it quietly lying, which is worse than no comment at all.
+3. **`pnpm build`** must succeed. Run it before pushing.
 
 We also have Prettier configured. Run `pnpm format` if you've touched files; Prettier is the source of truth for whitespace/quotes/line-length.
 
@@ -161,6 +162,7 @@ CSS attracts commentary, and this repo has had to be weeded once already. The ba
 - **Comment the _why_, never the _what_.** `/* Drop back to two columns */` above a rule that drops back to two columns earns nothing.
 - **A comment earns its place if someone editing the rule would otherwise break something.** `.header`'s `background-color` is load-bearing because the artwork is pre-composited onto it; `overflow: clip` isn't `hidden` because `hidden` traps a sticky descendant. Those need saying. A contrast ratio that stops someone re-tinting a card through AA needs saying. How a spacing scale was arrived at does not.
 - **Not every decision needs recording.** Most of them were the obvious call at the time and will be re-made the same way. Write the ones that look like mistakes without the note.
+- **Attach it to the declaration, not the block.** A comment floating above a rule or a media query invites a summary of everything inside it; one sitting on the line it explains has to earn that line. Two notes in a block is two comments, not one paragraph.
 - **Keep it to a line or three.** If the explanation wants a paragraph, it's design rationale — it belongs in the PR description, the README, or this file, where people will actually find it.
 - **Don't leave history in the file.** Comments describing what the code used to do, or a variant that has since been deleted, are stale the moment they're written. Git remembers; the stylesheet doesn't need to.
 - **Vendored files keep their own comments.** `normalize.css` is upstream's, licence header included — don't edit it to taste.

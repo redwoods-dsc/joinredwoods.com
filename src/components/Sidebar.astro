@@ -49,14 +49,14 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
      and locks there, so its own end is always reachable.
 
      min() picks between the two on its own. The second term is the lock line
-     for the tall case and goes negative exactly as the sidebar outgrows the
-     window, at which point it wins; while the sidebar fits, zero wins.
+     for the tall case and drops below the first exactly as the sidebar outgrows
+     --layout-rail-height, at which point it wins; while the sidebar fits inside
+     that, the inset wins.
 
-     Both edges lock flush, with no inset either way: the card's own --space-lg
-     padding is the breathing room, and insetting on top of it would read as
-     double. Flush at the top also means the sidebar always travels the 24px
-     the page's padding puts above it before it takes hold, rather than
-     appearing to catch before it has moved at all.
+     Both edges inset by --space-lg, so this holds the same line the rail does.
+     That's also why the cream card is painted here rather than on .shell__aside,
+     against the rule that the shell owns the card surfaces: the sticky box has
+     to be the painted one, or the card scrolls out from under its contents.
 
      It has to be `top` in both cases. A bottom inset only pulls a box up when
      it would fall below the line — it never pushes one down to hold it there,
@@ -64,15 +64,20 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
      element's own height puts the lock where its bottom meets the viewport
      floor, which is why the script publishes a measured height.
 
-     Only from 1300px, where the aside becomes a column of its own; below that
-     it sits under main with nothing to stay alongside. The aside stretches to
-     the row's height, so this rides inside it and the cream card is unaffected.
-     Without JS --sidebar-height is absent, `top` computes to auto and the
-     sidebar simply scrolls. */
-  @media (min-width: 1300px) {
+     Only from 1000px, where the aside becomes a column of its own; below that
+     it sits under main with nothing to stay alongside. Same number as the aside
+     column in Page.astro — move one and this has to move with it. Without JS
+     --sidebar-height is absent, `top` computes to auto and this just scrolls. */
+  @media (min-width: 1000px) {
     .sidebar {
       position: sticky;
-      top: min(0px, calc(100dvh - var(--sidebar-height)));
+      top: min(var(--space-lg), calc(100dvh - var(--sidebar-height) - var(--space-lg)));
+      background-color: var(--color-bg);
+      border-radius: var(--radius-xl);
+      /* The rail's height, so the two share a bottom edge as well as a top — but
+         never taller than the track, which is all there is on a short page and
+         would clip the overflow rather than scroll it. */
+      min-height: min(100%, var(--layout-rail-height));
     }
   }
 

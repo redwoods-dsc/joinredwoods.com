@@ -88,8 +88,13 @@
   --layout-shell-max: 1800px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
-  /* The header card is position: fixed, so it can't inherit its track's width —
-     card and column both read this token so they can't drift apart. */
+  --layout-header-min: 360px;
+  /* The header card is position: fixed, so it inherits neither its track's width
+     nor the shell's height. Card, track and shell read these so they can't drift. */
   --layout-rail: 350px;
-  --layout-aside: 30%;
+  --layout-rail-height: calc(100dvh - 2 * var(--space-lg));
+  /* Floored because 30% of the shell is under 400px for the whole band range and
+     the sidebar's cards don't take being squeezed. Keeps the track continuous
+     across 1300, where the percentage would otherwise still be under the floor. */
+  --layout-aside: max(400px, 30%);
 }

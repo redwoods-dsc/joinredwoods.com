@@ -139,6 +139,10 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-block: var(--space-md);
+  /* `block` so a table too wide for its column scrolls rather than being clipped
+     by the card: it can't shrink past the sum of its columns' min-content. */
+  display: block;
+  overflow-x: auto;
 }
 
 th,

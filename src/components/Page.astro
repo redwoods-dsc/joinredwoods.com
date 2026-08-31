@@ -30,11 +30,10 @@ const { aside = true } = Astro.props;
 
 <style>
   /* Breakpoints are raw px because custom properties can't be used in @media
-     conditions: 850px adds the header rail, 1300px splits the aside off.
-     1300 is a deliberate trade — the rail, aside, gaps and padding mean main
-     only clears --layout-prose-max from ~1616px, so three columns on a laptop
-     is bought at the cost of main sitting short of the measure. ~1620 buys it
-     back; narrowing the rail and aside to ~600px combined buys both. */
+     conditions: 850 adds the rail, 1000 lies it down into a band, 1300 stands it
+     back up as a third column. The band is bounded both sides so neither rail
+     state needs undoing, .98 so no width falls between two blocks. The cost of
+     the 1300 split is in the style guide's Layout section. */
 
   .global-wrap {
     position: relative;
@@ -71,6 +70,10 @@ const { aside = true } = Astro.props;
   .shell__aside,
   .shell__footer {
     background-color: var(--color-bg);
+    /* Without this the track takes its content's min-content width: `clip` below
+       isn't a scroll container, so it doesn't zero the automatic minimum, and one
+       long code line widened the whole shell past the viewport. */
+    min-width: 0;
   }
 
   .shell__footer {
@@ -103,10 +106,20 @@ const { aside = true } = Astro.props;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   }
 
+  /* The rail is viewport-height whether the page fills it or not; without this a
+     short page leaves the page showing through beside it. The 1fr rows below put
+     the slack above the footer rather than into it. */
+  @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
+    .shell {
+      min-height: var(--layout-rail-height);
+    }
+  }
+
   /* main, aside and footer join into one cream column: row-gap 0 so they meet flush. */
-  @media (min-width: 850px) {
+  @media (min-width: 850px) and (max-width: 999.98px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
+      grid-template-rows: auto 1fr auto;
       grid-template-areas:
         'header main'
         'header aside'
@@ -122,28 +135,57 @@ const { aside = true } = Astro.props;
     }
 
     .shell[data-aside='false'] {
+      grid-template-rows: 1fr auto;
       grid-template-areas:
         'header main'
         'header footer';
     }
   }
 
-  @media (min-width: 1300px) {
+  /* From here up the cards stand free in both states; only the tracks differ. */
+  @media (min-width: 1000px) {
     .shell {
-      grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
-      grid-template-areas:
-        'header main aside'
-        'header footer footer';
+      gap: var(--space-lg);
     }
 
     .shell__main,
-    .shell__aside {
+    .shell__footer {
       border-radius: var(--radius-xl);
     }
 
-    .shell__footer {
-      margin-block-start: var(--space-lg);
-      border-radius: var(--radius-xl);
+    /* Painted on .sidebar from here, which is the sticky box — a background left
+       on this track scrolls out from under its own contents. */
+    .shell__aside {
+      background-color: transparent;
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1299.98px) {
+    .shell {
+      grid-template-columns: 1fr var(--layout-aside);
+      grid-template-areas:
+        'header header'
+        'main   aside'
+        'footer footer';
+    }
+
+    /* Columns go with the area, or a 30% track is left holding nothing. */
+    .shell[data-aside='false'] {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'header'
+        'main'
+        'footer';
+    }
+  }
+
+  @media (min-width: 1300px) {
+    .shell {
+      grid-template-columns: var(--layout-rail) 1fr var(--layout-aside);
+      grid-template-rows: 1fr auto;
+      grid-template-areas:
+        'header main aside'
+        'header footer footer';
     }
 
     .shell[data-aside='false'] {
