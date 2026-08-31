@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import ContentPage from '../../layouts/ContentPage.astro';
 import { authorSlug } from '../../lib/authors';
 
-const articles = (await getCollection('articles', (entry) => !entry.data.draft)).sort(
+const articles = (await getCollection('field-notes', (entry) => !entry.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---

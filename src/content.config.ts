@@ -2,8 +2,10 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
-const articles = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/articles' }),
+const fieldNotes = defineCollection({
+  /* One directory per article, with its images beside it. Matching only
+     index.mdx keeps a stray draft in that directory from becoming a route. */
+  loader: glob({ pattern: '**/index.mdx', base: './src/content/field-notes' }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -21,4 +23,4 @@ const articles = defineCollection({
     }),
 });
 
-export const collections = { articles };
+export const collections = { 'field-notes': fieldNotes };
