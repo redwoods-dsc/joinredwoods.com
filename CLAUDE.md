@@ -24,7 +24,7 @@ These are the ones that are easy to get wrong. Do not deviate without discussion
 - **Plain CSS only.** No Tailwind, no CSS-in-JS, no Sass. Modern CSS (custom properties, nesting, `@layer`, `color-mix()`) covers what we need.
 - **Never hard-code design values.** Always `var(--color-accent)`, never `#875231`. Always `var(--space-md)`, never `16px`. Adding a token is fine; hard-coding is not.
 - **Prefer semantic aliases** (`--color-bg`, `--color-text`, `--color-accent`) over raw palette tokens (`--color-orange`, `--color-gray-25`). Reach for raw tokens only when defining a new semantic alias.
-- **Units:** `--font-size-*` tokens are in `rem` so user scaling works; everything else (`--space-*`, `--radius-*`, `--layout-*`) is in `px`.
+- **Units:** `--font-size-*` tokens are in `rem` so user scaling works; `--space-*` and `--radius-*` are in `px`. `--layout-*` is mostly `px` too, but a token naming a grid track may be a percentage where the track should flex with the viewport — `--layout-aside` is `30%` so the sidebar narrows at the 1300px breakpoint instead of squeezing the main column.
 - **Cascade layer order** is declared once in `src/styles/global.css`: `normalize, reset, tokens, base`. Anything outside a layer (including scoped component styles) wins over anything inside, so you don't need `!important`.
 - **Don't override base element styles.** `base.css` already styles links, headings, lists, and other elements. Scoped component styles should handle layout and spacing — not re-declare colors, text-decoration, or hover states that the base layer provides. Check `/style-guide` before adding element-level styles.
 - **Do not create a shared `components.css`.** Component styles live in the component's own `<style>` block (see below). We've had to rip this out once already — don't re-introduce it.
@@ -100,13 +100,15 @@ See `src/pages/code-of-conduct.md` for the canonical example.
 
 `ContentPage` frontmatter knobs, all optional:
 
-| Key           | Default    | What it does                                                                                           |
-| ------------- | ---------- | ------------------------------------------------------------------------------------------------------ |
-| `title`       | —          | Renders the intro header. Omit it and the page opens straight into body copy.                          |
-| `subtitle`    | —          | Serif lede under the title. Ignored without a `title`.                                                 |
-| `description` | `subtitle` | Meta description. Set it when the subtitle is too short or too coy to work as a search snippet.        |
-| `noindex`     | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read. |
-| `toc`         | `false`    | Renders the `toc` slot above the body. Articles set this; standalone pages rarely need it.             |
+| Key            | Default    | What it does                                                                                                                                                                                      |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`        | —          | Renders the intro header. Omit it and the page opens straight into body copy.                                                                                                                     |
+| `subtitle`     | —          | Serif lede under the title. Ignored without a `title`.                                                                                                                                            |
+| `description`  | `subtitle` | Meta description. Set it when the subtitle is too short, too coy, or too long to work as a snippet.                                                                                               |
+| `headingImage` | —          | Filename of artwork in `src/assets`, painted behind the title and off to its right. A name, not an import — frontmatter can't carry a module. Throws at build if it doesn't resolve.              |
+| `note`         | —          | A caveat or aside closing the intro, rendered by `Note`. Kept out of `subtitle` so it stays out of the meta description. Use `<Note>` in the body instead when the sentence interpolates a value. |
+| `noindex`      | `false`    | Keeps the page out of search results. For internal references, not for pages you'd rather nobody read.                                                                                            |
+| `toc`          | `false`    | Renders the `toc` slot above the body. Articles set this; standalone pages rarely need it.                                                                                                        |
 
 Content pages carry a step more air above headings than the base scale — see the comments in `ContentPage.astro`.
 
