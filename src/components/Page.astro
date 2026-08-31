@@ -30,12 +30,10 @@ const { aside = true } = Astro.props;
 
 <style>
   /* Breakpoints are raw px because custom properties can't be used in @media
-     conditions: 850 adds the header rail, 1000 lies it down into a band so the
-     aside can sit beside main instead of under it, 1300 stands it back up as a
-     third column. The band is bounded on both sides, so the rail states either
-     side of it need no undoing — .98 rather than a whole pixel so no width
-     falls between two blocks. The cost of the 1300 split is documented in the
-     style guide's Layout section. */
+     conditions: 850 adds the rail, 1000 lies it down into a band, 1300 stands it
+     back up as a third column. The band is bounded both sides so neither rail
+     state needs undoing, .98 so no width falls between two blocks. The cost of
+     the 1300 split is in the style guide's Layout section. */
 
   .global-wrap {
     position: relative;
@@ -72,11 +70,9 @@ const { aside = true } = Astro.props;
   .shell__aside,
   .shell__footer {
     background-color: var(--color-bg);
-    /* A grid item's automatic minimum is its content's min-content width unless
-       it's a scroll container, and `clip` below deliberately isn't one — so one
-       long code line was widening the whole shell past the viewport. Anything
-       that genuinely needs the room scrolls on its own; the shell doesn't grow
-       for it. */
+    /* Without this the track takes its content's min-content width: `clip` below
+       isn't a scroll container, so it doesn't zero the automatic minimum, and one
+       long code line widened the whole shell past the viewport. */
     min-width: 0;
   }
 
@@ -110,12 +106,9 @@ const { aside = true } = Astro.props;
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   }
 
-  /* The rail stands the full viewport whether or not the page fills it, so the
-     shell has to stand it too — otherwise a short page stops the column short
-     and leaves the page showing through beside the rail, with the fixed
-     copyright stranded in the gap. The slack goes to the row above the footer,
-     which puts the footer on the rail's bottom edge rather than sharing the
-     space out and leaving a tall empty footer card. */
+  /* The rail is viewport-height whether the page fills it or not; without this a
+     short page leaves the page showing through beside it. The 1fr rows below put
+     the slack above the footer rather than into it. */
   @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
     .shell {
       min-height: var(--layout-rail-height);
@@ -149,8 +142,7 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* From here up the cards stand free in both the band and the three-column
-     state, and only the tracks under them differ. */
+  /* From here up the cards stand free in both states; only the tracks differ. */
   @media (min-width: 1000px) {
     .shell {
       gap: var(--space-lg);
@@ -161,10 +153,8 @@ const { aside = true } = Astro.props;
       border-radius: var(--radius-xl);
     }
 
-    /* The aside's surface moves onto .sidebar for the same reason the header's
-       lives on .header: the card holds its own position here, and a sticky box
-       that isn't the painted one leaves its background scrolling out from under
-       it. This track just holds the space it travels in. */
+    /* Painted on .sidebar from here, which is the sticky box — a background left
+       on this track scrolls out from under its own contents. */
     .shell__aside {
       background-color: transparent;
     }
@@ -179,8 +169,7 @@ const { aside = true } = Astro.props;
         'footer footer';
     }
 
-    /* The columns go with the area: dropping the area alone leaves a 30% track
-       holding nothing. */
+    /* Columns go with the area, or a 30% track is left holding nothing. */
     .shell[data-aside='false'] {
       grid-template-columns: 1fr;
       grid-template-areas:

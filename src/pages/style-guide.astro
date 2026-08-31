@@ -1104,8 +1104,7 @@ const sections = [
   .guide {
     max-width: var(--layout-content-max);
     margin-inline: auto;
-    /* Block only: the inline gutter is main-wrap's --space-lg, the same one every
-       other page sits inside. Padding here too would double it. */
+    /* Inline gutter comes from main-wrap; padding here too would double it. */
     padding-block: var(--space-3xl) var(--space-4xl);
     display: flex;
     flex-direction: column;
@@ -1182,7 +1181,7 @@ const sections = [
   }
 
   /* Unwind Header's fixed rail so the demo lays out in flow. Same two ranges as
-     Header.astro — between them the card is already in flow. */
+     Header.astro; between them the card is already in flow. */
   @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
     .header-demo :global(.header) {
       position: static;
@@ -1389,10 +1388,8 @@ const sections = [
     max-width: 32rem;
   }
 
-  /* Roughly the width the promo gets inside the aside on a laptop: --layout-aside
-     of the shell, less the sidebar's own padding. Not the token itself — it's a
-     percentage, and here it would resolve against this column rather than the
-     shell, which on a phone caps the promo at about 88px. */
+  /* About what --layout-aside comes to on a laptop. Not the token: it's a
+     percentage, and here it would resolve against this column, not the shell. */
   .question-promo-demo {
     max-width: 370px;
   }

@@ -82,13 +82,10 @@
   --layout-shell-max: 1800px;
   --layout-content-max: 1152px;
   --layout-prose-max: 672px;
-  /* The header card is position: fixed, so it can't inherit its track's width,
-     and it stands the shell's own height so the column beside it doesn't stop
-     short. Card, column track and shell all read these so they can't drift. */
+  --layout-header-min: 360px;
+  /* The header card is position: fixed, so it inherits neither its track's width
+     nor the shell's height. Card, track and shell read these so they can't drift. */
   --layout-rail: 350px;
   --layout-rail-height: calc(100dvh - 2 * var(--space-lg));
-  /* The header card's short height: the floor it never drops below stacked, and
-     the exact height it takes as the band between 1000 and 1300. */
-  --layout-header-min: 360px;
   --layout-aside: 30%;
 }

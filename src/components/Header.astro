@@ -63,9 +63,8 @@ const background = await headerBackground();
 
   /* The card becomes the fixed rail. Top and left fall out of the static
      position, but a fixed box shrink-to-fits, so width has to be restated —
-     from the same token the grid track reads. Two ranges rather than one: the
-     band between them is a full-width card in normal flow, and stating the rail
-     once is what stops the two halves drifting apart. */
+     from the same token the grid track reads. Stated once for two ranges: the
+     band between them is in normal flow. */
   @media (min-width: 850px) and (max-width: 999.98px), (min-width: 1300px) {
     .header {
       position: fixed;
@@ -103,9 +102,8 @@ const background = await headerBackground();
     padding: 0;
   }
 
-  /* Fills its box, up to --layout-rail minus the card's padding — past which the
-     artwork would overflow the rail. Alignment never changes: the tagline stays
-     on the left edge the logo and nav share, at every width. */
+  /* 300 is --layout-rail minus the card's padding; past it the artwork overflows
+     the rail. */
   .tagline {
     width: 100%;
     max-width: 300px;
@@ -146,16 +144,10 @@ const background = await headerBackground();
     font-style: italic;
   }
 
-  /* Between the two rail states the card keeps the shape it takes stacked, just
-     spanning the grid's full width. Three things follow from the extra width:
-     it stands free above main and aside rather than meeting them, so all four
-     corners round; capping at the same value the base rule floors at pins the
-     card exactly there, because 50vh over a card this wide is more height than
-     the contents want; and the artwork moves to the far edge, which is the only
-     way a 587px-wide image doesn't leave a slab of flat colour beside it. The y
-     is restated at the base rule's own value rather than left to inherit it:
-     the card is pinned short here, so the min-height: 1024px flip would swap
-     the canopy for the trunks on any tall window. */
+  /* Between the rail states the card is the stacked one, full width. max-height
+     meets the base rule's min-height, so it lands exactly there rather than
+     merely under it; the y is restated so the min-height: 1024px flip below
+     can't swap the canopy for the trunks. */
   @media (min-width: 1000px) and (max-width: 1299.98px) {
     .header {
       max-height: var(--layout-header-min);

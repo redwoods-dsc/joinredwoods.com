@@ -53,18 +53,10 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
      --layout-rail-height, at which point it wins; while the sidebar fits inside
      that, the inset wins.
 
-     Both edges inset by --space-lg, which is the gap the page's own padding
-     leaves between the rail and the window. The rail holds that line whatever
-     the page does, so a sidebar holding a different one reads as a mistake
-     beside it. At three columns the aside already starts on that line, so it
-     simply never moves — which is the point: the two columns that stay put
-     stay put together.
-
-     Which is also why the cream card is painted here rather than on
-     .shell__aside, against the rule that the shell owns the card surfaces: the
-     sticky box has to be the painted one. Leave the surface on the track and
-     the card scrolls out from under its own contents, running up to the window
-     edge with the inset showing as a band of empty cream.
+     Both edges inset by --space-lg, so this holds the same line the rail does.
+     That's also why the cream card is painted here rather than on .shell__aside,
+     against the rule that the shell owns the card surfaces: the sticky box has
+     to be the painted one, or the card scrolls out from under its contents.
 
      It has to be `top` in both cases. A bottom inset only pulls a box up when
      it would fall below the line — it never pushes one down to hold it there,
@@ -74,21 +66,17 @@ const articles = (await getCollection('articles', (entry) => !entry.data.draft))
 
      Only from 1000px, where the aside becomes a column of its own; below that
      it sits under main with nothing to stay alongside. Same number as the aside
-     column in Page.astro — move one and this has to move with it. The aside
-     stretches to the row's height, so this rides inside it and the cream card
-     is unaffected.
-     Without JS --sidebar-height is absent, `top` computes to auto and the
-     sidebar simply scrolls. */
+     column in Page.astro — move one and this has to move with it. Without JS
+     --sidebar-height is absent, `top` computes to auto and this just scrolls. */
   @media (min-width: 1000px) {
     .sidebar {
       position: sticky;
       top: min(var(--space-lg), calc(100dvh - var(--sidebar-height) - var(--space-lg)));
       background-color: var(--color-bg);
       border-radius: var(--radius-xl);
-      /* Stands the rail's height so the two hold the same top and bottom edge,
-         but never taller than the track it travels in — on a page too short to
-         fill the window that track is all there is, and the overflow would be
-         clipped rather than scrolled. */
+      /* The rail's height, so the two share a bottom edge as well as a top — but
+         never taller than the track, which is all there is on a short page and
+         would clip the overflow rather than scroll it. */
       min-height: min(100%, var(--layout-rail-height));
     }
   }
