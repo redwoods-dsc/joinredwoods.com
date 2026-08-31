@@ -1,6 +1,6 @@
 ---
 import { site } from '../lib/site';
-import { ogImage, ogImageSize } from '../lib/og-image';
+import { ogImage, ogImageSize, type Tone } from '../lib/og-image';
 
 export interface Props {
   /** Page title, without the site name — Seo appends it. Omit on the homepage. */
@@ -9,6 +9,8 @@ export interface Props {
   /** Social card. Falls back to the branded trees card. */
   image?: ImageMetadata;
   imageAlt?: string;
+  /** Article tone, which grounds the fallback card. Accent without one. */
+  tone?: Tone;
   type?: 'website' | 'article';
   publishedTime?: Date;
   modifiedTime?: Date;
@@ -22,6 +24,7 @@ const {
   description = site.description,
   image,
   imageAlt,
+  tone,
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -42,7 +45,7 @@ const pageTitle =
   !title || title.includes(site.titleSuffix)
     ? (title ?? site.title)
     : `${title} | ${site.titleSuffix}`;
-const card = await ogImage(image);
+const card = await ogImage(image, tone);
 const cardAlt = imageAlt ?? (image ? title : undefined) ?? site.imageAlt;
 
 const schema =
