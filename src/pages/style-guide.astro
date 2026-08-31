@@ -87,19 +87,12 @@ const questionClosedSample = {
   answerBy: new Date(Date.UTC(2020, 7, 27)),
 };
 
+// Document order, not grouped order: this list is both the jump nav and the
+// headings the two wide TableOfContents demos are fed, and that component marks
+// the section you're reading. Out of order, the marker jumps around the rail.
 const sections = [
   { id: 'colors', label: 'Colors' },
   { id: 'typography', label: 'Typography' },
-  { id: 'spacing', label: 'Spacing' },
-  { id: 'radii', label: 'Radii' },
-  { id: 'buttons', label: 'Buttons' },
-  { id: 'button-row', label: 'Button row' },
-  { id: 'arrow-link', label: 'Arrow link' },
-  { id: 'hero', label: 'Hero' },
-  { id: 'lede', label: 'Lede' },
-  { id: 'callout', label: 'Callout' },
-  { id: 'entry-card', label: 'Entry card' },
-  { id: 'question-promo', label: 'The Question' },
   { id: 'links', label: 'Links' },
   { id: 'inline', label: 'Inline formatting' },
   { id: 'lists', label: 'Lists' },
@@ -109,6 +102,17 @@ const sections = [
   { id: 'images', label: 'Images' },
   { id: 'figure', label: 'Figure' },
   { id: 'code', label: 'Code' },
+  { id: 'spacing', label: 'Spacing' },
+  { id: 'radii', label: 'Radii' },
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'button-row', label: 'Button row' },
+  { id: 'arrow-link', label: 'Arrow link' },
+  { id: 'hero', label: 'Hero' },
+  { id: 'lede', label: 'Lede' },
+  { id: 'note', label: 'Note' },
+  { id: 'callout', label: 'Callout' },
+  { id: 'entry-card', label: 'Entry card' },
+  { id: 'question-promo', label: 'The Question' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
   { id: 'toc', label: 'Table of contents' },
@@ -124,12 +128,10 @@ const sections = [
 >
   <div class="guide">
     <header class="guide__header">
-      <p class="guide__eyebrow">Redwoods</p>
       <h2>Style guide</h2>
-      <p class="guide__lede">
-        A style guide for the tokens, styles, components, and patterns that make up this site. If
-        you're making a resuable pattern for the site please add new examples here so contributors
-        always have one place to look.
+      <p class="guide__subtitle">
+        The tokens, styles, components and patterns this site is built from. Adding a reusable
+        pattern? Add an example here too, so contributors keep one place to look.
       </p>
       <nav class="guide__nav" aria-label="Sections">
         {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
@@ -140,8 +142,8 @@ const sections = [
       <div class="section__head">
         <h2>Colors</h2>
         <p>
-          Brand and gray scale palette plus semantic aliases. Use the semantic aliases wherever
-          possible; reach for the brand and gray scale palette as a last resort.
+          The brand and gray scale palettes, plus the semantic aliases. Reach for an alias wherever
+          one fits; the raw palette is a last resort.
         </p>
       </div>
 
@@ -195,13 +197,9 @@ const sections = [
       <div class="section__head">
         <h2>Typography</h2>
         <p>
-          Stack is <code>var(--font-serif)</code> for headings and <code>var(--font-sans)</code> for body
-          copy.
-        </p>
-        <p>
-          Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at <code
-            >--layout-prose-max</code
-          >.
+          <code>var(--font-serif)</code> for headings, <code>var(--font-sans)</code> for body copy. Headings
+          balance; paragraphs use <code>text-wrap: pretty</code> and cap at
+          <code>--layout-prose-max</code>.
         </p>
       </div>
 
@@ -364,10 +362,9 @@ const sections = [
           Markdown <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
         </p>
         <p>
-          The quote sets in <code>--font-serif</code> at <code>--font-size-lg</code> — a step up from
-          body copy, so it reads as a change of voice rather than indented body text. An attribution line
-          stays on the sans body scale: it is a label about the quote, not part of it, and that contrast
-          is what marks the boundary between the two.
+          The quote sets in <code>--font-serif</code> at <code>--font-size-lg</code>, a step up from
+          body copy so it reads as a change of voice rather than indented body text. An attribution
+          line stays on the sans body scale — it's a label about the quote, not part of it.
         </p>
       </div>
       <blockquote>
@@ -417,10 +414,11 @@ const sections = [
       <div class="section__head">
         <h2>Tables</h2>
         <p>
-          Full-width with collapsed borders. Rows separated by <code>--color-border</code>. Styled
-          in <code>base.css</code>. A table can't shrink past the sum of its columns' min-content,
-          so it's its own horizontal scroll container &mdash; on a narrow screen it scrolls rather
-          than being clipped by the card around it.
+          Full-width with collapsed borders, rows separated by <code>--color-border</code>. Styled
+          in
+          <code>base.css</code>. A table can't shrink past the sum of its columns' min-content, so
+          it's its own horizontal scroll container — on a narrow screen it scrolls rather than being
+          clipped by the card around it.
         </p>
       </div>
       <table>
@@ -453,16 +451,15 @@ const sections = [
         <h2>Figure</h2>
         <p>
           <code>&lt;Figure src alt caption /&gt;</code>. An article image with a caption under it.
-          Everything after <code>alt</code> and <code>caption</code> passes straight through to Astro's
+          Everything after <code>alt</code> and <code>caption</code> passes through to Astro's
           <code>&lt;Image&gt;</code>, so <code>width</code>, <code>quality</code> and the rest are available
-          — which is the reason to reach for this over markdown's
-          <code>![alt](src)</code>, since that syntax takes no options at all.
+          — the reason to reach for this over markdown's <code>![alt](src)</code>, which takes no
+          options at all.
         </p>
         <p>
-          Leave <code>caption</code> off and the <code>alt</code> is displayed as the caption, with the
-          image's own alt emptied so a screen reader reads the sentence once rather than twice. Pass both
-          when they should say different things — an alt describing what is pictured, a caption adding
-          a date or a credit — and both are kept. Markdown images get the same treatment automatically;
+          Leave <code>caption</code> off and the <code>alt</code> is shown as the caption, with the image's
+          own alt emptied so a screen reader reads the sentence once rather than twice. Pass both when
+          they should say different things and both are kept. Markdown images get the same treatment automatically;
           see <code>rehypeFigureCaptions</code> in
           <code>astro.config.mjs</code>.
         </p>
@@ -513,8 +510,8 @@ const sections = [
       <div class="section__head">
         <h2>Spacing</h2>
         <p>
-          T-shirt scale from <code>3xs</code> to <code>4xl</code>. Use for margin, padding, and gap.
-          Don't use in places where the values align coincidently.
+          T-shirt scale from <code>3xs</code> to <code>4xl</code>, for margin, padding and gap.
+          Don't reach for a step just because its value happens to match what you want.
         </p>
       </div>
       <div class="scale-list">
@@ -656,14 +653,12 @@ const sections = [
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
           <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> from 600px up, a step clear of
-          <code>--font-size-3xl</code> so the page's opening statement never matches a section heading.
-          Below 600px it drops to <code>--font-size-2xl</code>: at 40px a full hero sentence sets as
-          nine lines in a phone-width column and pushes itself off the screen. The step is a
-          viewport media query, not a container query — the main column is not monotonic (it narrows
-          when the rail appears and again when the aside splits off), so sizing on the column fired
-          the step three times across the viewport range. Wrap words in <code
-            >&lt;span class="accent"&gt;</code
-          > to pick up <code>--color-green</code>.
+          <code>--font-size-3xl</code> so a page's opening statement never matches a section heading,
+          dropping to <code>--font-size-2xl</code> below that — at 40px a full hero sentence sets as nine
+          lines on a phone. The step is a viewport media query rather than a container query: the main
+          column isn't monotonic, so sizing on the column fired the step three times across the range.
+          Wrap words in <code>&lt;span class="accent"&gt;</code> to pick up
+          <code>--color-green</code>.
         </p>
       </div>
 
@@ -678,16 +673,15 @@ const sections = [
         <h2>Lede</h2>
         <p>
           <code>&lt;Lede&gt;</code>. Wraps the opening block of a page — a headline, the copy under
-          it, and whatever closes it out. <code>base.css</code> spaces prose by adjacency, tuned for body
-          copy at the reading measure; this block runs at display size and wants a looser scale, since
-          8px under a 48px headline reads as a collision. Children step apart by
-          <code>--space-lg</code>, and a closing <code>blockquote</code> gets
+          it, and whatever closes it out. This block runs at display size and wants a looser scale
+          than the base prose rhythm, since 8px under a 48px headline reads as a collision. Children
+          step apart by <code>--space-lg</code>, and a closing <code>blockquote</code> gets
           <code>--space-xl</code> so it reads as the end of the block rather than another beat.
         </p>
         <p>
           It owns the gap below it: <code>display: flow-root</code> traps the last child's trailing margin
-          inside the block, and the block-start margin of whatever follows is zeroed. So the space under
-          a lede is one number at every width, not a collapsed pair.
+          inside the block, and the block-start margin of whatever follows is zeroed, so the space under
+          a lede is one number at every width rather than a collapsed pair.
           <code>src/pages/index.mdx</code> is the canonical use.
         </p>
       </div>
@@ -742,17 +736,15 @@ const sections = [
         </p>
         <p>
           Only the colour reaches the card's edges; the box stays on the column so prose keeps its
-          measure. A box wide enough to reach the edge would set its text that wide too, so the
-          ground rides on a pseudo-element that overruns to the right until
-          <code>.shell__main</code>'s <code>overflow: clip</code> trims it. That clip is load-bearing
-          for this as well as for the article contents rail.
+          measure. The ground rides on a pseudo-element that overruns to the right until
+          <code>.shell__main</code>'s <code>overflow: clip</code> trims it.
         </p>
         <p>
           The four coloured tones reverse what sits inside them: prose and headings inherit the
           light foreground, a quote's rule takes it instead of the accent, the button pair inverts,
           and the focus ring switches off <code>--color-focus</code> — orange on the orange tone is 1.00:1,
-          an indicator nobody can see. <code>white</code> reverses nothing and is excluded from all of
-          it, since the base styles are already right there.
+          an indicator nobody can see. <code>white</code> reverses nothing, since the base styles are
+          already right.
         </p>
       </div>
 
@@ -778,12 +770,12 @@ const sections = [
         }
       </div>
 
-      <h3>Stacked</h3>
+      <h3 class="subhead">Stacked</h3>
       <p>
-        Two callouts in a row bump up against each other — the margins between them go, so the seam
-        falls where the tones meet rather than where the content does. Each keeps its own padding.
-        Both sides have to be zeroed: these margins collapse to the larger of the pair, so dropping
-        one alone leaves the other's standing and looks like the rule never matched.
+        Two callouts in a row bump up against each other, so the seam falls where the tones meet
+        rather than where the content does. Each keeps its own padding. Both margins have to be
+        zeroed: they collapse to the larger of the pair, so dropping one alone leaves the other
+        standing and looks like the rule never matched.
       </p>
 
       <div class="callout-stack">
@@ -877,13 +869,12 @@ const sections = [
           says which, and the artwork links to past episodes in both states.
         </p>
         <p>
-          It reads <code>src/data/the-question.ts</code> by default, which is the only file that changes
-          when a new question goes live — there is no step to take one down. Because the site is statically
-          built and nothing rebuilds it the moment a survey closes, the deadline is re-checked in the
-          browser by an inline script in the document head, which can only ever move the card from open
-          to closed. Deciding it there rather than beside the markup is what stops a closed question flashing
-          on screen. Pass <code>question</code> explicitly — as the two demos below do — to render a fixed
-          state that ignores all of that.
+          It reads <code>src/data/the-question.ts</code> by default — the only file that changes when
+          a new question goes live, with no step needed to take one down. Since nothing rebuilds the site
+          the moment a survey closes, the deadline is re-checked by an inline script in the document head,
+          which can only ever move the card from open to closed; running it there rather than beside the
+          markup is what stops a closed question flashing on screen. Pass
+          <code>question</code> explicitly, as the demos below do, to pin a fixed state instead.
         </p>
       </div>
 
@@ -898,22 +889,16 @@ const sections = [
       <div class="section__head">
         <h2>Header</h2>
         <p>
-          <code>&lt;Header /&gt;</code>. A single site header — the same logo, nav, and tagline
-          render on every page. It's mounted once by the layout shell (see Layout below), so pages
-          never import it themselves. The card has two shapes: a full-height rail at
-          850&ndash;1000px and again above 1300px, and a full-width card everywhere else &mdash;
-          stacked below 850px, spanning the grid between 1000 and 1300px. Both full-width states
-          share the same contents and stacking, and differ in three ways that all follow from the
-          extra width between 1000 and 1300px: all four corners round, because the card stands free
-          above main and aside instead of meeting them; the height pins to
-          <code>--layout-header-min</code> rather than growing with the viewport; and the artwork holds
-          the right edge, so it isn't stranded beside a slab of flat colour. The crop stays the same canopy
-          the stacked card shows. The trees backdrop is a background image; on tall viewports (<code
+          <code>&lt;Header /&gt;</code>. The site logo, nav and tagline. Mounted once by the layout
+          shell, so pages never import it themselves. It takes two shapes: a full-height rail at
+          850&ndash;1000px and above 1300px, and a full-width card everywhere else — see Layout for
+          what each breakpoint does.
+        </p>
+        <p>
+          The trees are a background image, anchored to the bottom of the card on tall viewports (<code
             >min-height: 1024px</code
-          >) it anchors to the bottom of the card, and on very short ones (<code
-            >max-height: 400px</code
-          >) it drops out entirely. The band restates both axes, so on a tall window it keeps the
-          canopy rather than flipping to the trunks.
+          >). The 1000&ndash;1300px band restates its position so that flip can't swap the canopy
+          for the trunks.
         </p>
       </div>
 
@@ -1020,25 +1005,25 @@ const sections = [
         <h2>Layout</h2>
         <p>
           Every page uses one responsive shell of four regions — <code>header</code>,
-          <code>main</code>, <code>aside</code>, and <code>footer</code> — owned by
-          <code>Page.astro</code>. The <code>.shell__*</code> wrappers own the card surface — grid placement,
-          the breakpoint-dependent join <code>border-radius</code>, the cream fill, and clipping —
-          because only the shell knows where each card sits in the grid. Content styling (padding,
-          type) lives on the inner elements (<code>.main-wrap</code>, <code>.footer</code>,
-          <code>.sidebar</code>), and every one of them pads with <code>--space-lg</code> — the same token
-          as the shell gutter and the column gap, so the inset inside a card matches the space between
-          cards. Two regions are exceptions, for the same underlying reason &mdash; a card that holds
-          its own position has to be the painted box, or its background scrolls out from under its contents.
-          The <code>header</code>'s chrome lives on <code>.header</code> because
-          <code>position: fixed</code> in the rail states must be on the element itself; from 1000px the
-          aside's moves to <code>.sidebar</code>, which is the sticky one, leaving
-          <code>.shell__aside</code> holding only the space it travels in. Pages provide <code
-            >main</code
-          > content (default slot); <code>header</code>,
-          <code>aside</code>, and <code>footer</code> are global and identical on every page. The aside
-          is <code>Sidebar.astro</code>. A page that wants the full width opts out with
+          <code>main</code>, <code>aside</code> and <code>footer</code> — owned by
+          <code>Page.astro</code>. Pages provide <code>main</code> content through the default slot; the
+          other three are global and identical everywhere, the aside being
+          <code>Sidebar.astro</code>. A page wanting the full width opts out with
           <code>&lt;Layout aside=&#123;false&#125;&gt;</code>, which drops the region from the grid
-          entirely rather than leaving an empty card — this page is the only one that does.
+          rather than leaving an empty card — this page is the only one that does.
+        </p>
+        <p>
+          The <code>.shell__*</code> wrappers own the card surface — grid placement, the join
+          <code>border-radius</code>, the cream fill and clipping — since only the shell knows where
+          each card sits. Content styling lives on the inner elements (<code>.main-wrap</code>,
+          <code>.footer</code>, <code>.sidebar</code>), each padding with <code>--space-lg</code>,
+          the same token as the shell gutter and column gap, so the inset inside a card matches the
+          space between cards.
+        </p>
+        <p>
+          <code>.header</code> and <code>.sidebar</code> are the exceptions, and for one reason: a card
+          that holds its own position has to be the painted box, or its background scrolls out from under
+          its contents.
         </p>
       </div>
 
@@ -1079,22 +1064,16 @@ const sections = [
       </ul>
       <p>
         In both rail states the shell carries a <code>min-height</code> of
-        <code>--layout-rail-height</code> &mdash; the same value the rail itself stands. The rail is fixed
-        and viewport-tall whether or not the page fills it, so without this a short page stops the column
-        well above the rail's foot and leaves the page showing through beside it, with the fixed copyright
-        stranded in the gap. The slack goes to the row above the footer, so the footer lands on the rail's
-        bottom edge rather than the space being shared out into a tall empty footer card.
+        <code>--layout-rail-height</code>, the height the rail itself stands. The rail is fixed and
+        viewport-tall whether the page fills it or not, so without this a short page leaves the page
+        showing through beside it. The slack goes to the row above the footer, so the footer lands
+        on the rail's bottom edge rather than growing into a tall empty card.
       </p>
       <p>
-        1300px is a deliberate trade, and the cost is worth knowing before anyone
-        <q>fixes</q> it. Bringing the rail back costs main its width plus a gap, so main only clears
-        <code>--layout-prose-max</code> from about 1645px up. At the switch itself main drops from 804px
-        to 430px — well short of the measure. That is accepted: three columns on a 1440px laptop is the
-        shape this layout is for, and a narrow-but-readable main column is the price. Raising the breakpoint
-        to about 1645px buys the measure back; narrowing the rail and aside to roughly 600px combined
-        buys both. The aside no longer jumps here — it is ~327px just below and ~328px just above, because
-        the band state already gives it a <code>--layout-aside</code>
-        column.
+        1300px is a deliberate trade, worth knowing before anyone <q>fixes</q> it. Bringing the rail back
+        costs main its width plus a gap, dropping it from 804px to 430px, and main only clears
+        <code>--layout-prose-max</code> again from about 1645px up. Three columns on a 1440px laptop is
+        the shape this layout is for, and a narrow main column is the price.
       </p>
     </section>
   </div>
@@ -1104,11 +1083,9 @@ const sections = [
   .guide {
     max-width: var(--layout-content-max);
     margin-inline: auto;
-    /* Inline gutter comes from main-wrap; padding here too would double it. */
-    padding-block: var(--space-3xl) var(--space-4xl);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4xl);
+    gap: var(--space-3xl);
   }
 
   .guide__header {
@@ -1117,16 +1094,16 @@ const sections = [
     gap: var(--space-md);
   }
 
-  .guide__eyebrow {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-accent);
+  /* Same treatment a content page's title gets: --font-size-hero, and no margin
+     above it, so the page opens on main-wrap's gutter like every other page. */
+  .guide__header h2 {
+    font-size: var(--font-size-hero);
+    margin-block: 0;
   }
 
-  .guide__lede {
-    color: var(--color-text);
+  .guide__subtitle {
+    font-size: var(--font-size-xl);
+    font-family: var(--font-serif);
     max-width: var(--layout-prose-max);
   }
 
