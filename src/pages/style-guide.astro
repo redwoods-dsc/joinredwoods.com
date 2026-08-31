@@ -1100,7 +1100,9 @@ const sections = [
   .guide {
     max-width: var(--layout-content-max);
     margin-inline: auto;
-    padding: var(--space-3xl) var(--space-lg) var(--space-4xl);
+    /* Block only: the inline gutter is main-wrap's --space-lg, the same one every
+       other page sits inside. Padding here too would double it. */
+    padding-block: var(--space-3xl) var(--space-4xl);
     display: flex;
     flex-direction: column;
     gap: var(--space-4xl);
@@ -1383,9 +1385,12 @@ const sections = [
     max-width: 32rem;
   }
 
-  /* The width the aside gets once it has its own column. */
+  /* Roughly the width the promo gets inside the aside on a laptop: --layout-aside
+     of the shell, less the sidebar's own padding. Not the token itself — it's a
+     percentage, and here it would resolve against this column rather than the
+     shell, which on a phone caps the promo at about 88px. */
   .question-promo-demo {
-    max-width: var(--layout-aside);
+    max-width: 370px;
   }
 
   .link-list {
