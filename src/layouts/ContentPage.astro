@@ -191,10 +191,19 @@ const headingArt = headingImage
     }
 
     .content-page__body > :global(.lede),
-    .content-page__body > :global(blockquote),
-    .content-page__body :global(.lede) > :global(.hero),
-    .content-page__body :global(.lede) > :global(blockquote) {
+    .content-page__body :global(.lede) > :global(.hero) {
       max-width: none;
+    }
+
+    /* The quoted text holds the same measure as the prose; only the rule and
+       its padding sit outside it, hanging into the slack on the start side. */
+    .content-page__body > :global(blockquote),
+    .content-page__body :global(.lede) > :global(blockquote) {
+      --quote-rule-hang: calc(var(--quote-rule-width) + var(--space-md));
+
+      max-width: calc(var(--layout-prose-max) + var(--quote-rule-hang));
+      margin-inline-start: calc((100% - var(--layout-prose-max)) / 2 - var(--quote-rule-hang));
+      margin-inline-end: auto;
     }
 
     /* The callout already paints past the column on its own; only its text
