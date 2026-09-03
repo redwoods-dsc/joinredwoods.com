@@ -106,7 +106,7 @@ const nextEpisode = episodeNo(question.number + 1);
             <time datetime={question.episodeDate.toISOString()}>{episodeOn}</time>!
           </p>
         </div>
-        <Button class="question-promo__cta" href={question.answerUrl} size="lg">
+        <Button class="question-promo__cta" href={question.answerUrl} size="md">
           Answer The Question
         </Button>
         <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller">
@@ -120,7 +120,7 @@ const nextEpisode = episodeNo(question.number + 1);
     <p class="question-promo__meta">
       Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
     </p>
-    <Button class="question-promo__cta" href={MAILING_LIST_URL} size="lg">
+    <Button class="question-promo__cta" href={MAILING_LIST_URL} size="md">
       Get The Question via Email
     </Button>
     <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller"
