@@ -24,7 +24,7 @@ const background = await headerBackground();
         <li><NavLink href="/" exact>Home</NavLink></li>
         <li><NavLink href="/field-notes/">Field Notes</NavLink></li>
         <li class="nav-break">—</li>
-        <li class="nav-join"><NavLink href="/join" class="join-link">Join</NavLink></li>
+        <li><NavLink href="/join" class="join-link">Join</NavLink></li>
       </ul>
     </nav>
     <img
@@ -121,12 +121,6 @@ const background = await headerBackground();
 
   .nav-break {
     padding-inline-start: var(--space-xs);
-  }
-
-  /* On the list item: the anchor is inline, and vertical margins don't apply
-     to an inline box. */
-  .nav-join {
-    margin-block-start: var(--space-lg);
   }
 
   /* NavLink renders the anchor, so it carries that component's hash rather
