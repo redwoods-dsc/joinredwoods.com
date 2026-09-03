@@ -57,9 +57,11 @@ export default defineConfig({
     mdx(),
     /* Auto-discovers every built page, which means draft articles are already
        excluded — they never produce a route. The style guide is an internal
-       reference, so it stays out here as well as carrying `noindex`. */
+       reference, so it stays out here as well as carrying `noindex`. Author
+       pages are out for a different reason: nothing links to them, and they
+       carry only a name and a list the Field Notes index already shows. */
     sitemap({
-      filter: (page) => !page.includes('/style-guide'),
+      filter: (page) => !page.includes('/style-guide') && !page.includes('/field-notes/authors/'),
     }),
   ],
   build: {
