@@ -1,6 +1,10 @@
 ---
 interface Props {
   href: string;
+  /* Off by default so a section link stays current on its children —
+     /field-notes/ keeps the mark while an article is open. Set it on a href
+     that every path starts with, like "/", where the prefix match is always
+     true and would otherwise mark Home current everywhere. */
   exact?: boolean;
   class?: string;
 }
@@ -16,37 +20,28 @@ const isCurrent = exact ? pathname === href : pathname.startsWith(href);
 </a>
 
 <style>
-  /* Use :global() to apply styles to the <a> element rendered by this component */
-  :global(.nav) {
-    a {
-      border-radius: var(--radius-sm);
-      color: var(--color-accent-contrast);
-      font-family: var(--font-serif);
-      font-weight: var(--font-weight-semibold);
-      line-height: 1;
-      padding: 0 var(--space-xs);
-      text-decoration: none;
-    }
+  /* The anchor is this component's own root, so it carries the scope hash and
+     these rules reach it unaided. Anything styling the <li> around it belongs
+     to Header, which owns that markup. */
+  a {
+    border-radius: var(--radius-sm);
+    color: var(--color-accent-contrast);
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    padding: 0 var(--space-xs);
+    text-decoration: none;
+  }
 
-    a:hover {
-      background-color: var(--color-gray-alpha-72);
-    }
+  a:hover {
+    background-color: var(--color-gray-alpha-72);
+  }
 
-    a:focus-visible {
-      outline-color: var(--color-accent-contrast);
-    }
+  a:focus-visible {
+    outline-color: var(--color-accent-contrast);
+  }
 
-    a[aria-current='page'] {
-      background-color: var(--color-gray-alpha-56);
-    }
-
-    .nav-break {
-      padding-left: var(--space-xs);
-    }
-
-    .join-link {
-      font-style: italic;
-      margin-top: var(--space-lg);
-    }
+  a[aria-current='page'] {
+    background-color: var(--color-gray-alpha-56);
   }
 </style>
