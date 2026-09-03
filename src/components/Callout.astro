@@ -102,17 +102,25 @@ const { tone = 'green', class: className, ...rest } = Astro.props;
      match, and fail silently.
 
      Headings and prose inherit the colour set above; links don't, because
-     base.css gives them one of their own. The hover ground goes with them: a
-     white panel behind pale text on a dark block inverts the emphasis. None of
-     that applies on white, where base.css's own link treatment is already
-     right — hence the exclusion rather than a second set of overrides. */
+     base.css gives them one of their own. On white that colour is already
+     right, hence the exclusion rather than a second set of overrides — the
+     hover below is the one thing every tone shares. */
   .callout:not([data-tone='white']) :global(a) {
     color: inherit;
   }
 
   .callout:not([data-tone='white']) :global(a:hover) {
     color: inherit;
-    background-color: color-mix(in srgb, var(--callout-fg) 20%, transparent);
+  }
+
+  /* Down a step, not up: a light wash behind a link lifted it off a dark block
+     and read as the ground falling away. The same 12%-toward-black the
+     secondary button takes, and EntryCard puts behind its date.
+
+     Every tone, white included — there base.css paints half-opaque white on
+     white, which is no hover at all. */
+  .callout :global(a:hover) {
+    background-color: color-mix(in srgb, var(--callout-bg), var(--color-gray-00) 12%);
   }
 
   /* The page's selection wash is the accent: it disappears on the orange tone and
