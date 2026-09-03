@@ -207,6 +207,13 @@ const headingArt = headingImage
       text-wrap: unset;
     }
 
+    /* An auto inline margin computes to zero on an inline-level box, so the
+       rule above caps an arrow link's width without moving it and it sits on
+       the column's edge, a slack's width clear of the prose. Offset by hand. */
+    .content-page__body > :global(.arrow-link) {
+      margin-inline-start: calc((100% - var(--layout-prose-max)) / 2);
+    }
+
     /* The quoted text holds the same measure as the prose; only the rule and
        its padding sit outside it, hanging into the slack on the start side. */
     .content-page__body > :global(blockquote),
