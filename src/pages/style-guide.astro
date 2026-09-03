@@ -37,6 +37,8 @@ const brand = [
 
 const grayScale = ['00', '25', '50', '75', '100'];
 
+const alpha = ['56', '72'];
+
 const semanticColors = [
   { name: 'bg', token: '--color-bg' },
   { name: 'surface', token: '--color-surface' },
@@ -171,6 +173,21 @@ const sections = [
               <div class="swatch__meta">
                 <span class="swatch__name">gray-{step}</span>
                 <code class="swatch__token">--color-gray-{step}</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="subhead">Alpha</h3>
+      <div class="swatches">
+        {
+          alpha.map((step) => (
+            <div class="swatch" style={`--swatch: var(--color-gray-alpha-${step})`}>
+              <div class="swatch__color" />
+              <div class="swatch__meta">
+                <span class="swatch__name">gray-alpha-{step}</span>
+                <code class="swatch__token">--color-gray-alpha-{step}</code>
               </div>
             </div>
           ))

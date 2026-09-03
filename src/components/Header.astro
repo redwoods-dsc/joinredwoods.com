@@ -2,6 +2,7 @@
 import redwoodsLogo from '../assets/redwoods-logo-white.svg';
 import tagline from '../assets/tagline-white.svg';
 import { headerBackground } from '../lib/header-background';
+import NavLink from '../components/NavLink.astro';
 
 const background = await headerBackground();
 ---
@@ -20,10 +21,10 @@ const background = await headerBackground();
     </h1>
     <nav class="nav" role="navigation">
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/field-notes/">Field Notes</a></li>
-        <li>-</li>
-        <li><a class="join-link" href="/join">Join</a></li>
+        <li><NavLink href="/" exact>Home</NavLink></li>
+        <li><NavLink href="/field-notes/">Field Notes</NavLink></li>
+        <li class="nav-break">—</li>
+        <li><NavLink href="/join" class="join-link">Join</NavLink></li>
       </ul>
     </nav>
     <img
@@ -104,18 +105,10 @@ const background = await headerBackground();
     padding: 0;
   }
 
-  /* 300 is --layout-rail minus the card's padding; past it the artwork overflows
-     the rail. */
-  .tagline {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    margin-block-start: auto;
-    align-self: flex-start;
-  }
-
+  /* nav link styles are in NavLink.astro */
   .nav {
     font-size: var(--font-size-md);
+    margin-left: calc(var(--space-xs) * -1);
   }
 
   .nav ul {
@@ -126,24 +119,18 @@ const background = await headerBackground();
     list-style: none;
   }
 
-  .nav a {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-accent-contrast);
-    text-decoration: none;
+  /* 300 is --layout-rail minus the card's padding; past it the artwork overflows
+     the rail. */
+  .tagline {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-block-start: auto;
+    align-self: flex-start;
   }
 
-  .nav a:hover {
-    text-decoration: underline;
-  }
-
-  .logo:focus-visible,
-  .nav a:focus-visible {
+  .logo:focus-visible {
     outline-color: var(--color-accent-contrast);
-  }
-
-  .join-link {
-    font-style: italic;
   }
 
   @media (min-width: 1000px) and (max-width: 1299.98px) {
