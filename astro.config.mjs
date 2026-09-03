@@ -62,6 +62,18 @@ export default defineConfig({
       filter: (page) => !page.includes('/style-guide'),
     }),
   ],
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        // The header trees are the only thing that asks the pipeline for PNG,
+        // and they're a duotone, so quantising them is free of banding. It's
+        // what keeps the flat area on --color-accent to the byte — see
+        // lib/header-background.ts.
+        png: { palette: true, quality: 60, colours: 64, dither: 0.5 },
+      },
+    },
+  },
   build: {
     // The page stylesheet is the only render-blocking request left, and at
     // ~4.7 KiB gzipped it costs more as a round trip than it does inline:
