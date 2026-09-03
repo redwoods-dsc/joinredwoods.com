@@ -59,7 +59,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <link
       rel="preload"
       as="image"
-      type="image/webp"
+      type={`image/${background.options.format}`}
       href={background.src}
       fetchpriority="high"
       media="(min-height: 401px)"
