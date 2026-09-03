@@ -52,7 +52,7 @@ function rehypeFigureCaptions() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://joinredwoods-com.pages.dev',
+  site: 'https://joinredwoods.com',
   integrations: [
     mdx(),
     /* Auto-discovers every built page, which means draft articles are already
