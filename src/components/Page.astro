@@ -51,7 +51,10 @@ const { aside = true } = Astro.props;
       'main'
       'aside'
       'footer';
-    gap: 0;
+    column-gap: var(--space-lg);
+    /* Header and main meet flush here, so the space below main can't come from
+       the grid — it's carried by the two cards that stand free instead. */
+    row-gap: 0;
   }
 
   /* Without dropping the area, the track still renders as an empty cream card. */
@@ -70,10 +73,16 @@ const { aside = true } = Astro.props;
   .shell__aside,
   .shell__footer {
     background-color: var(--color-bg);
+    border-radius: var(--radius-xl);
     /* Without this the track takes its content's min-content width: `clip` below
        isn't a scroll container, so it doesn't zero the automatic minimum, and one
        long code line widened the whole shell past the viewport. */
     min-width: 0;
+  }
+
+  .shell__aside,
+  .shell__footer {
+    margin-block-start: var(--space-lg);
   }
 
   .shell__footer {
@@ -88,6 +97,8 @@ const { aside = true } = Astro.props;
 
   .shell__main {
     grid-area: main;
+    /* Closes the join under the header. */
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     /* clip, not hidden: `hidden` makes this a scroll container and traps the
        article's sticky table of contents in a box that never scrolls. */
     overflow: clip;
@@ -103,7 +114,15 @@ const { aside = true } = Astro.props;
 
   .shell__footer {
     grid-area: footer;
-    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  /* The header stands free in all three states above the join, so the cards
+     below it go back to taking their space from the grid. */
+  @media (min-width: 850px) {
+    .shell__aside,
+    .shell__footer {
+      margin-block-start: 0;
+    }
   }
 
   /* The rail is viewport-height whether the page fills it or not; without this a
@@ -115,7 +134,10 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* main, aside and footer join into one cream column: row-gap 0 so they meet flush. */
+  /* The one state where main, aside and footer join into a single cream column:
+     row-gap 0 so they meet flush, and only the outer corners of the join keep a
+     radius — rounding a seam takes a bite out of the column and exposes the page
+     behind it. */
   @media (min-width: 850px) and (max-width: 999.98px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
@@ -128,10 +150,16 @@ const { aside = true } = Astro.props;
       row-gap: 0;
     }
 
-    /* Bottom corners stay square to meet the aside flush; rounding them takes
-       a bite out of the column and exposes the page behind the seam. */
     .shell__main {
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .shell__aside {
+      border-radius: 0;
+    }
+
+    .shell__footer {
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     }
 
     .shell[data-aside='false'] {
@@ -142,14 +170,12 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* From here up the cards stand free in both states; only the tracks differ. */
   @media (min-width: 1000px) {
     .shell {
-      gap: var(--space-lg);
+      row-gap: var(--space-lg);
     }
 
-    .shell__main,
-    .shell__footer {
+    .shell__main {
       border-radius: var(--radius-xl);
     }
 

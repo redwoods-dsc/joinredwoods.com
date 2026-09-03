@@ -1024,7 +1024,7 @@ const sections = [
           rather than leaving an empty card — this page is the only one that does.
         </p>
         <p>
-          The <code>.shell__*</code> wrappers own the card surface — grid placement, the join
+          The <code>.shell__*</code> wrappers own the card surface — grid placement, the
           <code>border-radius</code>, the cream fill and clipping — since only the shell knows where
           each card sits. Content styling lives on the inner elements (<code>.main-wrap</code>,
           <code>.footer</code>, <code>.sidebar</code>), each padding with <code>--space-lg</code>,
@@ -1047,15 +1047,18 @@ const sections = [
       </p>
       <ul>
         <li>
-          <strong>&lt; 850px</strong> — single column: header, main, aside, and footer stacked and flush,
-          reading as one rounded card.
+          <strong>&lt; 850px</strong> — single column: the header and main meet flush as one card, with
+          the aside and the footer standing free beneath it a <code>--space-lg</code> gap apart. The grid's
+          <code>row-gap</code> is 0 so that join can close, so those two carry their own
+          <code>margin-block-start</code> instead and hand the space back to the grid at 850px.
         </li>
         <li>
           <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (<code
             >--layout-rail</code
           >), full-viewport-height card pinned with
           <code>position: fixed</code>, while the right column (main + aside + footer) scrolls past
-          underneath as one joined card.
+          underneath as one joined card. The only state that joins them, so it's also the only one
+          to close the row gap and square off the seams between the three.
         </li>
         <li>
           <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width card
