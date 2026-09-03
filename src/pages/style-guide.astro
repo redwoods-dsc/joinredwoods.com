@@ -627,13 +627,18 @@ const sections = [
       <div class="section__head">
         <h2>Button row</h2>
         <p>
-          <code>&lt;ButtonRow&gt;</code>. Lays a group of buttons out in a wrapping row with
+          <code>&lt;ButtonRow margin&gt;</code>. Lays a group of buttons out in a wrapping row with
           <code>--space-sm</code> between them. <code>base.css</code> spaces prose through adjacency (<code
             >p + p</code
-          >, <code>ul + p</code>), which a wrapper element breaks, so the row carries its own <code
-            >--space-md</code
-          > block margin — that collapses against its neighbours to the same gaps the adjacency chain
-          produced.
+          >, <code>ul + p</code>), which a wrapper element breaks, so the row carries its own block
+          margin — at the <code>md</code> default that collapses against its neighbours to the same gaps
+          the adjacency chain produced.
+        </p>
+        <p>
+          <code>margin</code> takes <code>none</code>, <code>sm</code>, <code>md</code>, <code
+            >lg</code
+          > or <code>xl</code>, for a row that should sit apart from the prose rather than in its
+          rhythm. Margins collapse, so a step up only shows once it beats the neighbour's own.
         </p>
       </div>
 
@@ -641,6 +646,23 @@ const sections = [
         <Button href="#button-row" size="sm">Join Redwoods</Button>
         <Button href="#button-row" variant="secondary" size="sm">Read our values ↓</Button>
       </ButtonRow>
+
+      <h3 class="subhead">Margins</h3>
+      <div class="button-row-demo">
+        {
+          (['none', 'sm', 'md', 'lg', 'xl'] as const).map((m) => (
+            <div class="button-row-demo__case">
+              <p>Prose above the row.</p>
+              <ButtonRow margin={m}>
+                <Button href="#button-row" size="sm">
+                  margin: {m}
+                </Button>
+              </ButtonRow>
+              <p>Prose below the row.</p>
+            </div>
+          ))
+        }
+      </div>
     </section>
 
     <section id="arrow-link" class="section">
@@ -1182,6 +1204,19 @@ const sections = [
     display: flex;
     flex-direction: column;
     gap: var(--space-2xl);
+  }
+
+  .button-row-demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* Boxed so each row's own margin is visible against the prose around it. */
+  .button-row-demo__case {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
   }
 
   .header-demo {
