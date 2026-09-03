@@ -1,20 +1,43 @@
 ---
 interface Props {
+  /* Block margin around the row. `md` is the default because it matches what
+     base.css's adjacency chain would have given a paragraph in the same slot —
+     the sizes either side are for a row that wants setting apart from the prose
+     rather than sitting in its rhythm. */
+  margin?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   class?: string;
 }
 
-const { class: className } = Astro.props;
+const { margin = 'md', class: className } = Astro.props;
 ---
 
-<div class:list={['button-row', className]}><slot /></div>
+<div class:list={['button-row', className]} data-margin={margin}><slot /></div>
 
 <style>
   .button-row {
+    /* A div breaks base.css's prose adjacency chains (p + p, ul + p), so the
+       row carries its own margin and collapses to the same gap. */
+    --button-row-space: var(--space-md);
+
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
-    /* A div breaks base.css's prose adjacency chains (p + p, ul + p), so the
-       row carries its own margin and collapses to the same gap. */
-    margin-block: var(--space-md);
+    margin-block: var(--button-row-space);
+  }
+
+  .button-row[data-margin='none'] {
+    --button-row-space: 0;
+  }
+
+  .button-row[data-margin='sm'] {
+    --button-row-space: var(--space-sm);
+  }
+
+  .button-row[data-margin='lg'] {
+    --button-row-space: var(--space-lg);
+  }
+
+  .button-row[data-margin='xl'] {
+    --button-row-space: var(--space-xl);
   }
 </style>
