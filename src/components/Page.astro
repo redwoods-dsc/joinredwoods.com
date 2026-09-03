@@ -51,10 +51,7 @@ const { aside = true } = Astro.props;
       'main'
       'aside'
       'footer';
-    column-gap: var(--space-lg);
-    /* Header and main meet flush here, so the space below main can't come from
-       the grid — it's carried by the two cards that stand free instead. */
-    row-gap: 0;
+    gap: var(--space-lg);
   }
 
   /* Without dropping the area, the track still renders as an empty cream card. */
@@ -80,49 +77,26 @@ const { aside = true } = Astro.props;
     min-width: 0;
   }
 
-  .shell__aside,
-  .shell__footer {
-    margin-block-start: var(--space-lg);
-  }
-
-  .shell__footer {
-    overflow: hidden;
-  }
-
-  /* clip, not hidden, for the same reason as .shell__main below: `hidden`
-     makes this a scroll container, and the sidebar sticks inside it. */
-  .shell__aside {
-    overflow: clip;
-  }
-
   .shell__main {
     grid-area: main;
-    /* Closes the join under the header. */
-    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     /* clip, not hidden: `hidden` makes this a scroll container and traps the
        article's sticky table of contents in a box that never scrolls. */
     overflow: clip;
   }
 
-  .main-wrap {
-    padding: var(--space-lg);
-  }
-
   .shell__aside {
     grid-area: aside;
+    /* clip for the same reason as main: the sidebar sticks inside this. */
+    overflow: clip;
   }
 
   .shell__footer {
     grid-area: footer;
+    overflow: hidden;
   }
 
-  /* The header stands free in all three states above the join, so the cards
-     below it go back to taking their space from the grid. */
-  @media (min-width: 850px) {
-    .shell__aside,
-    .shell__footer {
-      margin-block-start: 0;
-    }
+  .main-wrap {
+    padding: var(--space-lg);
   }
 
   /* The rail is viewport-height whether the page fills it or not; without this a
@@ -171,14 +145,6 @@ const { aside = true } = Astro.props;
   }
 
   @media (min-width: 1000px) {
-    .shell {
-      row-gap: var(--space-lg);
-    }
-
-    .shell__main {
-      border-radius: var(--radius-xl);
-    }
-
     /* Painted on .sidebar from here, which is the sticky box — a background left
        on this track scrolls out from under its own contents. */
     .shell__aside {

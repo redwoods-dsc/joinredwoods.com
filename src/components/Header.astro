@@ -54,20 +54,12 @@ const background = await headerBackground();
     background-repeat: no-repeat;
     background-position-y: var(--space-xl);
     background-position-x: var(--space-4xl);
-    /* Square below, so main meets it flush. */
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    border-radius: var(--radius-xl);
   }
 
   @media (min-height: 1024px) {
     .header {
       background-position-y: bottom;
-    }
-  }
-
-  /* The join is the small-screen state only; above it the card stands free. */
-  @media (min-width: 850px) {
-    .header {
-      border-radius: var(--radius-xl);
     }
   }
 

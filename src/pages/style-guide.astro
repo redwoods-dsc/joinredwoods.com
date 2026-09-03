@@ -1047,10 +1047,10 @@ const sections = [
       </p>
       <ul>
         <li>
-          <strong>&lt; 850px</strong> — single column: the header and main meet flush as one card, with
-          the aside and the footer standing free beneath it a <code>--space-lg</code> gap apart. The grid's
-          <code>row-gap</code> is 0 so that join can close, so those two carry their own
-          <code>margin-block-start</code> instead and hand the space back to the grid at 850px.
+          <strong>&lt; 850px</strong> — single column: header, main, aside and footer stacked as four
+          free-standing rounded cards, a <code>--space-lg</code> gap apart. This is the base state, and
+          the one the others are written as departures from: the gap, the fill and the full
+          <code>border-radius</code> all sit outside a media query.
         </li>
         <li>
           <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (<code
@@ -1064,9 +1064,9 @@ const sections = [
           <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width card
           it is below 850px, now spanning the top of the grid, capped at
           <code>--layout-header-min</code> and in normal flow so it scrolls with the page, and main and
-          aside sit beside it as two columns with the footer spanning both. All four are free-standing
-          rounded cards. The aside is the reason: in the joined column it takes the full width beside
-          the rail, which by 1300px is 878px — far wider than the sidebar's cards are drawn for.
+          aside sit beside it as two columns with the footer spanning both. All four stand free again.
+          The aside is the reason: in the joined column it takes the full width beside the rail, which
+          by 1300px is 878px — far wider than the sidebar's cards are drawn for.
         </li>
         <li>
           <strong>&gt; 1300px</strong> — the rail returns, and the aside keeps its own column (<code
