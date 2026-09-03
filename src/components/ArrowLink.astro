@@ -50,7 +50,7 @@ const label = await inlineSlot(Astro.slots);
 </a>
 
 <style>
-  /* Colour, underline and hover come from base.css. A link that reads as a link
+  /* Colour and underline come from base.css. A link that reads as a link
      everywhere else should read as one here too. */
   .arrow-link {
     --arrow-link-space: 0;
@@ -83,6 +83,14 @@ const label = await inlineSlot(Astro.slots);
 
   .arrow-link[data-margin='lg'] {
     --arrow-link-space: var(--space-lg);
+  }
+
+  /* base.css trades a link's underline for a colour change on hover. Here the
+     arrow is already the emphasis, so the line and the colour both stay put and
+     the white ground carries the hover on its own. */
+  .arrow-link:hover {
+    color: var(--color-text);
+    text-decoration: underline;
   }
 
   /* A left arrow precedes what it points at, so its space belongs underneath;
