@@ -306,13 +306,15 @@ const sections = [
       <div class="section__head">
         <h2>Links</h2>
         <p>
-          Anchor defaults live in <code>base.css</code>. Focus rings come from <code
-            >--color-focus</code
-          >.
+          Anchor defaults live in <code>base.css</code>. A link stays underlined and keeps its
+          colour on hover; the only thing that moves is a half-opaque white ground behind it. Links
+          that are wholly an image and links inside a <code>&lt;nav&gt;</code> are excluded — a panel
+          behind a picture is a flash of white, and a row of nav links each growing its own card reads
+          as chrome. Focus rings come from <code>--color-focus</code>.
         </p>
       </div>
       <ul class="link-list">
-        <li><a href="#links">Default link — hover to see the color shift</a></li>
+        <li><a href="#links">Default link — hover to see the ground</a></li>
         <li><a href="https://example.com" rel="external">External link</a></li>
         <li>
           Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to

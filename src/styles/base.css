@@ -166,24 +166,16 @@ hr {
   margin-block: var(--space-lg);
 }
 
-/* On the resting state, not on :hover, so the ground fades out as well as in.
-   The underline isn't in the list because text-decoration is discrete — it has
-   no in-between to animate. */
+/* On the resting state, not on :hover, so the ground fades out as well as in. */
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-  transition:
-    color var(--motion-duration-fast) var(--motion-ease-standard),
-    background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
-a:hover {
-  color: var(--color-focus);
-  text-decoration: none;
-}
-
-/* The white ground is what carries the hover once the underline drops away.
+/* The white ground is the whole of the hover: a link keeps its underline and
+   its colour, so the only thing that moves is the ground behind it.
    Two exceptions: links that are wholly an image (the logo, the Question
    artwork), where a panel behind the picture is just a flash of white; and
    anything inside a <nav>, where a row of links each growing its own card
