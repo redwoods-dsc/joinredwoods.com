@@ -62,14 +62,14 @@ const nextEpisode = episodeNo(question.number + 1);
   data-auto-expire={autoExpire ? '' : undefined}
 >
   {
-    /* Both words ship when the build says live, so the head script's one-way
-      expiry can move the title to Closed without a rebuild — same reason the
-      two panels below are both in the markup. */
+    /* Closed is the bare title, so only the open state adds anything and the
+      head script's one-way expiry can strip it back without a rebuild — same
+      reason the two panels below are both in the markup. */
   }
   <h2 class="question-promo__title">
-    The Question is{' '}
-    {live && <span class="question-promo__status question-promo__status--open">Open</span>}
-    <span class="question-promo__status question-promo__status--closed">Closed</span>
+    The Question{
+      live && <span class="question-promo__status question-promo__status--open"> is Open</span>
+    }
   </h2>
   {
     artwork && (
@@ -118,7 +118,7 @@ const nextEpisode = episodeNo(question.number + 1);
 
   <div class="question-promo__fallback">
     <p class="question-promo__meta">
-      Never fear, Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
+      Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
     </p>
     <Button class="question-promo__cta" href={MAILING_LIST_URL} size="lg">
       Get The Question via Email
@@ -215,8 +215,7 @@ const nextEpisode = episodeNo(question.number + 1);
 
   /* Expiry is one-way and decided in Layout.astro's head script, before this
      markup is parsed, so the swaps below can never be seen happening. */
-  .question-promo[data-state='live'] .question-promo__fallback,
-  .question-promo[data-state='live'] .question-promo__status--closed {
+  .question-promo[data-state='live'] .question-promo__fallback {
     display: none;
   }
 
@@ -227,12 +226,6 @@ const nextEpisode = episodeNo(question.number + 1);
     .question-promo[data-state='live'][data-auto-expire]
     .question-promo__status--open {
     display: none;
-  }
-
-  :global(:root[data-question-expired])
-    .question-promo[data-state='live'][data-auto-expire]
-    .question-promo__status--closed {
-    display: inline;
   }
 
   :global(:root[data-question-expired])
