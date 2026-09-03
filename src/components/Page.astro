@@ -108,32 +108,16 @@ const { aside = true } = Astro.props;
     }
   }
 
-  /* The one state where main, aside and footer join into a single cream column:
-     row-gap 0 so they meet flush, and only the outer corners of the join keep a
-     radius — rounding a seam takes a bite out of the column and exposes the page
-     behind it. */
   @media (min-width: 850px) and (max-width: 999.98px) {
     .shell {
       grid-template-columns: var(--layout-rail) 1fr;
-      grid-template-rows: auto 1fr auto;
+      /* Slack goes to main: on the aside it would show as empty cream below a
+         sidebar that has run out of content. */
+      grid-template-rows: 1fr auto auto;
       grid-template-areas:
         'header main'
         'header aside'
         'header footer';
-      column-gap: var(--space-lg);
-      row-gap: 0;
-    }
-
-    .shell__main {
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    }
-
-    .shell__aside {
-      border-radius: 0;
-    }
-
-    .shell__footer {
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     }
 
     .shell[data-aside='false'] {
