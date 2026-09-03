@@ -22,6 +22,10 @@ html {
 body {
   color: var(--color-text);
   font-size: var(--font-size-md);
+  /* The ground the cards sit on. It was the browser's default white, which the
+     frame in Page.astro then has to match by guesswork — named here so the two
+     can't disagree. */
+  background-color: var(--color-gray-100);
 }
 
 h1,

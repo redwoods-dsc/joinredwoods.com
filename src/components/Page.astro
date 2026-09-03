@@ -43,6 +43,35 @@ const { aside = true } = Astro.props;
     padding: var(--space-lg);
   }
 
+  /* The wrap's padding is in normal flow, so the band above and below the cards
+     scrolls away with them and the cards meet the viewport's edge. These hold
+     that gap open at both ends. Only top and bottom: the inline padding never
+     scrolls, and a full border would paint over the copyright in the right
+     gutter. Painted from the same token as the body, so the held-open gap and
+     the ground it continues are the same colour. */
+  .global-wrap::before,
+  .global-wrap::after {
+    content: '';
+    position: fixed;
+    inset-inline: 0;
+    height: var(--space-lg);
+    background-color: var(--color-gray-100);
+    pointer-events: none;
+    /* The only z-index in the codebase. ::before would otherwise paint under
+       every positioned sibling, and the sticky sidebar takes a negative `top`
+       once it outgrows the viewport — it rises into the band and would cover
+       it. Raising both keeps the pair symmetrical rather than fixing one. */
+    z-index: 1;
+  }
+
+  .global-wrap::before {
+    top: 0;
+  }
+
+  .global-wrap::after {
+    bottom: 0;
+  }
+
   .shell {
     display: grid;
     grid-template-columns: 1fr;
