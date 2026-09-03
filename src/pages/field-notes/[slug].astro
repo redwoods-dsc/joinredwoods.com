@@ -3,7 +3,6 @@ import { getCollection, render } from 'astro:content';
 import ContentPage from '../../layouts/ContentPage.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import { authorSlug } from '../../lib/authors';
 import { buildTocTree, countTocNodes } from '../../lib/toc';
 
 export async function getStaticPaths() {
@@ -47,16 +46,7 @@ const hasToc = TOC_ENABLED && countTocNodes(buildTocTree(headings)) >= TOC_MIN_H
     >Back to Field Notes</ArrowLink
   >
   <div class="meta" slot="meta">
-    <span class="authors">
-      {
-        article.data.authors.map((author, i) => (
-          <>
-            {i > 0 && ', '}
-            <a href={`/field-notes/authors/${authorSlug(author)}/`}>{author}</a>
-          </>
-        ))
-      }
-    </span>
+    <span class="authors">{article.data.authors.join(', ')}</span>
     <time datetime={article.data.date.toISOString()}>
       {
         article.data.date.toLocaleDateString('en-US', {
