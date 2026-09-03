@@ -81,6 +81,11 @@ const background = await headerBackground();
     flex-direction: column;
     gap: var(--space-md);
     height: 100%;
+    /* The wordmark's ink starts at the top of its box; the hero's letters sit a
+       half-leading and an ascender below theirs. Both boxes already start on the
+       same line, so this is the difference between them — measured, not chosen,
+       and it lands on --space-xs. Re-measure if the hero's size or leading move. */
+    padding-block-start: var(--space-xs);
   }
 
   .logo-heading {
