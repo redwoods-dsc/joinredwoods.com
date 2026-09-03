@@ -687,13 +687,11 @@ const sections = [
         <h2>Hero</h2>
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
-          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> from 600px up, a step clear of
-          <code>--font-size-3xl</code> so a page's opening statement never matches a section heading,
-          dropping to <code>--font-size-2xl</code> below that — at 40px a full hero sentence sets as nine
-          lines on a phone. The step is a viewport media query rather than a container query: the main
-          column isn't monotonic, so sizing on the column fired the step three times across the range.
-          Wrap words in <code>&lt;span class="accent"&gt;</code> to pick up
-          <code>--color-green</code>.
+          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> at every width, a step clear of
+          <code>--font-size-3xl</code> so a page's opening statement never matches a section heading.
+          One size rather than a smaller one on narrow screens: the statement is the page's whole opening
+          move, and it costs nine lines on a phone to keep it at full strength. Wrap words in
+          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
         </p>
       </div>
 
@@ -1290,16 +1288,10 @@ const sections = [
     margin: 0;
   }
 
-  /* Stands in for <Hero>, so it has to track Hero.astro's breakpoint by hand. */
+  /* Stands in for <Hero>, so it has to track Hero.astro's size by hand. */
   .lede-demo__hero {
     margin-block-start: 0;
-    font-size: var(--font-size-2xl);
-  }
-
-  @media (min-width: 600px) {
-    .lede-demo__hero {
-      font-size: var(--font-size-hero);
-    }
+    font-size: var(--font-size-hero);
   }
 
   .type-hero {

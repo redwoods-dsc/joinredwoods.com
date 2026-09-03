@@ -15,19 +15,9 @@ const content = await inlineSlot(Astro.slots);
 <h2 class="hero" id={id} set:html={content} />
 
 <style>
-  /* Not a container query: the main column isn't monotonic — it narrows at 850,
-     widens at 1000, narrows again at 1300 — so sizing on the column steps the
-     hero on the way out. 600px is where the column reaches ~480px, under which
-     the hero sets as seven lines. */
   .hero {
     margin-block-start: 0;
-    font-size: var(--font-size-2xl);
-  }
-
-  @media (min-width: 600px) {
-    .hero {
-      font-size: var(--font-size-hero);
-    }
+    font-size: var(--font-size-hero);
   }
 
   .hero :global(.accent) {
