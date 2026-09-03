@@ -66,13 +66,13 @@ const headingArt = headingImage
         <header class="content-page__intro">
           <slot name="breadcrumb" />
           <h2 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h2>
-          {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
-          {note && <Note>{note}</Note>}
           {Astro.slots.has('meta') && (
             <div class="content-page__meta">
               <slot name="meta" />
             </div>
           )}
+          {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+          {note && <Note>{note}</Note>}
         </header>
       )
     }
@@ -110,6 +110,13 @@ const headingArt = headingImage
   .content-page__subtitle {
     font-size: var(--font-size-xl);
     font-family: var(--font-serif);
+  }
+
+  /* Without a byline the subtitle takes its gap from the title's own margin.
+     With one, its previous sibling is a div that no prose adjacency rule
+     matches, so it would sit flush against the byline. */
+  .content-page__meta + .content-page__subtitle {
+    margin-block-start: var(--space-md);
   }
 
   /* One step more air above headings than the base scale — a lone measure of

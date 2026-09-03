@@ -14,6 +14,10 @@ const fieldNotes = defineCollection({
          when an edit changes the substance, not for a typo fix. */
       modifiedDate: z.coerce.date().optional(),
       description: z.string().optional(),
+      /* The serif lede under an article's title, the same knob ContentPage
+         gives a Markdown page. Named here or z.object() drops it silently and
+         the frontmatter looks like it simply had no effect. */
+      subtitle: z.string().optional(),
       authors: z.array(z.string()).min(1),
       tags: z.array(z.string()).default([]),
       tone: z.enum(['green', 'blue', 'orange']).default('green'),
