@@ -195,9 +195,9 @@ const nextEpisode = episodeNo(question.number + 1);
      without changing the card's shape. Square across the top because it butts
      up against the artwork — the rounding there belongs to the image.
 
-     The same 12%-toward-black step EntryCard puts between its date block and
-     its body, mixed from --color-bg rather than picked by hand so the two stay
-     in step if the page is ever re-tinted. */
+     White, so the panel lifts off the cream sidebar card rather than sinking
+     into it. The pairing is only 1.15:1, the same near-invisible step the
+     Callout's white tone makes — it reads as a change of plane, not a border. */
   .question-promo__live,
   .question-promo__fallback {
     display: flex;
@@ -206,7 +206,7 @@ const nextEpisode = episodeNo(question.number + 1);
     gap: var(--space-sm);
     padding: var(--space-md);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    background: color-mix(in srgb, var(--color-bg), var(--color-gray-00) 12%);
+    background: var(--color-gray-100);
   }
 
   .question-promo__cta {
