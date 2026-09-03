@@ -2,6 +2,7 @@
 import redwoodsLogo from '../assets/redwoods-logo-white.svg';
 import tagline from '../assets/tagline-white.svg';
 import { headerBackground } from '../lib/header-background';
+import NavLink from '../components/NavLink.astro';
 
 const background = await headerBackground();
 ---
@@ -20,10 +21,10 @@ const background = await headerBackground();
     </h1>
     <nav class="nav" role="navigation">
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/field-notes/">Field Notes</a></li>
-        <li>-</li>
-        <li><a class="join-link" href="/join">Join</a></li>
+        <li><NavLink href="/" exact>Home</NavLink></li>
+        <li><NavLink href="/field-notes/">Field Notes</NavLink></li>
+        <li class="nav-break">—</li>
+        <li class="nav-join"><NavLink href="/join" class="join-link">Join</NavLink></li>
       </ul>
     </nav>
     <img
@@ -103,18 +104,11 @@ const background = await headerBackground();
     padding: 0;
   }
 
-  /* 300 is --layout-rail minus the card's padding; past it the artwork overflows
-     the rail. */
-  .tagline {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    margin-block-start: auto;
-    align-self: flex-start;
-  }
-
   .nav {
     font-size: var(--font-size-md);
+    /* Cancels the padding NavLink puts on the anchor so the labels still line
+       up with the logo above them. */
+    margin-inline-start: calc(-1 * var(--space-xs));
   }
 
   .nav ul {
@@ -125,24 +119,35 @@ const background = await headerBackground();
     list-style: none;
   }
 
-  .nav a {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-accent-contrast);
-    text-decoration: none;
+  .nav-break {
+    padding-inline-start: var(--space-xs);
   }
 
-  .nav a:hover {
-    text-decoration: underline;
+  /* On the list item: the anchor is inline, and vertical margins don't apply
+     to an inline box. */
+  .nav-join {
+    margin-block-start: var(--space-lg);
   }
 
-  .logo:focus-visible,
-  .nav a:focus-visible {
-    outline-color: var(--color-accent-contrast);
-  }
-
-  .join-link {
+  /* NavLink renders the anchor, so it carries that component's hash rather
+     than this one's — :global() is what lets a rule here reach it, and .nav
+     keeps it from escaping the header. */
+  .nav :global(.join-link) {
     font-style: italic;
+  }
+
+  /* 300 is --layout-rail minus the card's padding; past it the artwork overflows
+     the rail. */
+  .tagline {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-block-start: auto;
+    align-self: flex-start;
+  }
+
+  .logo:focus-visible {
+    outline-color: var(--color-accent-contrast);
   }
 
   @media (min-width: 1000px) and (max-width: 1299.98px) {

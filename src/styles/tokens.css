@@ -10,6 +10,9 @@
   --color-gray-75: #cccccc;
   --color-gray-100: #ffffff;
 
+  --color-gray-alpha-56: rgba(27, 27, 27, 0.56);
+  --color-gray-alpha-72: rgba(27, 27, 27, 0.72);
+
   --color-bg: var(--color-cream);
   --color-surface: var(--color-green);
   /* White, not cream: cream on the green surface is 3.98:1 and misses AA. */
