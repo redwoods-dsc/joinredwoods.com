@@ -3,12 +3,19 @@ interface Props {
   cite: string;
   role?: string;
   marker?: string;
+  /* Wraps the name in an anchor — a profile, a talk, whatever the attribution
+     should point at. The link goes inside <cite> so the element still names the
+     source rather than the link naming it. */
+  link?: string;
 }
 
-const { cite, role, marker = '~' } = Astro.props;
+const { cite, role, marker = '~', link } = Astro.props;
 ---
 
 <blockquote>
   <slot />
-  <footer>{marker} <cite>{cite}</cite>{role && `, ${role}`}</footer>
+  <footer>
+    {marker}
+    <cite>{link ? <a href={link}>{cite}</a> : cite}</cite>{role && `, ${role}`}
+  </footer>
 </blockquote>
