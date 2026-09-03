@@ -306,13 +306,15 @@ const sections = [
       <div class="section__head">
         <h2>Links</h2>
         <p>
-          Anchor defaults live in <code>base.css</code>. Focus rings come from <code
-            >--color-focus</code
-          >.
+          Anchor defaults live in <code>base.css</code>. A link stays underlined and keeps its
+          colour on hover; the only thing that moves is a half-opaque white ground behind it. Links
+          that are wholly an image and links inside a <code>&lt;nav&gt;</code> are excluded — a panel
+          behind a picture is a flash of white, and a row of nav links each growing its own card reads
+          as chrome. Focus rings come from <code>--color-focus</code>.
         </p>
       </div>
       <ul class="link-list">
-        <li><a href="#links">Default link — hover to see the color shift</a></li>
+        <li><a href="#links">Default link — hover to see the ground</a></li>
         <li><a href="https://example.com" rel="external">External link</a></li>
         <li>
           Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to
@@ -389,9 +391,14 @@ const sections = [
           Markdown <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
         </p>
         <p>
-          The quote sets in <code>--font-serif</code> at <code>--font-size-lg</code>, a step up from
-          body copy so it reads as a change of voice rather than indented body text. An attribution
-          line stays on the sans body scale — it's a label about the quote, not part of it.
+          The quote sets in italic <code>--font-serif</code> at <code>--font-size-xl</code>, two
+          steps up from body copy so it reads as a change of voice rather than indented body text.
+          An attribution line goes back upright on the sans body scale — it's a label about the
+          quote, not part of it — while <code>&lt;cite&gt;</code> keeps its own italic.
+        </p>
+        <p>
+          Past 1700px, where the main column runs wider than the measure, the quoted text holds the
+          same measure as the prose and only the rule hangs outside it — see Layout.
         </p>
       </div>
       <blockquote>
@@ -687,13 +694,11 @@ const sections = [
         <h2>Hero</h2>
         <p>
           <code>&lt;Hero&gt;</code>. The opening display headline for a page. Renders an
-          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> from 600px up, a step clear of
-          <code>--font-size-3xl</code> so a page's opening statement never matches a section heading,
-          dropping to <code>--font-size-2xl</code> below that — at 40px a full hero sentence sets as nine
-          lines on a phone. The step is a viewport media query rather than a container query: the main
-          column isn't monotonic, so sizing on the column fired the step three times across the range.
-          Wrap words in <code>&lt;span class="accent"&gt;</code> to pick up
-          <code>--color-green</code>.
+          <code>&lt;h2&gt;</code> at <code>--font-size-hero</code> at every width, a step clear of
+          <code>--font-size-3xl</code> so a page's opening statement never matches a section heading.
+          One size rather than a smaller one on narrow screens: the statement is the page's whole opening
+          move, and it costs nine lines on a phone to keep it at full strength. Wrap words in
+          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
         </p>
       </div>
 
@@ -948,8 +953,7 @@ const sections = [
           <code>&lt;Footer /&gt;</code>. A single site footer carrying the maintainer and community
           attribution. Like the header, it's mounted once by the layout shell and identical on every
           page. In the shell it renders on the cream card surface — a free-standing card spanning
-          the columns from 1000px up, flush at the bottom of the joined column at 850&ndash;1000px,
-          and flush at the bottom of the single stacked card below that.
+          the columns from 1000px up, and a card of its own at the foot of the stack below that.
         </p>
       </div>
 
@@ -1081,17 +1085,17 @@ const sections = [
           <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (<code
             >--layout-rail</code
           >), full-viewport-height card pinned with
-          <code>position: fixed</code>, while the right column (main + aside + footer) scrolls past
-          underneath as one joined card. The only state that joins them, so it's also the only one
-          to close the row gap and square off the seams between the three.
+          <code>position: fixed</code>, while main, aside and footer stack beside it as three
+          free-standing cards, the same as below 850px. The slack goes to main rather than the
+          aside, so the sidebar's card ends where its content does.
         </li>
         <li>
           <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width card
           it is below 850px, now spanning the top of the grid, capped at
           <code>--layout-header-min</code> and in normal flow so it scrolls with the page, and main and
           aside sit beside it as two columns with the footer spanning both. All four stand free again.
-          The aside is the reason: in the joined column it takes the full width beside the rail, which
-          by 1300px is 878px — far wider than the sidebar's cards are drawn for.
+          The aside is the reason: stacked beside the rail it takes that column's full width, which by
+          1300px is 878px — far wider than the sidebar's cards are drawn for.
         </li>
         <li>
           <strong>&gt; 1300px</strong> — the rail returns, and the aside keeps its own column (<code
@@ -1291,16 +1295,10 @@ const sections = [
     margin: 0;
   }
 
-  /* Stands in for <Hero>, so it has to track Hero.astro's breakpoint by hand. */
+  /* Stands in for <Hero>, so it has to track Hero.astro's size by hand. */
   .lede-demo__hero {
     margin-block-start: 0;
-    font-size: var(--font-size-2xl);
-  }
-
-  @media (min-width: 600px) {
-    .lede-demo__hero {
-      font-size: var(--font-size-hero);
-    }
+    font-size: var(--font-size-hero);
   }
 
   .type-hero {

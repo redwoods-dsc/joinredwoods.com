@@ -167,4 +167,58 @@ const headingArt = headingImage
   .content-page :global(h6) {
     margin-block-start: var(--space-md);
   }
+
+  /* Past 1700 the main column runs ~156px wider than the prose measure, which
+     is enough slack for the measure to sit centred rather than pinned left.
+     Everything holds that measure; only a quote's rule reaches outside it.
+
+     Everything is reached with :global(): these are a page's own children,
+     authored in .mdx, so they carry the calling page's scope and not this
+     layout's. The Lede is opened up too and its own children re-constrained,
+     since the homepage's hero sits one level down inside it. */
+  @media (min-width: 1700px) {
+    .content-page {
+      max-width: none;
+    }
+
+    .content-page__intro,
+    .content-page__rail,
+    .content-page__body > :global(*),
+    .content-page__body :global(.lede) > :global(*) {
+      max-width: var(--layout-prose-max);
+      margin-inline: auto;
+    }
+
+    .content-page__body > :global(.lede) {
+      max-width: none;
+    }
+
+    /* Greedy rather than the balance base.css gives headings: at this size the
+       hero fills each line and steps down to a short last one, which reads as
+       a deliberate close rather than four evenly-set lines. */
+    .content-page__body :global(.hero) {
+      text-wrap: unset;
+    }
+
+    /* The quoted text holds the same measure as the prose; only the rule and
+       its padding sit outside it, hanging into the slack on the start side. */
+    .content-page__body > :global(blockquote),
+    .content-page__body :global(.lede) > :global(blockquote) {
+      --quote-rule-hang: calc(var(--quote-rule-width) + var(--space-md));
+
+      max-width: calc(var(--layout-prose-max) + var(--quote-rule-hang));
+      margin-inline-start: calc((100% - var(--layout-prose-max)) / 2 - var(--quote-rule-hang));
+      margin-inline-end: auto;
+    }
+
+    /* The callout already paints past the column on its own; only its text
+       needs to hold the same centred measure as the prose around it. */
+    .content-page__body > :global(.callout) {
+      max-width: none;
+    }
+
+    .content-page__body :global(.callout__inner) {
+      margin-inline: auto;
+    }
+  }
 </style>

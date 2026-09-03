@@ -22,6 +22,10 @@ html {
 body {
   color: var(--color-text);
   font-size: var(--font-size-md);
+  /* The ground the cards sit on. It was the browser's default white, which the
+     frame in Page.astro then has to match by guesswork — named here so the two
+     can't disagree. */
+  background-color: var(--color-gray-100);
 }
 
 h1,
@@ -122,17 +126,21 @@ ol {
  * the boundary between the two.
  */
 blockquote {
-  border-inline-start: 3px solid var(--color-accent);
+  border-inline-start: var(--quote-rule-width) solid var(--color-accent);
   padding-inline-start: var(--space-md);
-  margin-block: var(--space-md);
+  margin-block: var(--space-xl);
   font-family: var(--font-serif);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
+  font-style: italic;
 }
 
+/* Upright again: the attribution is a label about the quote, so it takes none
+   of the quote's voice. <cite> keeps the italic the browser gives it. */
 blockquote footer {
   margin-block-start: var(--space-md);
   font-family: var(--font-sans);
   font-size: var(--font-size-md);
+  font-style: normal;
 }
 
 table {
@@ -162,24 +170,16 @@ hr {
   margin-block: var(--space-lg);
 }
 
-/* On the resting state, not on :hover, so the ground fades out as well as in.
-   The underline isn't in the list because text-decoration is discrete — it has
-   no in-between to animate. */
+/* On the resting state, not on :hover, so the ground fades out as well as in. */
 a {
   color: var(--color-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-  transition:
-    color var(--motion-duration-fast) var(--motion-ease-standard),
-    background-color var(--motion-duration-fast) var(--motion-ease-standard);
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 
-a:hover {
-  color: var(--color-focus);
-  text-decoration: none;
-}
-
-/* The white ground is what carries the hover once the underline drops away.
+/* The white ground is the whole of the hover: a link keeps its underline and
+   its colour, so the only thing that moves is the ground behind it.
    Two exceptions: links that are wholly an image (the logo, the Question
    artwork), where a panel behind the picture is just a flash of white; and
    anything inside a <nav>, where a row of links each growing its own card
