@@ -167,4 +167,44 @@ const headingArt = headingImage
   .content-page :global(h6) {
     margin-block-start: var(--space-md);
   }
+
+  /* Past 1700 the main column runs ~156px wider than the prose measure, which
+     is enough slack for the measure to sit centred rather than pinned left.
+     The hero and the pull quotes give that slack back and run the column's
+     full width, so they read as breaks in the text rather than more of it.
+
+     Everything is reached with :global(): these are a page's own children,
+     authored in .mdx, so they carry the calling page's scope and not this
+     layout's. The Lede is opened up too and its own children re-constrained,
+     since the homepage's hero and closing quote sit one level down inside it. */
+  @media (min-width: 1700px) {
+    .content-page {
+      max-width: none;
+    }
+
+    .content-page__intro,
+    .content-page__rail,
+    .content-page__body > :global(*),
+    .content-page__body :global(.lede) > :global(*) {
+      max-width: var(--layout-prose-max);
+      margin-inline: auto;
+    }
+
+    .content-page__body > :global(.lede),
+    .content-page__body > :global(blockquote),
+    .content-page__body :global(.lede) > :global(.hero),
+    .content-page__body :global(.lede) > :global(blockquote) {
+      max-width: none;
+    }
+
+    /* The callout already paints past the column on its own; only its text
+       needs to hold the same centred measure as the prose around it. */
+    .content-page__body > :global(.callout) {
+      max-width: none;
+    }
+
+    .content-page__body :global(.callout__inner) {
+      margin-inline: auto;
+    }
+  }
 </style>
