@@ -409,15 +409,23 @@ const sections = [
 
       <h3 class="subhead">Attributed</h3>
       <p>
-        <code>&lt;Quote cite role marker&gt;</code>. A blockquote with an attribution line, so pull
-        quotes can be written in Markdown without hand-rolling the
+        <code>&lt;Quote cite role marker link&gt;</code>. A blockquote with an attribution line, so
+        pull quotes can be written in Markdown without hand-rolling the
         <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is optional,
         and <code>marker</code> overrides the leading <code>~</code>.
+      </p>
+      <p>
+        <code>link</code> wraps the name in an anchor — a profile, a talk, whatever the attribution should
+        point at. It sits inside <code>&lt;cite&gt;</code> so the element still names the source rather
+        than the link naming it, and the role stays outside, unlinked.
       </p>
       <Quote cite="ToniAnn" role="Redwoods member">
         “Redwoods is one of the only communities where I feel like I can not only grow in my own DS
         practice by learning from others, but also have a hand in shaping the world of design
         systems at large.”
+      </Quote>
+      <Quote cite="ToniAnn Drenckhahn" role="Senior Manager Design Systems at Etsy" link="#quotes">
+        “The same quote with a linked attribution — only the name carries the anchor.”
       </Quote>
       <Quote cite="John Muir" marker="―">
         “When one tugs at a single thing in nature, he finds it attached to the rest of the world.”
