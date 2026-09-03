@@ -170,13 +170,12 @@ const headingArt = headingImage
 
   /* Past 1700 the main column runs ~156px wider than the prose measure, which
      is enough slack for the measure to sit centred rather than pinned left.
-     The hero and the pull quotes give that slack back and run the column's
-     full width, so they read as breaks in the text rather than more of it.
+     Everything holds that measure; only a quote's rule reaches outside it.
 
      Everything is reached with :global(): these are a page's own children,
      authored in .mdx, so they carry the calling page's scope and not this
      layout's. The Lede is opened up too and its own children re-constrained,
-     since the homepage's hero and closing quote sit one level down inside it. */
+     since the homepage's hero sits one level down inside it. */
   @media (min-width: 1700px) {
     .content-page {
       max-width: none;
@@ -190,14 +189,13 @@ const headingArt = headingImage
       margin-inline: auto;
     }
 
-    .content-page__body > :global(.lede),
-    .content-page__body :global(.lede) > :global(.hero) {
+    .content-page__body > :global(.lede) {
       max-width: none;
     }
 
-    /* base.css balances headings, which holds a hero's lines to roughly even
-       widths and leaves the column's extra width unused. Greedy wrapping fills
-       it instead — the trade is a short last line. */
+    /* Greedy rather than the balance base.css gives headings: at this size the
+       hero fills each line and steps down to a short last one, which reads as
+       a deliberate close rather than four evenly-set lines. */
     .content-page__body :global(.hero) {
       text-wrap: unset;
     }
