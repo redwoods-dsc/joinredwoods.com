@@ -21,6 +21,7 @@ import sourceSerifLatinItalic from '@fontsource-variable/source-serif-4/files/so
 import '../styles/global.css';
 import Page from '../components/Page.astro';
 import Seo from '../components/Seo.astro';
+import Analytics from '../components/Analytics.astro';
 import type { Props as SeoProps } from '../components/Seo.astro';
 import { headerBackground } from '../lib/header-background';
 import { site } from '../lib/site';
@@ -90,5 +91,11 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <Page aside={aside}>
       <slot />
     </Page>
+    {
+      /* Kept out of dev so `pnpm dev` doesn't report itself as traffic. The
+        raw <script> tags live in the component because Prettier's Astro
+        plugin can't parse one nested in a JSX conditional. */
+    }
+    {import.meta.env.PROD && <Analytics />}
   </body>
 </html>
