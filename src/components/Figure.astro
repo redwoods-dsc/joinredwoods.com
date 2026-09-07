@@ -12,21 +12,53 @@ interface Props {
   /* Off for artwork that already carries its own edge — a flat ground, a drawn
      border — where a second rule around it just reads as a double line. */
   border?: boolean;
+  /* Wraps the image in a link. The picture is then the whole of that link, so
+     the alt becomes its accessible name and has to say where it goes rather
+     than describe the artwork — the same trade QuestionPromo makes. */
+  link?: string;
   class?: string;
   [key: string]: unknown;
 }
 
-const { src, alt, caption, border = true, class: className, ...rest } = Astro.props;
+const { src, alt, caption, border = true, link, class: className, ...rest } = Astro.props;
 
 /* With no caption of its own the alt is displayed instead, and the image's own
    alt is emptied: left in place a screen reader announces the same sentence
    twice, once describing the image and once reading the caption beneath it.
-   Given both, they say different things and both are worth keeping. */
+   Given both, they say different things and both are worth keeping.
+
+   A link can't have its alt emptied — that would leave it with no accessible
+   name at all — so there the caption is hidden from assistive tech instead
+   when it would repeat the name word for word. */
 const captionText = caption ?? alt;
-const imageAlt = caption === undefined ? '' : alt;
+const imageAlt = link || caption !== undefined ? alt : '';
+const captionRepeatsLinkName = Boolean(link) && caption === undefined;
+const format = src.format === 'svg' ? undefined : 'webp';
 ---
 
 <figure class={className} data-border={border ? undefined : 'false'}>
-  <Image src={src} alt={imageAlt} format={src.format === 'svg' ? undefined : 'webp'} {...rest} />
-  {captionText && <figcaption>{captionText}</figcaption>}
+  {
+    link ? (
+      <a href={link}>
+        <Image src={src} alt={imageAlt} format={format} {...rest} />
+      </a>
+    ) : (
+      <Image src={src} alt={imageAlt} format={format} {...rest} />
+    )
+  }
+  {
+    captionText && (
+      <figcaption aria-hidden={captionRepeatsLinkName ? 'true' : undefined}>
+        {captionText}
+      </figcaption>
+    )
+  }
 </figure>
+
+<style>
+  /* base.css sets the image to display: block, so an inline anchor around it
+     leaves a line box under the picture. */
+  figure > a {
+    display: block;
+  }
+</style>
