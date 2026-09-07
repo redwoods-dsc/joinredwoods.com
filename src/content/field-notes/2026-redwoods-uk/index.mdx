@@ -10,7 +10,10 @@ tone: blue
 
 import Figure from '../../../components/Figure.astro';
 import ArrowLink from '../../../components/ArrowLink.astro';
+import Button from '../../../components/Button.astro';
+import ButtonRow from '../../../components/ButtonRow.astro';
 import hikers from './images/_redwoods-hike-01.jpg';
+import redwoodsxlondon from './images/_dessn-sparkbox-london-26.jpg';
 import Callout from '../../../components/Callout.astro';
 import Note from '../../../components/Note.astro';
 
@@ -53,15 +56,32 @@ Here's a bit more information about each stop.
 
 #### Redwoods X London
 
+<Figure
+  src={redwoodsxlondon}
+  alt="Get free tickets for Redwoods x London, a design system gathering with Ben Callahan at Sevente"
+  caption="Join us in London on Oct 19 from 6–9pm."
+  link="https://bit.ly/rwdxlon-2026"
+/>
+
 On October 19, 2026 from 6–9pm, we'll be gathering the design system nerds in London for some appetizers, drinks, and collaborative problem solving. This event is happening in partnership with [Dessn](https://bit.ly/4zptDQa) and [Sparkbox](https://bit.ly/43njpAf).
 
-More information will be posted here as it becomes available.
+It's free to attend, but there is very limited space, so [request a ticket](https://bit.ly/rwdxlon-2026) soon.
+
+<ButtonRow>
+  <Button href="https://bit.ly/rwdxlon-2026" size="lg">
+    Request a Spot
+  </Button>
+</ButtonRow>
+
+---
 
 #### Redwoods X Manchester
 
 On the afternoon and evening of October 20, 2026 we'll be gathering the design system nerds in Manchester for a hike and a pub crawl. Believe it or not, there are Redwoods in Manchester.
 
 More information here as it becomes available.
+
+---
 
 #### Redwoods X Converge, 2026
 

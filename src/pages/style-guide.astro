@@ -505,6 +505,16 @@ const sections = [
           see <code>rehypeFigureCaptions</code> in
           <code>astro.config.mjs</code>.
         </p>
+        <p>
+          <code>link</code> wraps the image in an anchor. The picture is then the whole of that link,
+          so its <code>alt</code> is the link's accessible name and has to say where it goes — which means
+          the alt can't be emptied the way it is above. With no separate
+          <code>caption</code> the caption would repeat that name word for word, so it's hidden from assistive
+          tech instead. Give a linked figure its own <code>caption</code> and both are read. Markdown
+          can't produce this shape: <code>rehypeFigureCaptions</code> only matches a paragraph whose one
+          element child is the image, and
+          <code>[![alt](src)](href)</code> nests it inside the anchor.
+        </p>
       </div>
 
       <h3 class="subhead">Alt as caption</h3>
@@ -523,6 +533,15 @@ const sections = [
         src={trees}
         alt="Two illustrated redwood trees against a cream ground"
         caption="Coastal redwoods, drawn for the site header."
+        width={480}
+      />
+
+      <h3 class="subhead">Linked</h3>
+      <Figure
+        src={trees}
+        alt="The Redwoods style guide, on this page"
+        caption="A linked figure, with a caption of its own so both are read."
+        link="#figure"
         width={480}
       />
     </section>
