@@ -13,10 +13,15 @@ list, so it stays the same when somebody new joins partway up the alphabet.
 
 What they need to be:
 
-- **Transparent PNG.** They sit on `--color-surface`, the green, which the card
-  paints behind them.
 - **Square**, and legible at **64px** — they are drawn into a circle, so keep the
   subject clear of the corners.
 - **256px or larger.** Astro renders them at 128px for 2× screens, and sharp
   will not enlarge a smaller source.
+- Either grounded in `--color-surface` themselves, as `01.png` is, or transparent
+  — the card paints that same green behind them either way.
 - In the same hand as `trees-04.png` and the rest of the site's artwork.
+
+`01.png` is a stand-in rather than a drawing of its own: a square lifted out of
+`trees-04.png`, its luminance remapped from the accent it was flattened onto to
+this green. It does the job at 64px, but it is the header artwork wearing a
+different colour, and ten of those would be one drawing ten times.
