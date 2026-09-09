@@ -49,7 +49,10 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
   .member-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: var(--space-lg);
+    /* More between rows than between columns: a card is wider than it is tall,
+       so an even gap reads as cramped vertically. */
+    column-gap: var(--space-lg);
+    row-gap: var(--space-2xl);
     padding: 0;
     margin-block-end: var(--space-2xl);
   }

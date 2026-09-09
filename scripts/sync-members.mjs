@@ -32,7 +32,12 @@ const AVATARS = 'src/assets/members';
    "nobody opted in" — which would quietly unpublish every member. Refuse the
    write instead, unless someone says out loud that the drop is real. */
 const MAX_SHRINK = 3;
-const EXT = { jpg: 'jpg', jpeg: 'jpg', png: 'png', gif: 'gif', webp: 'webp' };
+const EXT = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+};
 
 const api = async (method, params = '') => {
   const res = await fetch(`https://slack.com/api/${method}${params}`, {
@@ -76,6 +81,21 @@ const isLinkedIn = (url) => {
 
 /* Sorted on, not displayed. A trailing "(Hogg)" is an alternate surname rather
    than the one to file under, and it would otherwise sort ahead of the letters. */
+/* Slack only sets is_custom_image for a direct upload. Where there is none it
+   falls back to Gravatar and hands back a URL with `d=` pointing at one of its
+   own default avatars — so the URL always resolves and the flag alone would
+   drop everyone whose picture reaches Slack through Gravatar, which is what
+   they see in Slack and reasonably expect here. Ask Gravatar to 404 instead of
+   falling back, and the answer says whether a real photo exists. */
+const photoUrl = async (profile) => {
+  const url = profile.image_192;
+  if (!url) return undefined;
+  if (!new URL(url).hostname.endsWith('gravatar.com')) return url;
+  const strict = `${url.split('?')[0]}?s=192&d=404`;
+  const res = await fetch(strict, { method: 'HEAD', redirect: 'manual' });
+  return res.status === 200 ? strict : undefined;
+};
+
 const surname = (name) =>
   name
     .replace(/\([^)]*\)/g, ' ')
@@ -113,8 +133,8 @@ for (const account of humans) {
     title: (profile.title ?? '').trim() || undefined,
     linkedin: urls.find(isLinkedIn),
     website: urls.find((u) => !isLinkedIn(u)),
-    avatarHash: profile.is_custom_image ? profile.avatar_hash : undefined,
-    avatarUrl: profile.is_custom_image ? profile.image_192 : undefined,
+    avatarHash: profile.avatar_hash,
+    avatarUrl: await photoUrl(profile),
   });
   await new Promise((r) => setTimeout(r, 250));
 }
@@ -142,26 +162,36 @@ if (shrink > MAX_SHRINK && !process.argv.includes('--force')) {
 
 await mkdir(AVATARS, { recursive: true });
 const byHash = new Map(previous.map((m) => [m.slug, m.avatarHash]));
+const byFile = new Map(previous.map((m) => [m.slug, m.avatar]));
 let fetched = 0;
 for (const m of members) {
   if (!m.avatarUrl) continue;
-  /* Slack hands back whatever the member uploaded — roughly a third of these are
-     PNGs. Saving them all as .jpg leaves Astro sniffing one format and reading an
-     extension that says another, which fails the image endpoint outright. */
-  const ext = EXT[new URL(m.avatarUrl).pathname.split('.').pop()?.toLowerCase()] ?? 'jpg';
-  const file = `${m.slug}.${ext}`;
-  m.avatar = file;
   // Slack changes avatar_hash when the photo changes, so an unchanged one means
   // the bytes on disk are already right — a weekly job that re-downloaded every
   // avatar would commit near-identical binaries forever.
-  if (byHash.get(m.slug) === m.avatarHash && byHash.get(m.slug)) continue;
+  const unchanged = byHash.get(m.slug) === m.avatarHash && byHash.get(m.slug);
+  if (unchanged) {
+    m.avatar = byFile.get(m.slug);
+    continue;
+  }
   const res = await fetch(m.avatarUrl);
   if (!res.ok) {
     console.warn(`  could not fetch an avatar for ${m.slug} (${res.status})`);
     delete m.avatar;
     continue;
   }
-  await writeFile(join(AVATARS, file), Buffer.from(await res.arrayBuffer()));
+  /* From the response, never from the URL. Slack serves whatever the member
+     uploaded and about a third are PNGs; Gravatar serves PNG from a path ending
+     .jpg. An extension that disagrees with the bytes fails Astro's image
+     endpoint outright, so guessing it is not an option. */
+  const ext = EXT[res.headers.get('content-type')?.split(';')[0].trim()];
+  if (!ext) {
+    console.warn(`  unexpected image type for ${m.slug}: ${res.headers.get('content-type')}`);
+    delete m.avatar;
+    continue;
+  }
+  m.avatar = `${m.slug}.${ext}`;
+  await writeFile(join(AVATARS, m.avatar), Buffer.from(await res.arrayBuffer()));
   fetched++;
 }
 

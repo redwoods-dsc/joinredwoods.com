@@ -36,7 +36,9 @@
     "name": "Ben Callahan",
     "title": "Founder of Redwoods and Sparkbox",
     "linkedin": "https://www.linkedin.com/in/bencallahan/",
-    "website": "https://bencallahan.com/"
+    "website": "https://bencallahan.com/",
+    "avatarHash": "gde85ceea215",
+    "avatar": "ben-callahan.png"
   },
   {
     "slug": "robin-di-capua",
@@ -106,12 +108,16 @@
     "slug": "kaelig-deloumeau-prigent",
     "name": "Kaelig Deloumeau-Prigent",
     "linkedin": "https://www.linkedin.com/in/kaelig/en",
-    "website": "https://x.com/kaelig"
+    "website": "https://x.com/kaelig",
+    "avatarHash": "gf7e7b837bd0",
+    "avatar": "kaelig-deloumeau-prigent.jpg"
   },
   {
     "slug": "frank",
     "name": "frank",
-    "website": "https://frankstall.one"
+    "website": "https://frankstall.one",
+    "avatarHash": "g5c38c0743a8",
+    "avatar": "frank.png"
   },
   {
     "slug": "kelby-gassman",
@@ -156,7 +162,9 @@
     "slug": "amy-lam",
     "name": "Amy Lam",
     "title": "Design Engineer",
-    "website": "https://www.youthphase.dev"
+    "website": "https://www.youthphase.dev",
+    "avatarHash": "g66feaeb9bb3",
+    "avatar": "amy-lam.png"
   },
   {
     "slug": "pedro-martins",
@@ -258,7 +266,9 @@
     "name": "Murphy Trueman",
     "title": "Dir. of Design Systems @ Baseline Design",
     "linkedin": "https://www.linkedin.com/in/murphytrueman/",
-    "website": "https://blog.murphytrueman.com/"
+    "website": "https://blog.murphytrueman.com/",
+    "avatarHash": "gfd3c645e59c",
+    "avatar": "murphy-trueman.png"
   },
   {
     "slug": "corey-vickery",
