@@ -39,17 +39,17 @@ h6 {
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-h1);
   margin-block: var(--space-xl) var(--space-sm);
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-h2);
   margin-block: var(--space-xl) var(--space-xs);
 }
 
 h3 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-h3);
 }
 
 h4 {
@@ -127,7 +127,7 @@ blockquote {
   padding-inline-start: var(--space-md);
   margin-block: var(--space-xl);
   font-family: var(--font-serif);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-blockquote);
   font-style: italic;
 }
 

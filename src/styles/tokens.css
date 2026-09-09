@@ -35,10 +35,7 @@
   --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', serif;
   --font-mono: monospace;
 
-  /* The scale is static by design. The one responsive type change is the hero,
-     which swaps between two of these at a breakpoint rather than adding a
-     fluid token — see Hero.astro. */
-
+  /* Static scale — fixed at every viewport. */
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-caption: 0.8125rem; /* 13px */
   --font-size-sm: 0.875rem; /* 14px */
@@ -46,11 +43,14 @@
   --font-size-md: 1.125rem; /* 18px — body text */
   --font-size-lg: 1.3125rem; /* 21px */
   --font-size-xl: 1.5rem; /* 24px */
-  --font-size-2xl: 1.75rem; /* 28px */
-  --font-size-3xl: 2rem; /* 32px */
-  --font-size-4xl: 2.25rem; /* 36px */
 
-  --font-size-hero: 2.5rem; /* 40px — a step clear of the h1/h2 sizes above */
+  /* Fluid scale — clamp() steps, 360px–1800px viewport (matches
+     --layout-shell-max). Named by semantic role that other things don't borrow from. */
+  --font-size-blockquote: clamp(1.313rem, 1.266rem + 0.208vw, 1.5rem); /* 21px → 24px */
+  --font-size-h3: clamp(1.531rem, 1.445rem + 0.382vw, 1.875rem); /* 24.5px → 30px */
+  --font-size-h2: clamp(1.661rem, 1.491rem + 0.759vw, 2.344rem); /* 26.578px → 37.5px */
+  --font-size-h1: clamp(1.869rem, 1.604rem + 1.179vw, 2.93rem); /* 29.9px → 46.875px */
+  --font-size-hero: clamp(2.102rem, 1.712rem + 1.733vw, 3.662rem); /* 33.638px → 58.594px */
 
   --line-height-micro: 0.9;
   --line-height-none: 1;
