@@ -958,9 +958,13 @@ const sections = [
           LinkedIn, and 32 a photo.
         </p>
         <p>
-          The photo's box is held even when there is no photo, so names line up across a row rather
-          than stepping left for the members who have never set one. Slack hands back whatever was
-          uploaded — about a third are PNGs — so the glob that resolves them matches more than
+          A member who never set a profile picture gets a drawn stand of redwoods on the green
+          instead, rotated from <code>src/assets/member-stands</code> — keyed off their slug rather than
+          their position, so a new member joining partway up the alphabet does not reshuffle everyone
+          else's. With that folder empty the circle is a plain green ground, which is what the middle
+          card below shows. Either way the box is held, so names line up across a row rather than stepping
+          left. Slack hands back whatever was uploaded — about a third are PNGs — so the glob that resolves
+          them matches more than
           <code>.jpg</code>, and the file's extension has to match its bytes or the image endpoint
           fails outright.
         </p>

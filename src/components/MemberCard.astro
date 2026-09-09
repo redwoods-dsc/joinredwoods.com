@@ -5,7 +5,7 @@ import type { Member } from '../lib/members';
 
 type Props = Member;
 
-const { name, title, linkedin, website, avatar } = Astro.props;
+const { slug, name, title, linkedin, website, avatar } = Astro.props;
 
 /* Resolved here rather than imported by name, because the filename comes out of
    Slack — the same move ContentPage makes for its heading artwork. Every file in
@@ -23,11 +23,53 @@ const found = avatar
 const photo = found
   ? await getImage({ src: found[1].default, format: 'webp', width: 128, height: 128, fit: 'cover' })
   : undefined;
+
+/* Members who never set a profile picture get a drawn stand of redwoods on the
+   green instead. Sorted so the order is the filenames' rather than the
+   filesystem's, which is not promised to be stable. */
+const stands = Object.entries(
+  import.meta.glob<{ default: ImageMetadata }>('../assets/member-stands/*.{png,jpg,webp}', {
+    eager: true,
+  }),
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+
+/* Keyed off the slug rather than the member's position, so the drawing someone
+   gets is the same one next month — a new member joining partway up the
+   alphabet would otherwise shuffle everybody below them. */
+const pick = (slug: string) => {
+  let h = 0;
+  for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) % 100000;
+  return h % stands.length;
+};
+
+const stand =
+  !photo && stands.length
+    ? await getImage({
+        src: stands[pick(slug)],
+        format: 'webp',
+        width: 128,
+        height: 128,
+        fit: 'contain',
+      })
+    : undefined;
 ---
 
 <li class="member">
-  <div class="member__photo">
-    {photo && <img src={photo.src} alt="" width="64" height="64" loading="lazy" decoding="async" />}
+  <div class="member__photo" data-drawn={photo ? undefined : ''}>
+    {
+      (photo ?? stand) && (
+        <img
+          src={(photo ?? stand)!.src}
+          alt=""
+          width="64"
+          height="64"
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
   </div>
   <div class="member__body">
     <p class="member__name">{name}</p>
@@ -84,6 +126,14 @@ const photo = found
     flex: none;
     width: 64px;
     height: 64px;
+  }
+
+  /* The drawings are line art on nothing, so they need a ground of their own —
+     and it doubles as the empty circle when there are no drawings to rotate. */
+  .member__photo[data-drawn] {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-full);
+    overflow: hidden;
   }
 
   .member__photo img {
