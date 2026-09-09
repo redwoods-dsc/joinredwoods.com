@@ -7,6 +7,7 @@ import Button from '../components/Button.astro';
 import Callout from '../components/Callout.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
+import MemberCard from '../components/MemberCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
@@ -114,6 +115,7 @@ const sections = [
   { id: 'note', label: 'Note' },
   { id: 'callout', label: 'Callout' },
   { id: 'entry-card', label: 'Entry card' },
+  { id: 'member-card', label: 'Member card' },
   { id: 'question-promo', label: 'The Question' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
@@ -946,6 +948,47 @@ const sections = [
       </div>
     </section>
 
+    <section id="member-card" class="section">
+      <div class="section__head">
+        <h2>Member card</h2>
+        <p>
+          <code>&lt;MemberCard slug name title linkedin website avatar /&gt;</code>. One person on
+          <code>/members</code>. Everything but the name is optional, because the source is a Slack
+          profile and most of it is: of the members listed today, 26 of 37 have a title, 24 a
+          LinkedIn, and 32 a photo.
+        </p>
+        <p>
+          The photo's box is held even when there is no photo, so names line up across a row rather
+          than stepping left for the members who have never set one. Slack hands back whatever was
+          uploaded — about a third are PNGs — so the glob that resolves them matches more than
+          <code>.jpg</code>, and the file's extension has to match its bytes or the image endpoint
+          fails outright.
+        </p>
+        <p>
+          The two icon links are the only ones on the site whose accessible name is not their text,
+          since they have none: each carries an <code>aria-label</code> naming the person and where the
+          link goes.
+        </p>
+      </div>
+
+      <ul class="member-card-demo">
+        <MemberCard
+          slug="ada-example"
+          name="Ada Example"
+          title="Design System Lead, Somewhere"
+          linkedin="#member-card"
+          website="#member-card"
+        />
+        <MemberCard
+          slug="no-photo"
+          name="Someone Without A Photo"
+          title="Principal Designer"
+          linkedin="#member-card"
+        />
+        <MemberCard slug="name-only" name="Name Only" />
+      </ul>
+    </section>
+
     <section id="question-promo" class="section">
       <div class="section__head">
         <h2>The Question</h2>
@@ -1242,6 +1285,13 @@ const sections = [
     padding: var(--space-md);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+  }
+
+  .member-card-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-lg);
+    padding: 0;
   }
 
   .header-demo {

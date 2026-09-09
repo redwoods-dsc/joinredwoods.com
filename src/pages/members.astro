@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import ContentPage from '../layouts/ContentPage.astro';
+import MemberCard from '../components/MemberCard.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import members from '../data/members.json';
+import type { Member } from '../lib/members';
+
+/* Written by scripts/sync-members.mjs, already sorted by surname — the order is
+   the script's job because that is where the names are. */
+const listed = members as Member[];
+
+const articles = (await getCollection('field-notes', (entry) => !entry.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<ContentPage
+  title="Members"
+  headingImage="_hikers.png"
+  subtitle="Redwoods is the people in it. These are the members who asked to be listed here."
+  note="Everyone chooses for themselves whether to appear on this page, and can change their mind at any time."
+  description="The people of Redwoods — design system practitioners who asked to be listed on the site."
+>
+  <ul class="member-list">
+    {listed.map((member) => <MemberCard {...member} />)}
+  </ul>
+
+  <h3>What we publish together</h3>
+  <p>
+    Members write Field Notes as a community — analysis and synthesis offered back to the wider
+    design system world.
+  </p>
+  <ul class="article-list">
+    {
+      articles.map((article) => (
+        <li>
+          <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <ArrowLink href="/field-notes/" direction="right" margin="md" size="smaller">
+    Read all Field Notes
+  </ArrowLink>
+</ContentPage>
+
+<style>
+  .member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-lg);
+    padding: 0;
+    margin-block-end: var(--space-2xl);
+  }
+
+  .article-list {
+    padding-inline-start: var(--space-lg);
+  }
+</style>
