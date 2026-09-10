@@ -18,9 +18,9 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
 <ContentPage
   title="Members"
   headingImage="_hikers.png"
-  subtitle="Redwoods is the people in it. These are the members who asked to be listed here."
-  note="Everyone chooses for themselves whether to appear on this page, and can change their mind at any time."
-  description="The people of Redwoods — design system practitioners who asked to be listed on the site."
+  subtitle="Meet some of the Redwoods Design System Community."
+  note="We're a group of system thinkers, fascinated with the power of design systems to change the way our organizations deliver better products. We come from a variety of backgrounds and industries, but we all share a common goal: to be better humans and better practitioners."
+  description="Meet some of the Redwoods Design System Community members."
 >
   <ul class="member-list">
     {listed.map((member) => <MemberCard {...member} />)}
