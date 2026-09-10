@@ -192,6 +192,8 @@ CSS attracts commentary, and this repo has had to be weeded once already. The ba
 
   Slack serves whatever avatar the member uploaded — roughly a third are PNGs — so the file's extension is taken from the response rather than assumed, and `MemberCard`'s glob matches more than `.jpg`. An extension that disagrees with the bytes fails Astro's image endpoint outright.
 
+  The Rangers aren't in Slack's data — they're kept by hand in `src/data/rangers.ts`, **keyed by slug rather than name**, because Slack names don't always read as you'd type them (ToniAnn is `toniann`, Robin is `robin-di-capua`). A slug that matches no listed member fails silently, which is also what a Ranger who hasn't opted in looks like, so check the page after editing it.
+
 - Anything whose correct state depends on the current time can't be settled by a static build alone. The Question solves this by baking in the build-time state and re-checking the deadline in an inline `<head>` script that can only move the card one way (open → closed) — see "Updating The Question" in the README before adding a second one of these.
 - Build output is fully static — do not introduce a server runtime without discussion.
 

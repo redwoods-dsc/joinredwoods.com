@@ -957,6 +957,9 @@ const sections = [
           profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
           LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
           <code>members.json</code>, so the data still says what people actually put in Slack.
+          Rangers, listed by hand in <code>src/data/rangers.ts</code>, take "and Redwoods Ranger" on
+          the end of their title; <code>memberTitle()</code> in <code>src/lib/members.ts</code> decides
+          the line.
         </p>
         <p>
           A member who never set a profile picture gets a drawn stand of redwoods on the green
