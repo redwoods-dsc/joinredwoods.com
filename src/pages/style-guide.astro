@@ -957,7 +957,7 @@ const sections = [
           profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
           LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
           <code>members.json</code>, so the data still says what people actually put in Slack.
-          Rangers, listed by hand in <code>src/data/rangers.ts</code>, take "and Redwoods Ranger" on
+          Rangers, listed by hand in <code>src/data/rangers.ts</code>, take ", Redwoods Ranger" on
           the end of their title; <code>memberTitle()</code> in <code>src/lib/members.ts</code> decides
           the line.
         </p>
@@ -975,7 +975,13 @@ const sections = [
         <p>
           The two icon links are the only ones on the site whose accessible name is not their text,
           since they have none: each carries an <code>aria-label</code> naming the person and where the
-          link goes.
+          link goes. On the card's white ground base.css's half-opaque white hover would show nothing,
+          so they take the same 12%-toward-black step as a link in the white callout.
+        </p>
+        <p>
+          The list is a size container named <code>members</code>. When it is too narrow for two
+          240px columns the cards go one-up, and each stacks its photo above its text at a larger
+          size — side by side, a 96px photo on a phone leaves the title too narrow to set.
         </p>
       </div>
 
@@ -1296,9 +1302,10 @@ const sections = [
   }
 
   .member-card-demo {
+    container: members / inline-size;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: var(--space-lg);
+    gap: var(--space-md);
     padding: 0;
   }
 

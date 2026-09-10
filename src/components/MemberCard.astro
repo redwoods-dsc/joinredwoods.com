@@ -19,9 +19,10 @@ const found = avatar
   ? Object.entries(photos).find(([path]) => path.endsWith(`/${avatar}`))
   : undefined;
 
-/* 2× a 64px circle. Squared off first: Slack does not promise one. */
+/* 2× the 96px circle a one-up card draws, which is also as large as Slack's
+   rendition goes. Squared off first: Slack does not promise one. */
 const photo = found
-  ? await getImage({ src: found[1].default, format: 'webp', width: 128, height: 128, fit: 'cover' })
+  ? await getImage({ src: found[1].default, format: 'webp', width: 192, height: 192, fit: 'cover' })
   : undefined;
 
 /* Members who never set a profile picture get a drawn stand of redwoods on the
@@ -49,8 +50,8 @@ const stand =
     ? await getImage({
         src: stands[pick(slug)],
         format: 'webp',
-        width: 128,
-        height: 128,
+        width: 192,
+        height: 192,
         fit: 'contain',
       })
     : undefined;
@@ -117,7 +118,10 @@ const stand =
     display: flex;
     gap: var(--space-md);
     align-items: start;
+    padding: var(--space-md);
     list-style: none;
+    background-color: var(--color-gray-100);
+    border-radius: var(--radius-md);
   }
 
   /* Held even when there is no photo, so the names line up across a row rather
@@ -168,5 +172,37 @@ const stand =
   .member__links a {
     display: inline-flex;
     line-height: 0;
+    padding: var(--space-3xs);
+    margin: calc(-1 * var(--space-3xs));
+  }
+
+  /* base.css's hover ground is half-opaque white, which on a white card is no
+     hover at all. The same 12%-toward-black step the white callout takes. */
+  .member__links a:hover {
+    background-color: color-mix(in srgb, var(--color-gray-100), var(--color-gray-00) 12%);
+  }
+
+  /* Alone in its row, a card has the width to spend on a bigger photo and name.
+     496px is the point the grid in members.astro drops to one column — two
+     240px tracks and a --space-md gap — and a query can't read either value.
+     Stacked rather than side by side: on a phone the list is ~280px, and a
+     96px photo beside the text leaves it too little width to set a title in. */
+  @container members (width < 496px) {
+    .member {
+      flex-direction: column;
+    }
+
+    .member__photo {
+      width: 96px;
+      height: 96px;
+    }
+
+    .member__name {
+      font-size: var(--font-size-lg);
+    }
+
+    .member__title {
+      font-size: var(--font-size-md);
+    }
   }
 </style>
