@@ -1,7 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
-import { memberTitle, type Member } from '../lib/members';
+import { isRanger, memberTitle, type Member } from '../lib/members';
 
 type Props = Member;
 
@@ -73,8 +73,17 @@ const stand =
     }
   </div>
   <div class="member__body">
-    <p class="member__name">{name}</p>
-    <p class="member__title">{memberTitle({ slug, title })}</p>
+    <p class="member__name">
+      {name}
+      {
+        isRanger(slug) && (
+          <span role="img" aria-label="Redwoods Ranger" title="Redwoods Ranger">
+            🌲
+          </span>
+        )
+      }
+    </p>
+    <p class="member__title">{memberTitle({ title })}</p>
     {
       (linkedin || website) && (
         <p class="member__links">
@@ -116,39 +125,39 @@ const stand =
 <style>
   .member {
     display: flex;
-    gap: var(--space-md);
-    align-items: start;
-    padding: var(--space-md);
     list-style: none;
-    background-color: var(--color-gray-100);
+    background-color: color-mix(in srgb, var(--color-gray-100) 50%, transparent);
     border-radius: var(--radius-md);
   }
 
-  /* Held even when there is no photo, so the names line up across a row rather
-     than stepping left for the members who have never set one. */
+  /* Flush to the card's top, left and bottom, so it takes the card's height
+     rather than a size of its own. The image is positioned out of flow because
+     a percentage height against a stretched flex item is the kind of thing
+     that works until it doesn't. Held even when empty, so names line up. */
   .member__photo {
+    position: relative;
     flex: none;
     width: 64px;
-    height: 64px;
+    overflow: hidden;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
   }
 
-  /* The drawings are line art on nothing, so they need a ground of their own —
-     and it doubles as the empty circle when there are no drawings to rotate. */
+  /* The drawings are line art on nothing, so they need a ground of their own. */
   .member__photo[data-drawn] {
     background-color: var(--color-surface);
-    border-radius: var(--radius-full);
-    overflow: hidden;
   }
 
   .member__photo img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    border-radius: var(--radius-full);
     object-fit: cover;
   }
 
   .member__body {
     min-width: 0;
+    padding: var(--space-md);
   }
 
   .member__name {
@@ -176,25 +185,18 @@ const stand =
     margin: calc(-1 * var(--space-3xs));
   }
 
-  /* base.css's hover ground is half-opaque white, which on a white card is no
-     hover at all. The same 12%-toward-black step the white callout takes. */
+  /* base.css's hover ground is half-opaque white, which on this card's own
+     half-white ground barely registers. The white callout's 12% step down. */
   .member__links a:hover {
     background-color: color-mix(in srgb, var(--color-gray-100), var(--color-gray-00) 12%);
   }
 
-  /* Alone in its row, a card has the width to spend on a bigger photo and name.
-     496px is the point the grid in members.astro drops to one column — two
-     240px tracks and a --space-md gap — and a query can't read either value.
-     Stacked rather than side by side: on a phone the list is ~280px, and a
-     96px photo beside the text leaves it too little width to set a title in. */
+  /* Alone in its row, a card has width to spend on a bigger photo and name.
+     496px is where the grid in members.astro drops to one column — two 240px
+     tracks and a --space-md gap — and a query can't read either value. */
   @container members (width < 496px) {
-    .member {
-      flex-direction: column;
-    }
-
     .member__photo {
       width: 96px;
-      height: 96px;
     }
 
     .member__name {

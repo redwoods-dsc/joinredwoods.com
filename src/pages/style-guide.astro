@@ -957,16 +957,16 @@ const sections = [
           profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
           LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
           <code>members.json</code>, so the data still says what people actually put in Slack.
-          Rangers, listed by hand in <code>src/data/rangers.ts</code>, take ", Redwoods Ranger" on
-          the end of their title; <code>memberTitle()</code> in <code>src/lib/members.ts</code> decides
-          the line.
+          Rangers, listed by hand in <code>src/data/rangers.ts</code>, get a tree after their name,
+          labelled "Redwoods Ranger" so a screen reader announces what it means rather than the
+          emoji's name.
         </p>
         <p>
           A member who never set a profile picture gets a drawn stand of redwoods on the green
           instead, rotated from <code>src/assets/member-stands</code> — keyed off their slug rather than
           their position, so a new member joining partway up the alphabet does not reshuffle everyone
-          else's. With that folder empty the circle is a plain green ground, which is what the middle
-          card below shows. Either way the box is held, so names line up across a row rather than stepping
+          else's. With that folder empty the photo strip is a plain green ground, which is what the middle
+          card below shows. Either way it is held, so names line up across a row rather than stepping
           left. Slack hands back whatever was uploaded — about a third are PNGs — so the glob that resolves
           them matches more than
           <code>.jpg</code>, and the file's extension has to match its bytes or the image endpoint
@@ -975,13 +975,14 @@ const sections = [
         <p>
           The two icon links are the only ones on the site whose accessible name is not their text,
           since they have none: each carries an <code>aria-label</code> naming the person and where the
-          link goes. On the card's white ground base.css's half-opaque white hover would show nothing,
+          link goes. On the card's half-white ground base.css's half-opaque white hover barely registers,
           so they take the same 12%-toward-black step as a link in the white callout.
         </p>
         <p>
-          The list is a size container named <code>members</code>. When it is too narrow for two
-          240px columns the cards go one-up, and each stacks its photo above its text at a larger
-          size — side by side, a 96px photo on a phone leaves the title too narrow to set.
+          The photo runs flush to the card's top, left and bottom, taking the card's height, with
+          its outer corners rounded to the card's own radius. The list is a size container named
+          <code>members</code>: when it is too narrow for two 240px columns the cards go one-up, and
+          the photo strip widens and the name and title step up a size.
         </p>
       </div>
 
