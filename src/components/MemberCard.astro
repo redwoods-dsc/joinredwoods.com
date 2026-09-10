@@ -73,7 +73,7 @@ const stand =
   </div>
   <div class="member__body">
     <p class="member__name">{name}</p>
-    {title && <p class="member__title">{title}</p>}
+    <p class="member__title">{title ?? 'Redwoods Member'}</p>
     {
       (linkedin || website) && (
         <p class="member__links">
@@ -155,6 +155,7 @@ const stand =
   .member__title {
     margin: var(--space-3xs) 0 0;
     font-size: var(--font-size-sm);
+    line-height: var(--line-height-none);
   }
 
   .member__links {

@@ -954,8 +954,9 @@ const sections = [
         <p>
           <code>&lt;MemberCard slug name title linkedin website avatar /&gt;</code>. One person on
           <code>/members</code>. Everything but the name is optional, because the source is a Slack
-          profile and most of it is: of the members listed today, 26 of 37 have a title, 24 a
-          LinkedIn, and 32 a photo.
+          profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
+          LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
+          <code>members.json</code>, so the data still says what people actually put in Slack.
         </p>
         <p>
           A member who never set a profile picture gets a drawn stand of redwoods on the green
@@ -989,7 +990,7 @@ const sections = [
           title="Principal Designer"
           linkedin="#member-card"
         />
-        <MemberCard slug="name-only" name="Name Only" />
+        <MemberCard slug="no-title" name="Someone Without A Title" />
       </ul>
     </section>
 
