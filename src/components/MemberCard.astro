@@ -19,8 +19,8 @@ const found = avatar
   ? Object.entries(photos).find(([path]) => path.endsWith(`/${avatar}`))
   : undefined;
 
-/* 2× the 96px circle a one-up card draws, which is also as large as Slack's
-   rendition goes. Squared off first: Slack does not promise one. */
+/* As large as Slack's rendition goes, which is 1.5× the 128px square a wide
+   card draws. Squared off first: Slack does not promise one. */
 const photo = found
   ? await getImage({ src: found[1].default, format: 'webp', width: 192, height: 192, fit: 'cover' })
   : undefined;
@@ -124,6 +124,7 @@ const stand =
 
 <style>
   .member {
+    container: member / inline-size;
     display: flex;
     list-style: none;
     background-color: color-mix(in srgb, var(--color-gray-100) 50%, transparent);
@@ -191,12 +192,25 @@ const stand =
     background-color: color-mix(in srgb, var(--color-gray-100), var(--color-gray-00) 12%);
   }
 
-  /* Alone in its row, a card has width to spend on a bigger photo and name.
-     496px is where the grid in members.astro drops to one column — two 240px
-     tracks and a --space-md gap — and a query can't read either value. */
-  @container members (width < 496px) {
+  /* Square once the card is wide enough for the text to sit within the photo's
+     height; narrower, the photo would be a tall sliver, so it stays a strip.
+     The min-height is what makes it square: the text sets the card's height
+     otherwise, and a title too long to fit stretches the photo rather than
+     overflowing the card. */
+  @container member (width >= 300px) {
+    .member__photo {
+      width: 128px;
+      min-height: 128px;
+    }
+  }
+
+  /* Alone in its row, a card has width to spend on a bigger name. 616px is
+     where the grid in members.astro drops to one column — two 300px tracks and
+     a --space-md gap — and a query can't read either value. */
+  @container members (width < 616px) {
     .member__photo {
       width: 96px;
+      min-height: 0;
     }
 
     .member__name {
@@ -205,6 +219,14 @@ const stand =
 
     .member__title {
       font-size: var(--font-size-md);
+    }
+
+    /* The larger type needs a wider card before it fits beside a square. */
+    @container member (width >= 400px) {
+      .member__photo {
+        width: 128px;
+        min-height: 128px;
+      }
     }
   }
 </style>

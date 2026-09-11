@@ -49,7 +49,9 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
   .member-list {
     container: members / inline-size;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    /* MemberCard squares its photo from 300px; a narrower track splits into two
+       columns of strips. */
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: var(--space-md);
     padding: 0;
     margin-block-end: var(--space-2xl);
