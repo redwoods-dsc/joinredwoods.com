@@ -38,28 +38,26 @@ h6 {
   margin-block: var(--space-lg) var(--space-xs);
 }
 
+/* One per page: its title, from ContentPage or Hero. It always opens its
+   block, so it takes nothing above. */
 h1 {
-  font-size: var(--font-size-4xl);
-  margin-block: var(--space-xl) var(--space-sm);
+  font-size: var(--font-size-hero);
+  margin-block-start: 0;
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
-  margin-block: var(--space-xl) var(--space-xs);
-}
-
-h3 {
   font-size: var(--font-size-2xl);
 }
 
-h4 {
+h3 {
   font-size: var(--font-size-xl);
 }
 
-h5 {
+h4 {
   font-size: var(--font-size-lg);
 }
 
+h5,
 h6 {
   font-size: var(--font-size-md);
 }

@@ -91,18 +91,20 @@ title: Redwoods Code of Conduct
 subtitle: We take this code of conduct seriously, and we trust that you will too.
 ---
 
-### A section heading
+## A section heading
 
 Body copy lands in the layout's `<slot />`, so heading spacing and prose styles come for free.
 ```
 
 See `src/pages/code-of-conduct.md` for the canonical example.
 
+**Every page has exactly one `h1`, and it's the page's title** — `ContentPage` renders `title` as one, and a page without a title opens on a `<Hero>`, which is one too. The logo is the nav's home link, not a heading. So body headings start at `##` and never skip a level on the way down. `base.css` sizes each level for that role — an `h2` is a section heading, not a second title — so a heading that looks too big or too small is a styling question, not a reason to pick a different level.
+
 `ContentPage` frontmatter knobs, all optional:
 
 | Key            | Default    | What it does                                                                                                                                                                                      |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`        | —          | Renders the intro header. Omit it and the page opens straight into body copy.                                                                                                                     |
+| `title`        | —          | Renders the intro header, with the title as the page's `h1`. Omit it and the page opens straight into body copy, which then needs a `<Hero>`.                                                     |
 | `subtitle`     | —          | Serif lede under the title, below the byline on a page that has one. Ignored without a `title`.                                                                                                   |
 | `description`  | `subtitle` | Meta description. Set it when the subtitle is too short, too coy, or too long to work as a snippet.                                                                                               |
 | `headingImage` | —          | Filename of artwork in `src/assets`, painted behind the title and off to its right. A name, not an import — frontmatter can't carry a module. Throws at build if it doesn't resolve.              |

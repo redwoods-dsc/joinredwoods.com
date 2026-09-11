@@ -12,7 +12,7 @@
 
   /* Stated here rather than left to the child: a layout's prose rhythm reaches
      slotted content through :global() at a higher specificity than the child's
-     own reset, so a Hero that already zeroes its margin still gets pushed down. */
+     own reset, so a heading that already zeroes its margin still gets pushed down. */
   .lede > :global(:first-child) {
     margin-block-start: 0;
   }
