@@ -20,6 +20,6 @@ We expect members and facilitators to fully comply with these ideals in every in
 
 Don't be nasty or mean — be considerate and respectful.
 
-Questions or concerns? Contact [Ben Callahan](https://bencallahan.com/contact).
+Questions or concerns? Connect with [Ben Callahan](https://bencallahan.com/connect).
 
 _By joining Redwoods, you agree to this Code of Conduct._
