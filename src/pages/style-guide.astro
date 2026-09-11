@@ -7,6 +7,7 @@ import Button from '../components/Button.astro';
 import Callout from '../components/Callout.astro';
 import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
+import MemberCard from '../components/MemberCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
 import Hero from '../components/Hero.astro';
@@ -114,6 +115,7 @@ const sections = [
   { id: 'note', label: 'Note' },
   { id: 'callout', label: 'Callout' },
   { id: 'entry-card', label: 'Entry card' },
+  { id: 'member-card', label: 'Member card' },
   { id: 'question-promo', label: 'The Question' },
   { id: 'header', label: 'Header' },
   { id: 'footer', label: 'Footer' },
@@ -948,6 +950,67 @@ const sections = [
       </div>
     </section>
 
+    <section id="member-card" class="section">
+      <div class="section__head">
+        <h2>Member card</h2>
+        <p>
+          <code>&lt;MemberCard slug name title linkedin website avatar /&gt;</code>. One person on
+          <code>/members</code>. Everything but the name is optional, because the source is a Slack
+          profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
+          LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
+          <code>members.json</code>, so the data still says what people actually put in Slack.
+          Rangers, listed by hand in <code>src/data/rangers.ts</code>, get a tree after their name,
+          labelled "Redwoods Ranger" so a screen reader announces what it means rather than the
+          emoji's name.
+        </p>
+        <p>
+          A member with no photo in Slack — neither an upload nor a Gravatar — gets a drawn stand of
+          redwoods on the green instead, rotated from <code>src/assets/member-stands</code> and keyed
+          off their slug rather than their position, so a new member joining partway up the alphabet does
+          not reshuffle everyone else's. None of the demos below has a photo, so all three show one; with
+          that folder empty they would be a plain green ground. Slack hands back whatever was uploaded
+          — about a third are PNGs — so the glob that resolves photos matches more than
+          <code>.jpg</code>, and the file's extension has to match its bytes or the image endpoint
+          fails outright.
+        </p>
+        <p>
+          The two icon links are the only ones on the site whose accessible name is not their text,
+          since they have none: each carries an <code>aria-label</code> naming the person and where the
+          link goes. The card lifts from half-white to white on hover, which leaves base.css's half-opaque
+          white hover with nothing to show against, so the links take the same 12%-toward-black step as
+          a link in the white callout.
+        </p>
+        <p>
+          The photo runs flush to the card's top, left and bottom, with its outer corners rounded to
+          the card's own radius. Each card is a size container named <code>member</code>, and
+          squares its photo at 128px once it is 300px wide — the width at which every current title
+          fits beside it. Narrower, it stays a strip as tall as the card. The list is a second
+          container,
+          <code>members</code>: when it is too narrow for two 300px columns the cards go one-up, the
+          strip widens and the name and title step up a size, and the larger type needs a 400px card
+          before it squares. The page's grid uses that same 300px minimum, so two-up only happens
+          when both cards can hold a square.
+        </p>
+      </div>
+
+      <ul class="member-card-demo">
+        <MemberCard
+          slug="ada-example"
+          name="Ada Example"
+          title="Design System Lead, Somewhere"
+          linkedin="#member-card"
+          website="#member-card"
+        />
+        <MemberCard
+          slug="no-photo"
+          name="Someone Without A Photo"
+          title="Principal Designer"
+          linkedin="#member-card"
+        />
+        <MemberCard slug="no-title" name="Someone Without A Title" />
+      </ul>
+    </section>
+
     <section id="question-promo" class="section">
       <div class="section__head">
         <h2>The Question</h2>
@@ -1242,6 +1305,14 @@ const sections = [
     padding: var(--space-md);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+  }
+
+  .member-card-demo {
+    container: members / inline-size;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: var(--space-md);
+    padding: 0;
   }
 
   .header-demo {
