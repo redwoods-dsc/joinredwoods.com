@@ -4,16 +4,21 @@
 // depends on Slack being up, and on a secret being present, is a build that
 // fails for reasons nobody can see in the repo. The output is committed.
 //
-//   node --env-file=.env scripts/sync-members.mjs
+//   node --env-file=.env scripts/sync-members.mjs            # sync
+//   node --env-file=.env scripts/sync-members.mjs --fields   # print field ids
+//   node --env-file=.env scripts/sync-members.mjs --force    # allow a big drop
 //
-// Writes src/data/members.json and src/assets/members/*.jpg.
+// Writes src/data/members.json and one photo per member to src/assets/members/,
+// removing any that no longer belong to someone listed.
 
 import { mkdir, readFile, writeFile, readdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const TOKEN = process.env.SLACK_TOKEN;
 if (!TOKEN) {
-  console.error('SLACK_TOKEN is not set. Put it in .env — see the members section of CLAUDE.md.');
+  console.error(
+    'SLACK_TOKEN is not set. Put it in .env — see "Updating the member list" in the README.',
+  );
   process.exit(1);
 }
 
@@ -79,8 +84,6 @@ const isLinkedIn = (url) => {
   }
 };
 
-/* Sorted on, not displayed. A trailing "(Hogg)" is an alternate surname rather
-   than the one to file under, and it would otherwise sort ahead of the letters. */
 /* Slack only sets is_custom_image for a direct upload. Where there is none it
    falls back to Gravatar and hands back a URL with `d=` pointing at one of its
    own default avatars — so the URL always resolves and the flag alone would
@@ -96,6 +99,8 @@ const photoUrl = async (profile) => {
   return res.status === 200 ? strict : undefined;
 };
 
+/* Sorted on, not displayed. A trailing "(Hogg)" is an alternate surname rather
+   than the one to file under, and it would otherwise sort ahead of the letters. */
 const surname = (name) =>
   name
     .replace(/\([^)]*\)/g, ' ')

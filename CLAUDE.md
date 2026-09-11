@@ -181,18 +181,14 @@ CSS attracts commentary, and this repo has had to be weeded once already. The ba
 - `src/assets/` for media processed by Astro's pipeline; `public/` for files served as-is.
 - `src/data/` is hand-maintained content that isn't a page and isn't big enough to be a collection — a typed module with one export and no logic, so a non-developer can edit it without reading around. `src/lib/` holds the types and logic that operate on it. `the-question.ts` exists in both for exactly that split.
 
-- `scripts/` holds tooling that is **run by a person, never by the build**. `sync-members.mjs` is the only one: it reads the Redwoods Slack workspace and writes `src/data/members.json` plus `src/assets/members/`. The build must not call Slack — the site is static, and a build that depends on a third-party API and a secret is one that fails for reasons nobody can see in the repo. Its output is committed.
-
-  ```bash
-  node --env-file=.env scripts/sync-members.mjs            # sync
-  node --env-file=.env scripts/sync-members.mjs --fields   # print Slack's custom field ids and labels
-  ```
-
-  Needs `SLACK_TOKEN` in `.env` (gitignored) — a Slack bot token with `users:read` and `users.profile:read`. Custom profile fields come back keyed by opaque ids like `Xf0B01T21M5X` rather than by the label typed into Slack, so the ids are pinned at the top of the script and `--fields` reprints the mapping when they drift. Only members whose "Can we list you on the Redwoods website?" field reads exactly `Yes, please!` are written; silence is not consent. The script refuses to write if the member count drops by more than three, because an expired token and a changed field id both look like "nobody opted in" and would quietly unpublish everyone.
-
-  Slack serves whatever avatar the member uploaded — roughly a third are PNGs — so the file's extension is taken from the response rather than assumed, and `MemberCard`'s glob matches more than `.jpg`. An extension that disagrees with the bytes fails Astro's image endpoint outright.
-
-  The Rangers aren't in Slack's data — they're kept by hand in `src/data/rangers.ts`, **keyed by slug rather than name**, because Slack names don't always read as you'd type them (ToniAnn is `toniann`, Robin is `robin-di-capua`). A slug that matches no listed member fails silently, which is also what a Ranger who hasn't opted in looks like, so check the page after editing it.
+- `scripts/` holds tooling that is **run by a person, never by the build**. `sync-members.mjs` is the only one: it reads the Redwoods Slack workspace and writes `src/data/members.json` plus `src/assets/members/`, and its output is committed. The build must not call Slack — the site is static, and a build that depends on a third-party API and a secret is one that fails for reasons nobody can see in the repo. How to run it, set up its token, and recover when it refuses to write is in "Updating the member list" in the README. What matters when you're editing the code:
+  - **`members.json` is generated.** Don't hand-edit it; the next sync overwrites it. Anything derived for display — the "Redwoods Member" fallback title, the Ranger's tree — belongs in `src/lib/members.ts` or `MemberCard`, so the data keeps saying exactly what people put in Slack.
+  - **Only an exact `Yes, please!` in the opt-in field is written.** Silence is not consent; don't loosen that match.
+  - **Custom profile fields are keyed by opaque ids** like `Xf0B01T21M5X`, not by their labels, so the ids are pinned at the top of the script. `--fields` reprints the mapping.
+  - **The script refuses to write if the member count drops by more than three** (`MAX_SHRINK`), because an expired token and a drifted field id both look like "nobody opted in" and would quietly unpublish everyone. Keep that guard.
+  - **A photo's extension comes from the response's content type, never the URL.** About a third of Slack uploads are PNGs, and Gravatar serves PNG from paths ending `.jpg`; an extension that disagrees with the bytes fails Astro's image endpoint outright. `MemberCard`'s glob matches more than `.jpg` for the same reason.
+  - **Gravatar photos count.** Slack only sets `is_custom_image` for a direct upload, and otherwise hands back a Gravatar URL that always resolves to _something_. The script asks Gravatar for `d=404` and keeps the photo only on a 200.
+  - **Rangers are kept by hand in `src/data/rangers.ts`, keyed by slug rather than name**, because Slack names don't always read as you'd type them (ToniAnn is `toniann`, Robin is `robin-di-capua`). A slug that matches no listed member fails silently — which is also what a Ranger who hasn't opted in looks like — so check the page after editing it.
 
 - Anything whose correct state depends on the current time can't be settled by a static build alone. The Question solves this by baking in the build-time state and re-checking the deadline in an inline `<head>` script that can only move the card one way (open → closed) — see "Updating The Question" in the README before adding a second one of these.
 - Build output is fully static — do not introduce a server runtime without discussion.
