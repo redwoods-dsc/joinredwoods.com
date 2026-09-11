@@ -1,48 +1,30 @@
 ---
-import { getCollection } from 'astro:content';
 import ContentPage from '../layouts/ContentPage.astro';
 import MemberCard from '../components/MemberCard.astro';
-import ArrowLink from '../components/ArrowLink.astro';
 import members from '../data/members.json';
 import type { Member } from '../lib/members';
 
 /* Written by scripts/sync-members.mjs, already sorted by surname — the order is
    the script's job because that is where the names are. */
 const listed = members as Member[];
-
-const articles = (await getCollection('field-notes', (entry) => !entry.data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
 ---
 
 <ContentPage
   title="Members"
-  headingImage="_hikers.png"
+  headingImage="_members-r.png"
   subtitle="Meet some of the Redwoods Design System Community."
-  note="We're a group of system thinkers, fascinated with the power of design systems to change the way our organizations deliver better products. We come from a variety of backgrounds and industries, but we all share a common goal: to be better humans and better practitioners."
-  description="Meet some of the Redwoods Design System Community members."
+  note="We're a group of system thinkers, fascinated with the power of design systems to change the way our organizations deliver better products. We come from a variety of backgrounds and industries, but we all share a common goal: to be better humans and better practitioners. Redwoods Rangers are designated with a 🌲."
+  description="Meet some of the Redwoods Design System Community members, the humans who make Redwoods work."
 >
   <ul class="member-list">
     {listed.map((member) => <MemberCard {...member} />)}
   </ul>
 
-  <h3>What we publish together</h3>
+  <h3>Be part of the community</h3>
   <p>
-    Members write Field Notes as a community — analysis and synthesis offered back to the wider
-    design system world.
+    If you're looking for a group of like-minded learners, <a href="/#values">review our values</a> and
+    <a href="/join">consider joining</a>.
   </p>
-  <ul class="article-list">
-    {
-      articles.map((article) => (
-        <li>
-          <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
-        </li>
-      ))
-    }
-  </ul>
-  <ArrowLink href="/field-notes/" direction="right" margin="md" size="smaller">
-    Read all Field Notes
-  </ArrowLink>
 </ContentPage>
 
 <style>
@@ -55,9 +37,5 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
     gap: var(--space-md);
     padding: 0;
     margin-block-end: var(--space-2xl);
-  }
-
-  .article-list {
-    padding-inline-start: var(--space-lg);
   }
 </style>
