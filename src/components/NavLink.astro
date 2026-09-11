@@ -1,18 +1,15 @@
 ---
 interface Props {
   href: string;
-  /* Off by default so a section link stays current on its children —
-     /field-notes/ keeps the mark while an article is open. Set it on a href
-     that every path starts with, like "/", where the prefix match is always
-     true and would otherwise mark Home current everywhere. */
-  exact?: boolean;
   class?: string;
 }
 
-const { href, exact = false, class: className } = Astro.props;
-const { pathname } = Astro.url;
+const { href, class: className } = Astro.props;
 
-const isCurrent = exact ? pathname === href : pathname.startsWith(href);
+// A prefix match, so a section link stays current on its children —
+// /field-notes/ keeps the mark while an article is open. Not for "/", which
+// prefixes every path; the home link is Header's logo.
+const isCurrent = Astro.url.pathname.startsWith(href);
 ---
 
 <a aria-current={isCurrent ? 'page' : undefined} class:list={[className]} href={href}>

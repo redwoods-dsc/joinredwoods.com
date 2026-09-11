@@ -65,7 +65,7 @@ const headingArt = headingImage
       title && (
         <header class="content-page__intro">
           <slot name="breadcrumb" />
-          <h2 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h2>
+          <h1 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h1>
           {Astro.slots.has('meta') && (
             <div class="content-page__meta">
               <slot name="meta" />
@@ -119,15 +119,11 @@ const headingArt = headingImage
     margin-block-start: var(--space-md);
   }
 
-  /* One step more air above headings than the base scale — a lone measure of
-     prose can take it, but 64px above an h2 reads as a gap, not hierarchy. h5
-     and h6 sit at the paragraph gap: at those levels they're run-in labels. */
+  /* A step more air above a section heading than the base scale — a lone
+     measure of prose can take it. h4 and below sit at the paragraph gap: at
+     those levels they're run-in labels. */
   .content-page :global(h2) {
-    margin-block-start: var(--space-2xl);
-  }
-
-  .content-page .content-page__intro :global(h2) {
-    margin-block-start: 0;
+    margin-block-start: var(--space-xl);
   }
 
   /* Artwork behind the title rather than in place of it, so the heading stays
@@ -135,17 +131,12 @@ const headingArt = headingImage
      with the column and taken the apparent size of the title with it.
 
      Decorative, so it belongs in CSS: there is nothing here a screen reader
-     should announce, and the h2 keeps its own text either way. The custom
+     should announce, and the h1 keeps its own text either way. The custom
      property is only set when a page supplies one, so the rule is inert
      elsewhere. */
-  .content-page__intro h2 {
+  .content-page__intro h1 {
     --heading-art-size: 8rem;
 
-    /* The page's title is the largest thing on it, which is the role
-       --font-size-hero already names — 2.5rem, a step clear of the h2 the base
-       scale would otherwise give this. Shared rather than duplicated: a second
-       token at the same value is a pair that drifts. */
-    font-size: var(--font-size-hero);
     display: flex;
     align-items: center;
     min-height: var(--heading-art-size);
@@ -157,19 +148,16 @@ const headingArt = headingImage
   }
 
   /* Nothing to reserve room for without artwork. */
-  .content-page__intro h2:not([style]) {
+  .content-page__intro h1:not([style]) {
     min-height: 0;
     padding-inline-end: 0;
   }
 
   .content-page :global(h3) {
-    margin-block-start: var(--space-xl);
-  }
-
-  .content-page :global(h4) {
     margin-block-start: var(--space-lg);
   }
 
+  .content-page :global(h4),
   .content-page :global(h5),
   .content-page :global(h6) {
     margin-block-start: var(--space-md);
