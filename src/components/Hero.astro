@@ -7,19 +7,14 @@ interface Props {
 
 const { id } = Astro.props;
 
-// An <h2> takes phrasing content only, so the slot can't carry the paragraph
+// An <h1> takes phrasing content only, so the slot can't carry the paragraph
 // MDX wraps it in. See inlineSlot.
 const content = await inlineSlot(Astro.slots);
 ---
 
-<h2 class="hero" id={id} set:html={content} />
+<h1 class="hero" id={id} set:html={content} />
 
 <style>
-  .hero {
-    margin-block-start: 0;
-    font-size: var(--font-size-hero);
-  }
-
   .hero :global(.accent) {
     color: var(--color-green);
   }

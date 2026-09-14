@@ -175,6 +175,8 @@ draft: false
 
 **`tone` picks the colour of the entry card** the piece gets in the sidebar. `green` is for articles and `blue` is for news and events, so most Field Notes want `green` — which is the default, and can be left out. Only the exceptions need saying, as `tone: blue`. The schema only accepts those two, so a typo fails the build instead of quietly rendering the default card. Both are side by side on the [style guide](http://localhost:4321/style-guide#entry-card).
 
+**The `title` is the page's `h1`**, so an article's own headings start at `##` and step down one level at a time. The same goes for every other page — see [Heading hierarchy](http://localhost:4321/style-guide#typography) in the style guide.
+
 ## 🎨 Styling
 
 We use **plain CSS** — no Tailwind, no CSS-in-JS, no Sass. Modern CSS covers everything we need and Astro compiles it with zero config.

@@ -5,12 +5,13 @@ import { headerBackground } from '../lib/header-background';
 import NavLink from '../components/NavLink.astro';
 
 const background = await headerBackground();
+const isHome = Astro.url.pathname === '/';
 ---
 
 <header class="header" style={`--bg-image: url(${background.src})`}>
   <div class="header-content">
-    <h1 class="logo-heading">
-      <a class="logo" href="/"
+    <nav class="nav" role="navigation">
+      <a class="logo" href="/" aria-current={isHome ? 'page' : undefined}
         ><img
           src={redwoodsLogo.src}
           width={redwoodsLogo.width}
@@ -18,10 +19,7 @@ const background = await headerBackground();
           alt="Redwoods"
         /></a
       >
-    </h1>
-    <nav class="nav" role="navigation">
       <ul>
-        <li><NavLink href="/" exact>Home</NavLink></li>
         <li><NavLink href="/field-notes/">Field Notes</NavLink></li>
         <li class="nav-break">—</li>
         <li><NavLink href="/join" class="join-link">Join</NavLink></li>
@@ -88,11 +86,6 @@ const background = await headerBackground();
     padding-block-start: var(--space-xs);
   }
 
-  .logo-heading {
-    margin: 0;
-    align-self: flex-start;
-  }
-
   .logo {
     display: block;
     width: 190px;
@@ -110,14 +103,17 @@ const background = await headerBackground();
   }
 
   .nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
     font-size: var(--font-size-md);
-    /* Cancels the padding NavLink puts on the anchor so the labels still line
-       up with the logo above them. */
-    margin-inline-start: calc(-1 * var(--space-xs));
   }
 
   .nav ul {
     padding-inline-start: 0;
+    /* Cancels the padding NavLink puts on the anchor so the labels still line
+       up with the logo above them. */
+    margin-inline-start: calc(-1 * var(--space-xs));
   }
 
   .nav li {
