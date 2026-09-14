@@ -9,7 +9,7 @@ import ButtonRow from '../components/ButtonRow.astro';
 import EntryCard from '../components/EntryCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
-import Hero from '../components/Hero.astro';
+import PageTitle from '../components/PageTitle.astro';
 import Lede from '../components/Lede.astro';
 import Note from '../components/Note.astro';
 import Quote from '../components/Quote.astro';
@@ -50,12 +50,12 @@ const semanticColors = [
 ];
 
 const typeSamples = [
-  { tag: 'h1', label: 'Heading 1', token: '--font-size-hero' },
-  { tag: 'h2', label: 'Heading 2', token: '--font-size-2xl' },
-  { tag: 'h3', label: 'Heading 3', token: '--font-size-xl' },
-  { tag: 'h4', label: 'Heading 4', token: '--font-size-lg' },
-  { tag: 'h5', label: 'Heading 5', token: '--font-size-md' },
-  { tag: 'h6', label: 'Heading 6', token: '--font-size-md' },
+  { tag: 'h1', label: 'Heading 1', token: '--font-size-h1' },
+  { tag: 'h2', label: 'Heading 2', token: '--font-size-h2' },
+  { tag: 'h3', label: 'Heading 3', token: '--font-size-h3' },
+  { tag: 'h4', label: 'Heading 4', token: '--font-size-h4' },
+  { tag: 'h5', label: 'Heading 5', token: '--font-size-h5' },
+  { tag: 'h6', label: 'Heading 6', token: '--font-size-h6' },
 ] as const;
 
 const spacingSteps = ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
@@ -109,7 +109,7 @@ const sections = [
   { id: 'buttons', label: 'Buttons' },
   { id: 'button-row', label: 'Button row' },
   { id: 'arrow-link', label: 'Arrow link' },
-  { id: 'hero', label: 'Hero' },
+  { id: 'page-title', label: 'Page title' },
   { id: 'lede', label: 'Lede' },
   { id: 'note', label: 'Note' },
   { id: 'callout', label: 'Callout' },
@@ -228,6 +228,15 @@ const sections = [
           balance; paragraphs use <code>text-wrap: pretty</code> and cap at
           <code>--layout-prose-max</code>.
         </p>
+        <p>
+          Each heading level has a token named for it, so a level's size is changed in one place
+          rather than by repointing it at a different step of a t-shirt scale.
+          <code>--font-size-h1</code> through <code>--font-size-h3</code> and
+          <code>--font-size-blockquote</code> are <code>clamp()</code> steps that grow with the viewport
+          between 360px and 1800px — the samples below resize as you drag the window.
+          <code>--font-size-h4</code> down alias the static scale: at those sizes the fluid range would
+          be smaller than the rounding. Body copy and UI text stay static at every width.
+        </p>
       </div>
 
       <div class="type-scale">
@@ -268,10 +277,23 @@ const sections = [
       <h3 class="subhead">Heading hierarchy</h3>
       <p>
         Each page has one h1, and it's the page's title: <code>ContentPage</code> renders it from
-        <code>title</code>, and a page without one opens on a <code>&lt;Hero&gt;</code> instead. The logo
-        is the nav's home link, not a heading. So body copy starts at h2 — <code>##</code> in Markdown
-        — and steps down one level at a time.
+        <code>title</code>, and a page without one opens on a <code>&lt;PageTitle&gt;</code> instead.
+        The logo is the nav's home link, not a heading. So body copy starts at h2 —
+        <code>##</code> in Markdown — and steps down one level at a time.
       </p>
+
+      <h3 class="subhead">Accent</h3>
+      <p>
+        Wrap words in <code>&lt;span class="accent"&gt;</code> to pick up
+        <code>--color-green</code>. Styled in <code>base.css</code>, so it works in any heading on
+        any page.
+      </p>
+      <p>
+        Green on the page ground is 3.98:1 — <strong>AA Large, and nothing more</strong>. That's
+        fine down to h4, which is 21px bold, but h5 and h6 fall under the 18.66px threshold that
+        makes large text large, and body copy fails outright. Keep it in the top four levels.
+      </p>
+      <h2>A heading with an <span class="accent">accented phrase</span></h2>
 
       <h3 class="subhead">Heading rhythm</h3>
       <p>
@@ -392,10 +414,12 @@ const sections = [
           Markdown <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
         </p>
         <p>
-          The quote sets in italic <code>--font-serif</code> at <code>--font-size-xl</code>, two
-          steps up from body copy so it reads as a change of voice rather than indented body text.
-          An attribution line goes back upright on the sans body scale — it's a label about the
-          quote, not part of it — while <code>&lt;cite&gt;</code> keeps its own italic.
+          The quote sets in italic <code>--font-serif</code> at
+          <code>--font-size-blockquote</code>, which clamps from 21px to 24px so it stays a step
+          above body copy at every width — a change of voice rather than indented body text, without
+          ever reading as a heading. An attribution line goes back upright on the sans body scale —
+          it's a label about the quote, not part of it — while <code>&lt;cite&gt;</code> keeps its own
+          italic.
         </p>
         <p>
           Past 1700px, where the main column runs wider than the measure, the quoted text holds the
@@ -731,24 +755,30 @@ const sections = [
       </div>
     </section>
 
-    <section id="hero" class="section">
+    <section id="page-title" class="section">
       <div class="section__head">
-        <h2>Hero</h2>
+        <h2>Page title</h2>
         <p>
-          <code>&lt;Hero&gt;</code>. The opening display headline for a page, and so its
-          <code>&lt;h1&gt;</code> — use it once, on a page with no <code>title</code> of its own. It takes
-          <code>--font-size-hero</code> from the base h1 at every width, well clear of the section headings
-          under it. One size rather than a smaller one on narrow screens: the statement is the page's
-          whole opening move, and it costs nine lines on a phone to keep it at full strength. Wrap words
-          in
-          <code>&lt;span class="accent"&gt;</code> to pick up <code>--color-green</code>.
+          <code>&lt;PageTitle&gt;</code>. A page's <code>&lt;h1&gt;</code>, for the one case
+          <code>ContentPage</code>'s <code>title</code> can't cover: a headline authored in the body of
+          an <code>.mdx</code> page, because it carries inline markup. Use it once, on a page with no
+          <code>title</code> of its own.
+        </p>
+        <p>
+          It adds no size — the base <code>h1</code> gives it
+          <code>--font-size-h1</code>, the same as a <code>ContentPage</code> title, so the two can't
+          drift. What it does add is <code>inlineSlot</code>: MDX wraps a component's children in a
+          paragraph whenever they sit on their own lines, and Prettier decides whether they do, so a
+          plain <code>&lt;h1&gt;</code> here would ship as
+          <code>&lt;h1&gt;&lt;p&gt;…&lt;/p&gt;&lt;/h1&gt;</code>. That is the whole reason this
+          component exists.
         </p>
       </div>
 
-      <Hero>
+      <PageTitle>
         Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
         each other.
-      </Hero>
+      </PageTitle>
     </section>
 
     <section id="lede" class="section">
@@ -771,7 +801,7 @@ const sections = [
 
       <div class="lede-demo">
         <Lede>
-          <h3 class="lede-demo__hero">An opening block at display size</h3>
+          <h3 class="lede-demo__title">An opening block at display size</h3>
           <p>
             The copy under the headline steps away from it by <code>--space-lg</code> rather than the
             paragraph gap it would get from the base scale.
@@ -1355,10 +1385,12 @@ const sections = [
     margin: 0;
   }
 
-  /* Stands in for <Hero>, so it has to track the base h1's size by hand. */
-  .lede-demo__hero {
+  /* An h3 dressed as the h1 a real <PageTitle> would render: this page already
+     has its own, and a demo is not worth a second one. Sized by hand for that
+     reason — keep it on --font-size-h1. */
+  .lede-demo__title {
     margin-block-start: 0;
-    font-size: var(--font-size-hero);
+    font-size: var(--font-size-h1);
   }
 
   .type-caption {

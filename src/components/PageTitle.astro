@@ -12,10 +12,4 @@ const { id } = Astro.props;
 const content = await inlineSlot(Astro.slots);
 ---
 
-<h1 class="hero" id={id} set:html={content} />
-
-<style>
-  .hero :global(.accent) {
-    color: var(--color-green);
-  }
-</style>
+<h1 class="page-title" id={id} set:html={content} />
