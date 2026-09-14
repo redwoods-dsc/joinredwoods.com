@@ -38,28 +38,39 @@ h6 {
   margin-block: var(--space-lg) var(--space-xs);
 }
 
-/* One per page: its title, from ContentPage or Hero. It always opens its
+/* One per page: its title, from ContentPage. It always opens its
    block, so it takes nothing above. */
 h1 {
-  font-size: var(--font-size-hero);
+  font-size: var(--font-size-h1);
   margin-block-start: 0;
 }
 
 h2 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-h2);
 }
 
 h3 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-h3);
 }
 
 h4 {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-h4);
 }
 
-h5,
+h5 {
+  font-size: var(--font-size-h5);
+}
+
 h6 {
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-h6);
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+}
+
+/* Green on the cream ground is 3.98:1 which means it should be used for AA Large text
+   (h1–h4) and nothing more. */
+.accent {
+  color: var(--color-green);
 }
 
 p,
@@ -125,7 +136,7 @@ blockquote {
   padding-inline-start: var(--space-md);
   margin-block: var(--space-xl);
   font-family: var(--font-serif);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-blockquote);
   font-style: italic;
 }
 
