@@ -1,0 +1,47 @@
+---
+import ContentPage from '../layouts/ContentPage.astro';
+import MemberCard from '../components/MemberCard.astro';
+import members from '../data/members.json';
+import type { Member } from '../lib/members';
+
+/* Written by scripts/sync-members.mjs, already sorted by surname — the order is
+   the script's job because that is where the names are. */
+const listed = members as Member[];
+---
+
+<ContentPage
+  title="Members"
+  headingImage="_members-r.png"
+  subtitle="Meet some of the Redwoods Design System Community."
+  note=""
+  description="Meet some of the Redwoods Design System Community members, the humans who make Redwoods work."
+>
+  <p>
+    We're a group of system thinkers, fascinated with the power of design systems to change the way
+    our organizations deliver better products. We come from a variety of backgrounds and industries,
+    but we all share a common goal: to be better humans and better practitioners. Redwoods Rangers
+    are designated with a 🌲.
+  </p>
+  <ul class="member-list">
+    {listed.map((member) => <MemberCard {...member} />)}
+  </ul>
+
+  <h2>Be part of the community</h2>
+  <p>
+    If you're looking for a group of like-minded learners, <a href="/#values">review our values</a> and
+    <a href="/join">consider joining</a>.
+  </p>
+</ContentPage>
+
+<style>
+  .member-list {
+    container: members / inline-size;
+    display: grid;
+    /* MemberCard squares its photo from 300px; a narrower track splits into two
+       columns of strips. */
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: var(--space-md);
+    padding: 0;
+    margin-block: var(--space-xl) var(--space-2xl);
+  }
+</style>

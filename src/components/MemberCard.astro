@@ -1,0 +1,232 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { isRanger, memberTitle, type Member } from '../lib/members';
+
+type Props = Member;
+
+const { slug, name, title, linkedin, website, avatar } = Astro.props;
+
+/* Resolved here rather than imported by name, because the filename comes out of
+   Slack — the same move ContentPage makes for its heading artwork. Every file in
+   this folder belongs to a listed member, so the eager glob wastes nothing. */
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/members/*.{jpg,png,gif,webp}',
+  { eager: true },
+);
+
+const found = avatar
+  ? Object.entries(photos).find(([path]) => path.endsWith(`/${avatar}`))
+  : undefined;
+
+/* As large as Slack's rendition goes, which is 1.5× the 128px square a wide
+   card draws. Squared off first: Slack does not promise one. */
+const photo = found
+  ? await getImage({ src: found[1].default, format: 'webp', width: 192, height: 192, fit: 'cover' })
+  : undefined;
+
+/* Members who never set a profile picture get a drawn stand of redwoods on the
+   green instead. Sorted so the order is the filenames' rather than the
+   filesystem's, which is not promised to be stable. */
+const stands = Object.entries(
+  import.meta.glob<{ default: ImageMetadata }>('../assets/member-stands/*.{png,jpg,webp}', {
+    eager: true,
+  }),
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+
+/* Keyed off the slug rather than the member's position, so the drawing someone
+   gets is the same one next month — a new member joining partway up the
+   alphabet would otherwise shuffle everybody below them. */
+const pick = (slug: string) => {
+  let h = 0;
+  for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) % 100000;
+  return h % stands.length;
+};
+
+const stand =
+  !photo && stands.length
+    ? await getImage({
+        src: stands[pick(slug)],
+        format: 'webp',
+        width: 192,
+        height: 192,
+        fit: 'contain',
+      })
+    : undefined;
+---
+
+<li class="member">
+  <div class="member__photo" data-drawn={photo ? undefined : ''}>
+    {
+      (photo ?? stand) && (
+        <img
+          src={(photo ?? stand)!.src}
+          alt=""
+          width="64"
+          height="64"
+          loading="lazy"
+          decoding="async"
+        />
+      )
+    }
+  </div>
+  <div class="member__body">
+    <p class="member__name">
+      {name}
+      {
+        isRanger(slug) && (
+          <span role="img" aria-label="Redwoods Ranger" title="Redwoods Ranger">
+            🌲
+          </span>
+        )
+      }
+    </p>
+    <p class="member__title">{memberTitle({ title })}</p>
+    {
+      (linkedin || website) && (
+        <p class="member__links">
+          {linkedin && (
+            <a href={linkedin} aria-label={`${name} on LinkedIn`}>
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C21.6 8.65 22 11.1 22 14.3V21h-4v-5.9c0-1.4-.03-3.2-1.95-3.2-1.96 0-2.26 1.53-2.26 3.1V21h-4V9Z" />
+              </svg>
+            </a>
+          )}
+          {website && (
+            <a href={website} aria-label={`${name}'s website`}>
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" />
+              </svg>
+            </a>
+          )}
+        </p>
+      )
+    }
+  </div>
+</li>
+
+<style>
+  .member {
+    container: member / inline-size;
+    display: flex;
+    list-style: none;
+    background-color: var(--color-gray-100);
+    border-radius: var(--radius-md);
+  }
+
+  /* Flush to the card's top, left and bottom, so it takes the card's height
+     rather than a size of its own. The image is positioned out of flow because
+     a percentage height against a stretched flex item is the kind of thing
+     that works until it doesn't. Held even when empty, so names line up. */
+  .member__photo {
+    position: relative;
+    flex: none;
+    width: 64px;
+    overflow: hidden;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+
+  /* The drawings are line art on nothing, so they need a ground of their own. */
+  .member__photo[data-drawn] {
+    background-color: var(--color-surface);
+  }
+
+  .member__photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .member__body {
+    min-width: 0;
+    padding: var(--space-md);
+  }
+
+  .member__name {
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-none);
+  }
+
+  .member__title {
+    margin: var(--space-2xs) 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-none);
+  }
+
+  .member__links {
+    display: flex;
+    gap: var(--space-xs);
+    margin: var(--space-3xs) 0 0;
+  }
+
+  .member__links a {
+    display: inline-flex;
+    line-height: 0;
+    padding: var(--space-3xs);
+    margin: calc(-1 * var(--space-3xs));
+  }
+
+  /* base.css's hover ground is half-opaque white, which is no hover at all on
+     this card's white. The white callout's 12% step down. */
+  .member__links a:hover {
+    background-color: color-mix(in srgb, var(--color-gray-100), var(--color-gray-00) 12%);
+  }
+
+  /* Square once the card is wide enough for the text to sit within the photo's
+     height; narrower, the photo would be a tall sliver, so it stays a strip.
+     The min-height is what makes it square: the text sets the card's height
+     otherwise, and a title too long to fit stretches the photo rather than
+     overflowing the card. */
+  @container member (width >= 300px) {
+    .member__photo {
+      width: 128px;
+      min-height: 128px;
+    }
+  }
+
+  /* Alone in its row, a card has width to spend on a bigger name. 616px is
+     where the grid in members.astro drops to one column — two 300px tracks and
+     a --space-md gap — and a query can't read either value. */
+  @container members (width < 616px) {
+    .member__photo {
+      width: 96px;
+      min-height: 0;
+    }
+
+    .member__name {
+      font-size: var(--font-size-lg);
+    }
+
+    .member__title {
+      font-size: var(--font-size-md);
+    }
+
+    /* The larger type needs a wider card before it fits beside a square. */
+    @container member (width >= 400px) {
+      .member__photo {
+        width: 128px;
+        min-height: 128px;
+      }
+    }
+  }
+</style>

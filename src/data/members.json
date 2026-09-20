@@ -1,0 +1,296 @@
+[
+  {
+    "slug": "lauren-basser",
+    "name": "Lauren Basser",
+    "linkedin": "http://linkedin.com/in/laurenbasser",
+    "website": "http://laurenbasser.site",
+    "avatarHash": "3b7a429081e2",
+    "avatar": "lauren-basser.png"
+  },
+  {
+    "slug": "shaun-bent",
+    "name": "Shaun Bent",
+    "website": "https://www.shaunbent.co.uk",
+    "avatarHash": "4d56711a1118",
+    "avatar": "shaun-bent.jpg"
+  },
+  {
+    "slug": "brad-bice",
+    "name": "Brad Bice",
+    "title": "Principal Product Designer, Design System",
+    "linkedin": "https://www.linkedin.com/in/bradbice/",
+    "website": "https://www.bradbice.com",
+    "avatarHash": "98cf8ee4b069",
+    "avatar": "brad-bice.png"
+  },
+  {
+    "slug": "greg-bruening",
+    "name": "Greg Bruening",
+    "title": "Lead front-end developer, CPWA @ Common App",
+    "linkedin": "https://www.linkedin.com/in/gbruening/",
+    "avatarHash": "1929711e903f",
+    "avatar": "greg-bruening.jpg"
+  },
+  {
+    "slug": "ben-callahan",
+    "name": "Ben Callahan",
+    "title": "Founder of Redwoods and Sparkbox",
+    "linkedin": "https://www.linkedin.com/in/bencallahan/",
+    "website": "https://bencallahan.com/",
+    "avatarHash": "gde85ceea215",
+    "avatar": "ben-callahan.png"
+  },
+  {
+    "slug": "robin-di-capua",
+    "name": "Robin Di Capua",
+    "linkedin": "https://www.linkedin.com/in/robindicapua/",
+    "website": "https://www.robindicapua.com/",
+    "avatarHash": "9b2178e90a64",
+    "avatar": "robin-di-capua.jpg"
+  },
+  {
+    "slug": "lisa-carey",
+    "name": "Lisa Carey",
+    "title": "Design System Lead",
+    "linkedin": "https://www.linkedin.com/in/lisacareydesign/",
+    "avatarHash": "728442d2f1de",
+    "avatar": "lisa-carey.png"
+  },
+  {
+    "slug": "taylor-cashdan",
+    "name": "Taylor Cashdan",
+    "title": "Consigliere of Chaos",
+    "linkedin": "https://www.linkedin.com/in/taylorcashdan/",
+    "website": "http://www.taylorcashdan.com",
+    "avatarHash": "757346e5eeb0",
+    "avatar": "taylor-cashdan.jpg"
+  },
+  {
+    "slug": "kelsey-cavitt",
+    "name": "Kelsey Cavitt",
+    "title": "Senior Product Designer (Design Systems) @1Password",
+    "linkedin": "https://www.linkedin.com/in/kelseycavitt/",
+    "website": "https://www.kelseycavitt.co",
+    "avatarHash": "3dd0ce0bdeca",
+    "avatar": "kelsey-cavitt.jpg"
+  },
+  {
+    "slug": "brittany-clark-hogg",
+    "name": "Brittany Clark (Hogg)",
+    "title": "Design System Architect at Fullscript",
+    "linkedin": "https://www.linkedin.com/in/brittanyhogg/",
+    "avatarHash": "52ad93a37047",
+    "avatar": "brittany-clark-hogg.jpg"
+  },
+  {
+    "slug": "jesse-clark",
+    "name": "Jesse Clark",
+    "title": "Builder",
+    "website": "https://jc.2ofb.com",
+    "avatarHash": "79b54720f323",
+    "avatar": "jesse-clark.jpg"
+  },
+  {
+    "slug": "bill-collins",
+    "name": "Bill Collins",
+    "linkedin": "https://www.linkedin.com/in/bill-collins-a5553824/",
+    "website": "https://bill.works",
+    "avatarHash": "b5462af4058c",
+    "avatar": "bill-collins.png"
+  },
+  {
+    "slug": "kevin-coyle",
+    "name": "Kevin Coyle",
+    "avatarHash": "9c8f61336751",
+    "avatar": "kevin-coyle.jpg"
+  },
+  {
+    "slug": "kaelig-deloumeau-prigent",
+    "name": "Kaelig Deloumeau-Prigent",
+    "linkedin": "https://www.linkedin.com/in/kaelig/en",
+    "website": "https://x.com/kaelig",
+    "avatarHash": "gf7e7b837bd0",
+    "avatar": "kaelig-deloumeau-prigent.jpg"
+  },
+  {
+    "slug": "frank",
+    "name": "frank",
+    "website": "https://frankstall.one",
+    "avatarHash": "g5c38c0743a8",
+    "avatar": "frank.png"
+  },
+  {
+    "slug": "kelby-gassman",
+    "name": "Kelby Gassman",
+    "title": "Design Systems Designer",
+    "linkedin": "https://www.linkedin.com/in/kelby-gassman/",
+    "avatarHash": "f415c390ceb4",
+    "avatar": "kelby-gassman.jpg"
+  },
+  {
+    "slug": "max-hurd",
+    "name": "Max Hurd",
+    "title": "Product Designer",
+    "linkedin": "https://www.linkedin.com/in/max-hurd",
+    "avatarHash": "da2f7466f198",
+    "avatar": "max-hurd.png"
+  },
+  {
+    "slug": "kyle-hyams",
+    "name": "Kyle Hyams",
+    "title": "Design Lead, Design Systems @ Epic Games",
+    "linkedin": "https://www.linkedin.com/in/kylehyams",
+    "website": "https://kylehyams.design",
+    "avatarHash": "a4049b411420",
+    "avatar": "kyle-hyams.jpg"
+  },
+  {
+    "slug": "gregory-johnson",
+    "name": "Gregory Johnson",
+    "title": "Design Engineer at ADP",
+    "linkedin": "https://www.linkedin.com/in/gregjdc/",
+    "avatarHash": "4ebf63422d0f",
+    "avatar": "gregory-johnson.png"
+  },
+  {
+    "slug": "julesforrest",
+    "name": "julesforrest",
+    "avatarHash": "ab960f6bec48",
+    "avatar": "julesforrest.jpg"
+  },
+  {
+    "slug": "amy-lam",
+    "name": "Amy Lam",
+    "title": "Design Engineer",
+    "website": "https://www.youthphase.dev",
+    "avatarHash": "g66feaeb9bb3",
+    "avatar": "amy-lam.png"
+  },
+  {
+    "slug": "pedro-martins",
+    "name": "Pedro Martins",
+    "title": "Design Systems Addict :)",
+    "avatarHash": "91a14c8de026",
+    "avatar": "pedro-martins.jpg"
+  },
+  {
+    "slug": "doug-neiner",
+    "name": "Doug Neiner",
+    "title": "🌲 Redwoods Ranger",
+    "linkedin": "https://www.linkedin.com/in/dougneiner/",
+    "website": "https://dougneiner.com",
+    "avatarHash": "0d1eeded6d6c",
+    "avatar": "doug-neiner.jpg"
+  },
+  {
+    "slug": "randy-oest",
+    "name": "Randy Oest",
+    "title": "UX/UI Designer at Sparkbox",
+    "linkedin": "https://www.linkedin.com/in/amazingrando/",
+    "website": "https://amazingrando.com/",
+    "avatarHash": "7bf122f4eeca",
+    "avatar": "randy-oest.jpg"
+  },
+  {
+    "slug": "katie-orzeck",
+    "name": "Katie Orzeck",
+    "title": "Sr. Art Director, Digital Product @ Fast Company + Inc.",
+    "website": "https://katieorzeck.com/",
+    "avatarHash": "139e58b55c60",
+    "avatar": "katie-orzeck.png"
+  },
+  {
+    "slug": "rebecca-ostrich",
+    "name": "Rebecca Ostrich",
+    "title": "Design System Specialist at Fullbay",
+    "linkedin": "https://www.linkedin.com/in/rebeccaostrich",
+    "website": "https://www.rebeccaostrich.com",
+    "avatarHash": "584dfef2fef8",
+    "avatar": "rebecca-ostrich.png"
+  },
+  {
+    "slug": "erin-potter",
+    "name": "Erin Potter",
+    "avatarHash": "8b9b7a40db46",
+    "avatar": "erin-potter.png"
+  },
+  {
+    "slug": "jonathan-simcoe",
+    "name": "Jonathan Simcoe",
+    "title": "Systems designer @ Mercury",
+    "website": "https://mercury.com",
+    "avatarHash": "4bcf294ad876",
+    "avatar": "jonathan-simcoe.jpg"
+  },
+  {
+    "slug": "emily-sullivan",
+    "name": "Emily Sullivan",
+    "title": "Product Designer @OnTheClock",
+    "linkedin": "https://www.linkedin.com/in/emily-a-sullivan/",
+    "avatarHash": "864aab339694",
+    "avatar": "emily-sullivan.png"
+  },
+  {
+    "slug": "hattie-tadsen",
+    "name": "Hattie Tadsen",
+    "title": "UX Lead at John Deere",
+    "linkedin": "https://www.linkedin.com/in/hattietadsen",
+    "avatarHash": "eb36b08efaee",
+    "avatar": "hattie-tadsen.jpg"
+  },
+  {
+    "slug": "honza-toman",
+    "name": "Honza Toman",
+    "title": "Head of Product and Design @ Supernova.io",
+    "website": "https://honza.codes",
+    "avatarHash": "aa11736100e8",
+    "avatar": "honza-toman.png"
+  },
+  {
+    "slug": "mark-tomlinson",
+    "name": "Mark Tomlinson",
+    "website": "https://sugarcube.sh",
+    "avatarHash": "7bb09d2fc532",
+    "avatar": "mark-tomlinson.jpg"
+  },
+  {
+    "slug": "toniann",
+    "name": "toniann",
+    "title": "Senior Design Manager, Design Systems",
+    "linkedin": "https://www.linkedin.com/in/tonianndrenckhahn/",
+    "avatarHash": "599be590b97e",
+    "avatar": "toniann.jpg"
+  },
+  {
+    "slug": "murphy-trueman",
+    "name": "Murphy Trueman",
+    "title": "Dir. of Design Systems @ Baseline Design",
+    "linkedin": "https://www.linkedin.com/in/murphytrueman/",
+    "website": "https://blog.murphytrueman.com/",
+    "avatarHash": "gfd3c645e59c",
+    "avatar": "murphy-trueman.png"
+  },
+  {
+    "slug": "corey-vickery",
+    "name": "Corey Vickery",
+    "title": "Principal UX Designer/Design System Lead",
+    "linkedin": "https://www.linkedin.com/in/coreyvickery",
+    "avatarHash": "a269106d6fab",
+    "avatar": "corey-vickery.jpg"
+  },
+  {
+    "slug": "leo-vogel",
+    "name": "Leo Vogel",
+    "title": "Lead Product Designer (Design Systems)",
+    "linkedin": "http://linkedin.com/in/theleovogel/",
+    "website": "https://leovogel.com",
+    "avatarHash": "31aea20a7d33",
+    "avatar": "leo-vogel.png"
+  },
+  {
+    "slug": "jane-wolf",
+    "name": "Jane Wolf",
+    "avatarHash": "30f3cbbdbaa1",
+    "avatar": "jane-wolf.png"
+  }
+]

@@ -51,8 +51,12 @@ Run everything from the project root.
 
 ```text
 /
+├── .github/
+│   └── workflows/            # CI — visual regression, and the weekly member sync
 ├── public/                   # Static files copied verbatim to the build root
 │   └── favicon.svg
+├── scripts/                  # Run by a person or a workflow, never by the build
+│   └── sync-members.mjs      # Slack → /members — see "Updating the member list" below
 ├── src/
 │   ├── assets/               # Site-wide images/media, processed by Astro's pipeline
 │   ├── components/           # Reusable .astro components (flat hierarchy)
@@ -64,6 +68,8 @@ Run everything from the project root.
 │   │           ├── images/
 │   │           └── index.mdx
 │   ├── data/                 # Hand-maintained content that isn't a page
+│   │   ├── members.json      # Written by scripts/sync-members.mjs — don't hand-edit
+│   │   ├── rangers.ts        # The Redwoods Rangers, by slug
 │   │   └── the-question.ts   # The Question — see "Updating The Question" below
 │   ├── layouts/              # Shared page shells (html, head, body, <slot />)
 │   │   ├── Home.astro
@@ -144,6 +150,61 @@ That fallback happens in the browser, because it has to. The site is statically 
 - It only ever moves the card from open to closed, never the other way. A new question can't appear without a build, so there's nothing to undo.
 
 Both states are on the [style guide](http://localhost:4321/style-guide#question-promo) if you want to look at them side by side.
+
+## 👥 Updating the member list
+
+`/members` lists the people in the Redwoods Slack who have said yes to being on the site. The list comes out of Slack, through a script the build never calls. Usually you'll want [the GitHub workflow](#from-github-by-hand-or-weekly) below, which runs that script for you. To run it on your own machine instead:
+
+```bash
+node --env-file=.env scripts/sync-members.mjs
+```
+
+It rewrites `src/data/members.json` and the photos in `src/assets/members/`. Look over the diff, commit, and push. **The build never talks to Slack**, so a sync only reaches the site once its output is committed. Don't hand-edit `members.json` either: the next sync overwrites it. If something on a card is wrong, the fix belongs in that person's Slack profile.
+
+### From GitHub, by hand or weekly
+
+You don't have to run it locally. `.github/workflows/sync-members.yml` does the same job:
+
+- **By hand:** Actions → **Sync members** → **Run workflow**. Anyone with write access to the repo can do this, no token or checkout needed. The "force" tick box is the `--force` flag; leave it off unless you've already confirmed a big drop is real.
+- **Weekly:** Mondays at 13:00 UTC, on its own.
+
+Either way the result arrives as a **pull request** on the `sync-members` branch, with the names that joined or dropped off in its description. Nothing reaches the site until someone merges it. When Slack and the site already agree, the run finishes without opening anything.
+
+Three things worth knowing:
+
+- It needs a `SLACK_TOKEN` **repository secret** (Settings → Secrets and variables → Actions), which is the same token as the one in `.env`. Without it every run fails.
+- A pull request opened by a workflow doesn't start other workflows, so Chromatic won't run on it. Push a commit to the branch, or close and reopen the PR, if you want the visual checks.
+- GitHub pauses scheduled workflows in a repository that's had no commits for 60 days. Any commit re-enables it.
+
+### Setting up the token
+
+The script needs a Slack bot token in `.env` at the project root. That file is gitignored, so the token never gets committed. Don't paste it anywhere else either.
+
+```bash
+SLACK_TOKEN=xoxb-…
+```
+
+To get one, create an app for the Redwoods workspace at [api.slack.com/apps](https://api.slack.com/apps). Under **OAuth & Permissions**, add the `users:read` and `users.profile:read` bot token scopes, install the app to the workspace, and copy the **Bot User OAuth Token**.
+
+### Who shows up, and how
+
+- **Only people who opted in.** Their "Can we list you on the Redwoods website?" profile field has to read exactly `Yes, please!`. Anyone who hasn't answered stays off, because silence isn't consent.
+- **Each card shows** the person's real name, their title, a LinkedIn icon, a website icon, and their photo. The LinkedIn icon links to any linkedin.com URL in their profile links. The website icon links to the first other link. Cards are sorted by surname. Someone with no title reads "Redwoods Member". The card supplies that wording, so `members.json` still says exactly what's in Slack.
+- **Photos** come from a photo uploaded to Slack, or from the Gravatar behind the account when that's where Slack gets its picture. Anyone with neither gets a drawing of a stand of redwoods from `src/assets/member-stands/`. A photo is downloaded again only when it changes in Slack.
+
+### When it refuses to write
+
+If the member count drops by more than three since the last sync, the script stops without writing anything. An expired token or a rebuilt profile field looks exactly like everyone opting out at once, and publishing that would empty the page. Check the token first. Then run:
+
+```bash
+node --env-file=.env scripts/sync-members.mjs --fields
+```
+
+That prints the id and label of every custom profile field. Slack identifies the fields by those ids rather than by their labels. The ids are pinned at the top of the script, so update them there if they've changed. If the drop really is people leaving, re-run with `--force`.
+
+### The Rangers
+
+Rangers get a 🌲 after their name. Slack doesn't know who the Rangers are, so they're listed by hand in `src/data/rangers.ts`, **by slug**. A slug is the lowercase, hyphenated form of the Slack name, as it appears in `members.json`. Slack names don't always read the way you'd type them: ToniAnn is `toniann`. A Ranger who hasn't opted in stays listed there and appears once they do. A mistyped slug fails just as quietly, so check `/members` after editing the file.
 
 ## 📝 Writing a Field Note
 

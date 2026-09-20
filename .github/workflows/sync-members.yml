@@ -1,0 +1,79 @@
+name: Sync members
+
+# Anyone with write access can run this from the Actions tab; it also runs
+# itself weekly. Either way the result arrives as a pull request, so a person
+# sees who joined or dropped off before it publishes.
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Write even if more than three members drop off'
+        type: boolean
+        default: false
+  schedule:
+    # Mondays, 13:00 UTC. Cron is always UTC here, and GitHub runs scheduled
+    # jobs late when its queue is busy.
+    - cron: '0 13 * * 1'
+
+concurrency:
+  group: sync-members
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      # No install step: the script imports nothing outside node:.
+      - name: Read the Slack profiles
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        run: node scripts/sync-members.mjs ${{ inputs.force && '--force' || '' }}
+
+      - name: Open a pull request with whatever changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo 'Slack matches the site. Nothing to do.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git show HEAD:src/data/members.json > /tmp/before.json
+          summary=$(jq -rn \
+            --slurpfile before /tmp/before.json \
+            --slurpfile after src/data/members.json '
+              ($before[0] | map(.slug)) as $old |
+              ($after[0] | map(.slug)) as $new |
+              def names($rows; $other):
+                ($rows | map(select(.slug as $s | $other | index($s) | not) | .name) | join(", "))
+                | if . == "" then "none" else . end;
+              "Joined the list: " + names($after[0]; $old) + "\n\n" +
+              "Dropped off: " + names($before[0]; $new) + "\n\n" +
+              "Listed now: \($after[0] | length) (was \($before[0] | length))"
+            ')
+
+          echo "$summary" >> "$GITHUB_STEP_SUMMARY"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C sync-members
+          git add src/data/members.json src/assets/members
+          git commit -m 'Sync members from Slack' -m "$summary"
+          git push --force origin sync-members
+
+          if [ "$(gh pr list --head sync-members --state open --json number --jq 'length')" = '0' ]; then
+            gh pr create --base main --head sync-members \
+              --title 'Sync members from Slack' \
+              --body "$(printf '%s\n\n%s\n' "$summary" 'Opened by the Sync members workflow. Check the names above before merging — everyone here answered the opt-in question in their Slack profile.')"
+          fi
