@@ -51,9 +51,11 @@ Run everything from the project root.
 
 ```text
 /
+├── .github/
+│   └── workflows/            # CI — visual regression, and the weekly member sync
 ├── public/                   # Static files copied verbatim to the build root
 │   └── favicon.svg
-├── scripts/                  # Run by hand, never by the build
+├── scripts/                  # Run by a person or a workflow, never by the build
 │   └── sync-members.mjs      # Slack → /members — see "Updating the member list" below
 ├── src/
 │   ├── assets/               # Site-wide images/media, processed by Astro's pipeline
@@ -151,7 +153,7 @@ Both states are on the [style guide](http://localhost:4321/style-guide#question-
 
 ## 👥 Updating the member list
 
-`/members` lists the people in the Redwoods Slack who have said yes to being on the site. The list comes out of Slack, through a script you run yourself:
+`/members` lists the people in the Redwoods Slack who have said yes to being on the site. The list comes out of Slack, through a script the build never calls. Usually you'll want [the GitHub workflow](#from-github-by-hand-or-weekly) below, which runs that script for you. To run it on your own machine instead:
 
 ```bash
 node --env-file=.env scripts/sync-members.mjs
