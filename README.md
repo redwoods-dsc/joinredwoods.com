@@ -166,7 +166,7 @@ It rewrites `src/data/members.json` and the photos in `src/assets/members/`. Loo
 You don't have to run it locally. `.github/workflows/sync-members.yml` does the same job:
 
 - **By hand:** Actions → **Sync members** → **Run workflow**. Anyone with write access to the repo can do this, no token or checkout needed. The "force" tick box is the `--force` flag; leave it off unless you've already confirmed a big drop is real.
-- **Weekly:** Mondays at 13:00 UTC, on its own.
+- **Weekly:** Tuesdays at 10:00 UTC, on its own — 6am Eastern, or 5am once the clocks go back, since GitHub's cron doesn't follow daylight saving.
 
 Either way the run pushes its changes to a `sync-members` branch and ends with a **link to open the pull request**, on the run's summary page. Click it and GitHub fills in the title and description from the commit, which names who joined and who dropped off. Nothing reaches the site until someone opens that PR and merges it. When Slack and the site already agree, the run says so and pushes nothing.
 

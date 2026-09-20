@@ -11,9 +11,10 @@ on:
         type: boolean
         default: false
   schedule:
-    # Mondays, 13:00 UTC. Cron is always UTC here, and GitHub runs scheduled
-    # jobs late when its queue is busy.
-    - cron: '0 13 * * 1'
+    # Tuesdays, 6am Eastern — 10:00 UTC, because cron here is always UTC and
+    # doesn't follow daylight saving; this lands an hour earlier over winter.
+    # GitHub also runs scheduled jobs late when its queue is busy.
+    - cron: '0 10 * * 2'
 
 concurrency:
   group: sync-members
