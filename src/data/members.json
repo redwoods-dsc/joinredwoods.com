@@ -1,5 +1,12 @@
 [
   {
+    "slug": "boris-basque",
+    "name": "Boris Basque",
+    "title": "UX Lead, Design Systems",
+    "avatarHash": "24aab89e42fc",
+    "avatar": "boris-basque.png"
+  },
+  {
     "slug": "lauren-basser",
     "name": "Lauren Basser",
     "linkedin": "http://linkedin.com/in/laurenbasser",
@@ -10,6 +17,8 @@
   {
     "slug": "shaun-bent",
     "name": "Shaun Bent",
+    "title": "Design Systems & Accessibility Consultant | Founder, Studio 53 Degrees",
+    "linkedin": "https://www.linkedin.com/in/shaun-bent",
     "website": "https://www.shaunbent.co.uk",
     "avatarHash": "4d56711a1118",
     "avatar": "shaun-bent.jpg"
@@ -43,6 +52,7 @@
   {
     "slug": "robin-di-capua",
     "name": "Robin Di Capua",
+    "title": "Senior Prouct Designer - Design Systems at GetYourGuide",
     "linkedin": "https://www.linkedin.com/in/robindicapua/",
     "website": "https://www.robindicapua.com/",
     "avatarHash": "9b2178e90a64",
@@ -93,6 +103,7 @@
   {
     "slug": "bill-collins",
     "name": "Bill Collins",
+    "title": "Captain Churn @ HP Inc.",
     "linkedin": "https://www.linkedin.com/in/bill-collins-a5553824/",
     "website": "https://bill.works",
     "avatarHash": "b5462af4058c",
@@ -111,6 +122,15 @@
     "website": "https://x.com/kaelig",
     "avatarHash": "gf7e7b837bd0",
     "avatar": "kaelig-deloumeau-prigent.jpg"
+  },
+  {
+    "slug": "jeremy-elder",
+    "name": "Jeremy Elder",
+    "title": "Staff Product Designer",
+    "linkedin": "https://www.linkedin.com/in/jeremyelder/",
+    "website": "https://jeremyelder.com/",
+    "avatarHash": "9e2269666f18",
+    "avatar": "jeremy-elder.png"
   },
   {
     "slug": "frank",
@@ -280,7 +300,7 @@
   },
   {
     "slug": "leo-vogel",
-    "name": "Leo Vogel",
+    "name": "Leo  Vogel",
     "title": "Lead Product Designer (Design Systems)",
     "linkedin": "http://linkedin.com/in/theleovogel/",
     "website": "https://leovogel.com",
