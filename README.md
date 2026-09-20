@@ -159,6 +159,21 @@ node --env-file=.env scripts/sync-members.mjs
 
 It rewrites `src/data/members.json` and the photos in `src/assets/members/`. Look over the diff, commit, and push. **The build never talks to Slack**, so a sync only reaches the site once its output is committed. Don't hand-edit `members.json` either: the next sync overwrites it. If something on a card is wrong, the fix belongs in that person's Slack profile.
 
+### From GitHub, by hand or weekly
+
+You don't have to run it locally. `.github/workflows/sync-members.yml` does the same job:
+
+- **By hand:** Actions → **Sync members** → **Run workflow**. Anyone with write access to the repo can do this, no token or checkout needed. The "force" tick box is the `--force` flag; leave it off unless you've already confirmed a big drop is real.
+- **Weekly:** Mondays at 13:00 UTC, on its own.
+
+Either way the result arrives as a **pull request** on the `sync-members` branch, with the names that joined or dropped off in its description. Nothing reaches the site until someone merges it. When Slack and the site already agree, the run finishes without opening anything.
+
+Three things worth knowing:
+
+- It needs a `SLACK_TOKEN` **repository secret** (Settings → Secrets and variables → Actions), which is the same token as the one in `.env`. Without it every run fails.
+- A pull request opened by a workflow doesn't start other workflows, so Chromatic won't run on it. Push a commit to the branch, or close and reopen the PR, if you want the visual checks.
+- GitHub pauses scheduled workflows in a repository that's had no commits for 60 days. Any commit re-enables it.
+
 ### Setting up the token
 
 The script needs a Slack bot token in `.env` at the project root. That file is gitignored, so the token never gets committed. Don't paste it anywhere else either.
