@@ -13,9 +13,15 @@ const listed = members as Member[];
   title="Members"
   headingImage="_members-r.png"
   subtitle="Meet some of the Redwoods Design System Community."
-  note="We're a group of system thinkers, fascinated with the power of design systems to change the way our organizations deliver better products. We come from a variety of backgrounds and industries, but we all share a common goal: to be better humans and better practitioners. Redwoods Rangers are designated with a 🌲."
+  note=""
   description="Meet some of the Redwoods Design System Community members, the humans who make Redwoods work."
 >
+  <p>
+    We're a group of system thinkers, fascinated with the power of design systems to change the way
+    our organizations deliver better products. We come from a variety of backgrounds and industries,
+    but we all share a common goal: to be better humans and better practitioners. Redwoods Rangers
+    are designated with a 🌲.
+  </p>
   <ul class="member-list">
     {listed.map((member) => <MemberCard {...member} />)}
   </ul>
@@ -36,6 +42,6 @@ const listed = members as Member[];
     grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: var(--space-md);
     padding: 0;
-    margin-block-end: var(--space-2xl);
+    margin-block: var(--space-xl) var(--space-2xl);
   }
 </style>
