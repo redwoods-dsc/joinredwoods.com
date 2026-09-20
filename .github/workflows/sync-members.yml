@@ -1,8 +1,8 @@
 name: Sync members
 
 # Anyone with write access can run this from the Actions tab; it also runs
-# itself weekly. Either way the result arrives as a pull request, so a person
-# sees who joined or dropped off before it publishes.
+# itself weekly. Either way it only pushes a branch and hands back a link, so
+# opening the pull request — and publishing anyone — stays a person's call.
 on:
   workflow_dispatch:
     inputs:
@@ -20,7 +20,8 @@ concurrency:
 
 permissions:
   contents: write
-  pull-requests: write
+  # Read, because the job only asks whether a pull request is already open.
+  pull-requests: read
 
 jobs:
   sync:
@@ -38,7 +39,7 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         run: node scripts/sync-members.mjs ${{ inputs.force && '--force' || '' }}
 
-      - name: Open a pull request with whatever changed
+      - name: Push a branch with whatever changed
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -72,8 +73,15 @@ jobs:
           git commit -m 'Sync members from Slack' -m "$summary"
           git push --force origin sync-members
 
-          if [ "$(gh pr list --head sync-members --state open --json number --jq 'length')" = '0' ]; then
-            gh pr create --base main --head sync-members \
-              --title 'Sync members from Slack' \
-              --body "$(printf '%s\n\n%s\n' "$summary" 'Opened by the Sync members workflow. Check the names above before merging — everyone here answered the opt-in question in their Slack profile.')"
+          # A workflow can't open the pull request itself unless the repository
+          # allows Actions to create them, and leaving that off is the safer
+          # default — so hand the link to whoever is reading this run.
+          open_pr=$(gh pr list --head sync-members --state open --json url --jq '.[0].url // empty')
+          if [ -n "$open_pr" ]; then
+            printf '\nUpdated the open pull request: %s\n' "$open_pr" >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf '\n**[Open a pull request for these changes](%s)** — the title and description come from the commit.\n' \
+              "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...sync-members?expand=1" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+          printf '\nEveryone listed answered the opt-in question in their Slack profile — check the names above before merging.\n' >> "$GITHUB_STEP_SUMMARY"

@@ -168,12 +168,13 @@ You don't have to run it locally. `.github/workflows/sync-members.yml` does the 
 - **By hand:** Actions → **Sync members** → **Run workflow**. Anyone with write access to the repo can do this, no token or checkout needed. The "force" tick box is the `--force` flag; leave it off unless you've already confirmed a big drop is real.
 - **Weekly:** Mondays at 13:00 UTC, on its own.
 
-Either way the result arrives as a **pull request** on the `sync-members` branch, with the names that joined or dropped off in its description. Nothing reaches the site until someone merges it. When Slack and the site already agree, the run finishes without opening anything.
+Either way the run pushes its changes to a `sync-members` branch and ends with a **link to open the pull request**, on the run's summary page. Click it and GitHub fills in the title and description from the commit, which names who joined and who dropped off. Nothing reaches the site until someone opens that PR and merges it. When Slack and the site already agree, the run says so and pushes nothing.
 
-Three things worth knowing:
+The workflow stops short of opening the PR itself because that needs "Allow GitHub Actions to create and approve pull requests" turned on for the repository, and leaving it off is the safer default. The click costs a second and means a person has seen the names.
+
+Two things worth knowing:
 
 - It needs a `SLACK_TOKEN` **repository secret** (Settings → Secrets and variables → Actions), which is the same token as the one in `.env`. Without it every run fails.
-- A pull request opened by a workflow doesn't start other workflows, so Chromatic won't run on it. Push a commit to the branch, or close and reopen the PR, if you want the visual checks.
 - GitHub pauses scheduled workflows in a repository that's had no commits for 60 days. Any commit re-enables it.
 
 ### Setting up the token
