@@ -103,7 +103,7 @@
   {
     "slug": "bill-collins",
     "name": "Bill Collins",
-    "title": "Captain Churn @ HP Inc.",
+    "title": "Architect @ HP Inc.",
     "linkedin": "https://www.linkedin.com/in/bill-collins-a5553824/",
     "website": "https://bill.works",
     "avatarHash": "b5462af4058c",
@@ -182,9 +182,18 @@
     "slug": "amy-lam",
     "name": "Amy Lam",
     "title": "Design Engineer",
+    "linkedin": "https://www.linkedin.com/in/amyrlam",
     "website": "https://www.youthphase.dev",
     "avatarHash": "g66feaeb9bb3",
     "avatar": "amy-lam.png"
+  },
+  {
+    "slug": "cassie-m",
+    "name": "Cassie M.",
+    "title": "Principal Design Systems Architect @ The Goodyear Tire & Rubber Co.",
+    "linkedin": "https://www.linkedin.com/in/cassiemilicia/",
+    "avatarHash": "5f383c0aaf68",
+    "avatar": "cassie-m.jpg"
   },
   {
     "slug": "pedro-martins",
