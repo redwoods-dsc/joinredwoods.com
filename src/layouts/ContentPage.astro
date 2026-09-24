@@ -170,7 +170,7 @@ const headingArt = headingImage
      Everything is reached with :global(): these are a page's own children,
      authored in .mdx, so they carry the calling page's scope and not this
      layout's. The Lede is opened up too and its own children re-constrained,
-     since the homepage's hero sits one level down inside it. */
+     since the homepage's title sits one level down inside it. */
   @media (min-width: 1700px) {
     .content-page {
       max-width: none;
@@ -189,9 +189,9 @@ const headingArt = headingImage
     }
 
     /* Greedy rather than the balance base.css gives headings: at this size the
-       hero fills each line and steps down to a short last one, which reads as
+       title fills each line and steps down to a short last one, which reads as
        a deliberate close rather than four evenly-set lines. */
-    .content-page__body :global(.hero) {
+    .content-page__body :global(.page-title) {
       text-wrap: unset;
     }
 
