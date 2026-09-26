@@ -412,8 +412,10 @@ const sections = [
       <div class="section__head">
         <h2>Blockquotes</h2>
         <p>
-          Left border uses <code>--color-accent</code>. Styled in <code>base.css</code>, so a
-          Markdown <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
+          A redwood runs down the start edge in <code>--color-accent</code>, masked from the
+          <code>tree-*.svg</code> pieces so the trunk stretches with the quote. Shorter quotes drop the
+          lower crown, then the branches. Styled in <code>base.css</code>, so a Markdown
+          <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
         </p>
         <p>
           The quote sets in italic <code>--font-serif</code> at
@@ -425,44 +427,48 @@ const sections = [
         </p>
         <p>
           Past 1700px, where the main column runs wider than the measure, the quoted text holds the
-          same measure as the prose and only the rule hangs outside it — see Layout.
+          same measure as the prose and only the tree hangs outside it — see Layout.
         </p>
       </div>
+      <p>
+        The tree switches on the quote's own height, not the viewport. Below
+        <code>--crown-2-min</code> (about 189px) the lower crown drops out and the branches move up under
+        the top crown; below <code>--branch-min</code> (about 147px) the branches go too. The trunk stretches
+        in every case. The examples below run short, medium and full.
+      </p>
       <blockquote>
         <p>The best time to plant a tree was twenty years ago. The second best time is now.</p>
       </blockquote>
+
       <h3 class="subhead">Multi-paragraph</h3>
       <blockquote>
         <p>This is the first paragraph inside the quote.</p>
+        <p>The second can carry <strong>bold</strong> and <em>italic</em>.</p>
         <p>
-          And this is the second paragraph. Blockquotes can contain <strong>bold</strong>, <em
-            >italic</em
-          >, and other inline formatting.
+          By the third, it's tall enough<br />
+          for the branches but not the lower crown.
         </p>
       </blockquote>
 
       <h3 class="subhead">Attributed</h3>
       <p>
-        <code>&lt;Quote cite role marker link&gt;</code>. A blockquote with an attribution line, so
-        pull quotes can be written in Markdown without hand-rolling the
-        <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is optional,
-        and <code>marker</code> overrides the leading <code>~</code>.
+        <code>&lt;Quote cite role link&gt;</code>. A blockquote with an attribution line, so pull
+        quotes can be written in Markdown without hand-rolling the
+        <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is optional.
       </p>
       <p>
         <code>link</code> wraps the name in an anchor — a profile, a talk, whatever the attribution should
         point at. It sits inside <code>&lt;cite&gt;</code> so the element still names the source rather
         than the link naming it, and the role stays outside, unlinked.
       </p>
-      <Quote cite="ToniAnn" role="Redwoods member">
-        “Redwoods is one of the only communities where I feel like I can not only grow in my own DS
-        practice by learning from others, but also have a hand in shaping the world of design
-        systems at large.”
-      </Quote>
-      <Quote cite="ToniAnn Drenckhahn" role="Senior Manager Design Systems at Etsy" link="#quotes">
-        “The same quote with a linked attribution — only the name carries the anchor.”
-      </Quote>
-      <Quote cite="John Muir" marker="―">
-        “When one tugs at a single thing in nature, he finds it attached to the rest of the world.”
+      <Quote cite="Ada Example" role="Design Systems Lead at Example Co" link="#quotes">
+        “Tall enough for the whole tree:<br />
+        the upper crown,<br />
+        the lower crown,<br />
+        both branches,<br />
+        and a trunk that stretches<br />
+        the rest of the way down.<br />
+        Only the name carries the link.”
       </Quote>
     </section>
 

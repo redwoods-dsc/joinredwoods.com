@@ -81,9 +81,9 @@
   --space-4xl: 96px;
 
   --radius-xs: 2px;
-  /* The rule down a blockquote's start edge. A token because the wide layout
-     has to subtract it to hang the rule outside the measure. */
-  --quote-rule-width: 3px;
+  /* The tree down a blockquote's start edge. A token because the wide layout
+     has to subtract it to hang the tree outside the measure. */
+  --quote-rule-width: 1rem;
 
   --radius-sm: 4px;
   --radius-md: 8px;
