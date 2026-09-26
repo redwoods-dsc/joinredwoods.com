@@ -205,7 +205,7 @@ That prints the id and label of every custom profile field. Slack identifies the
 
 ### The Rangers
 
-Rangers get a 🌲 after their name. Slack doesn't know who the Rangers are, so they're listed by hand in `src/data/rangers.ts`, **by slug**. A slug is the lowercase, hyphenated form of the Slack name, as it appears in `members.json`. Slack names don't always read the way you'd type them: ToniAnn is `toniann`. A Ranger who hasn't opted in stays listed there and appears once they do. A mistyped slug fails just as quietly, so check `/members` after editing the file.
+Rangers get a 🌲 after their name. Slack doesn't know who the Rangers are, so they're listed by hand in `src/data/rangers.ts`, **by slug**. A slug is the lowercase, hyphenated form of the Slack name, as it appears in `members.json`. Slack names don't always read the way you'd type them: Robin is `robin-di-capua`. **A Ranger who renames themselves in Slack gets a new slug**, so the entry here has to follow — nothing breaks, they just stop being a Ranger. A Ranger who hasn't opted in stays listed and appears once they do, and a mistyped slug fails just as quietly, so check `/members` after editing the file.
 
 ## 📝 Writing a Field Note
 
