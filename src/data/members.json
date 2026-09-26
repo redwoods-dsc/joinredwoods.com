@@ -1,5 +1,23 @@
 [
   {
+    "slug": "pegah-ahmadi",
+    "name": "Pegah Ahmadi",
+    "title": "Principal Design Systems Architect",
+    "linkedin": "https://www.linkedin.com/in/pegah-ahmadi/",
+    "website": "https://www.youtube.com/@TheLoop-with-Pegah-and-Cris",
+    "avatarHash": "246e98489277",
+    "avatar": "pegah-ahmadi.png"
+  },
+  {
+    "slug": "peter-michaels-allen",
+    "name": "Peter Michaels Allen",
+    "title": "Design & Agentic Engineering",
+    "linkedin": "https://linkedin.com/in/petermichaelsallen",
+    "website": "https://designerpunk.ai",
+    "avatarHash": "7371c567d830",
+    "avatar": "peter-michaels-allen.jpg"
+  },
+  {
     "slug": "boris-basque",
     "name": "Boris Basque",
     "title": "UX Lead, Design Systems",
@@ -116,12 +134,28 @@
     "avatar": "kevin-coyle.jpg"
   },
   {
+    "slug": "bobby-davis",
+    "name": "Bobby Davis",
+    "title": "Skyway Design System @ The Mayo Clinic",
+    "linkedin": "https://www.linkedin.com/in/pixelguru/",
+    "avatarHash": "e437ea39f52c",
+    "avatar": "bobby-davis.jpg"
+  },
+  {
     "slug": "kaelig-deloumeau-prigent",
     "name": "Kaelig Deloumeau-Prigent",
     "linkedin": "https://www.linkedin.com/in/kaelig/en",
     "website": "https://x.com/kaelig",
     "avatarHash": "gf7e7b837bd0",
     "avatar": "kaelig-deloumeau-prigent.jpg"
+  },
+  {
+    "slug": "toniann-drenckhahn",
+    "name": "ToniAnn Drenckhahn",
+    "title": "Senior Manager, Design Systems at Etsy",
+    "linkedin": "https://www.linkedin.com/in/tonianndrenckhahn/",
+    "avatarHash": "599be590b97e",
+    "avatar": "toniann-drenckhahn.jpg"
   },
   {
     "slug": "jeremy-elder",
@@ -146,6 +180,15 @@
     "linkedin": "https://www.linkedin.com/in/kelby-gassman/",
     "avatarHash": "f415c390ceb4",
     "avatar": "kelby-gassman.jpg"
+  },
+  {
+    "slug": "maya-hampton",
+    "name": "Maya Hampton",
+    "title": "Sr. Product Manager, Design Systems at lululemon",
+    "linkedin": "https://www.linkedin.com/in/mayahampton/",
+    "website": "https://himaya.medium.com/",
+    "avatarHash": "d022063f2cb8",
+    "avatar": "maya-hampton.png"
   },
   {
     "slug": "max-hurd",
@@ -205,7 +248,7 @@
   {
     "slug": "doug-neiner",
     "name": "Doug Neiner",
-    "title": "🌲 Redwoods Ranger",
+    "title": "Principal Software Engineer at Planview, Inc.",
     "linkedin": "https://www.linkedin.com/in/dougneiner/",
     "website": "https://dougneiner.com",
     "avatarHash": "0d1eeded6d6c",
@@ -281,14 +324,6 @@
     "website": "https://sugarcube.sh",
     "avatarHash": "7bb09d2fc532",
     "avatar": "mark-tomlinson.jpg"
-  },
-  {
-    "slug": "toniann",
-    "name": "toniann",
-    "title": "Senior Design Manager, Design Systems",
-    "linkedin": "https://www.linkedin.com/in/tonianndrenckhahn/",
-    "avatarHash": "599be590b97e",
-    "avatar": "toniann.jpg"
   },
   {
     "slug": "murphy-trueman",
