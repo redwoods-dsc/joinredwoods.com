@@ -986,12 +986,15 @@ const sections = [
         <p>
           <code>&lt;MemberCard slug name title linkedin website avatar /&gt;</code>. One person on
           <code>/members</code>. Everything but the name is optional, because the source is a Slack
-          profile and most of it is: of the members listed today, 26 of 37 have a title and 24 a
-          LinkedIn. A missing title reads "Redwoods Member" — supplied by the card, not written into
-          <code>members.json</code>, so the data still says what people actually put in Slack.
-          Rangers, listed by hand in <code>src/data/rangers.ts</code>, get a tree after their name,
-          labelled "Redwoods Ranger" so a screen reader announces what it means rather than the
-          emoji's name.
+          profile and most of it is: of the members listed today, 32 of 40 have a title and 28 a
+          LinkedIn. A missing title reads "Redwoods Member", and a title that has one loses its
+          emoji, gets its "@" spelled out as "at", and has its capitalisation evened out, so a
+          column of them reads as a list rather than a jumble. A word carrying a capital of its own
+          is left alone, so UX and GetYourGuide survive. All of that is the card's doing, not the
+          data's:
+          <code>members.json</code> still says what people actually put in Slack. Rangers, listed by hand
+          in <code>src/data/rangers.ts</code>, get a tree after their name, labelled "Redwoods
+          Ranger" so a screen reader announces what it means rather than the emoji's name.
         </p>
         <p>
           A member with no photo in Slack — neither an upload nor a Gravatar — gets a drawn stand of
