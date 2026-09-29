@@ -9,6 +9,15 @@
     "avatar": "pegah-ahmadi.png"
   },
   {
+    "slug": "alecdanz",
+    "name": "alecdanz",
+    "title": "Manager, Design Systems - 🏀 theScore",
+    "linkedin": "https://www.linkedin.com/in/alecdanz/",
+    "website": "https://alecdanz.github.io/",
+    "avatarHash": "2ab7cd96ea90",
+    "avatar": "alecdanz.jpg"
+  },
+  {
     "slug": "peter-michaels-allen",
     "name": "Peter Michaels Allen",
     "title": "Design & Agentic Engineering",
@@ -21,6 +30,7 @@
     "slug": "boris-basque",
     "name": "Boris Basque",
     "title": "UX Lead, Design Systems",
+    "linkedin": "https://www.linkedin.com/in/borisbasque/",
     "avatarHash": "24aab89e42fc",
     "avatar": "boris-basque.png"
   },
@@ -66,6 +76,13 @@
     "website": "https://bencallahan.com/",
     "avatarHash": "gde85ceea215",
     "avatar": "ben-callahan.png"
+  },
+  {
+    "slug": "chris-capellini",
+    "name": "Chris Capellini",
+    "linkedin": "https://www.linkedin.com/in/chriscap/",
+    "avatarHash": "71efaab3efb8",
+    "avatar": "chris-capellini.jpg"
   },
   {
     "slug": "robin-di-capua",
@@ -182,6 +199,15 @@
     "avatar": "kelby-gassman.jpg"
   },
   {
+    "slug": "cassie-groos",
+    "name": "Cassie Groos",
+    "title": "Design System Architect",
+    "linkedin": "https://www.linkedin.com/in/graphicgoose/",
+    "website": "http://www.graphicgoose.co.uk",
+    "avatarHash": "a86b4edc00c2",
+    "avatar": "cassie-groos.jpg"
+  },
+  {
     "slug": "maya-hampton",
     "name": "Maya Hampton",
     "title": "Sr. Product Manager, Design Systems at lululemon",
@@ -189,6 +215,15 @@
     "website": "https://himaya.medium.com/",
     "avatarHash": "d022063f2cb8",
     "avatar": "maya-hampton.png"
+  },
+  {
+    "slug": "grace-han",
+    "name": "Grace Han",
+    "title": "Lead Product Designer",
+    "linkedin": "https://www.linkedin.com/in/ghan/",
+    "website": "https://medium.com/@gracehan.me",
+    "avatarHash": "2eaf296265ef",
+    "avatar": "grace-han.png"
   },
   {
     "slug": "max-hurd",
@@ -220,6 +255,14 @@
     "name": "julesforrest",
     "avatarHash": "ab960f6bec48",
     "avatar": "julesforrest.jpg"
+  },
+  {
+    "slug": "juliannesombat",
+    "name": "juliannesombat",
+    "title": "Senior Manager, design systems",
+    "linkedin": "http://www.linkedin.com/in/julianne-sombat",
+    "avatarHash": "4f6fae311e6b",
+    "avatar": "juliannesombat.png"
   },
   {
     "slug": "amy-lam",
@@ -266,7 +309,7 @@
   {
     "slug": "katie-orzeck",
     "name": "Katie Orzeck",
-    "title": "Sr. Art Director, Digital Product @ Fast Company + Inc.",
+    "title": "Sr. Art Director, Digital Product at Fast Company + Inc.",
     "website": "https://katieorzeck.com/",
     "avatarHash": "139e58b55c60",
     "avatar": "katie-orzeck.png"
@@ -295,10 +338,29 @@
     "avatar": "jonathan-simcoe.jpg"
   },
   {
+    "slug": "caleb-smith",
+    "name": "Caleb Smith",
+    "title": "Design System Lead @ One North",
+    "linkedin": "https://www.linkedin.com/in/caleb-smith-uxdesign/",
+    "website": "https://calebsmith.framer.website/",
+    "avatarHash": "d2eb634aa035",
+    "avatar": "caleb-smith.png"
+  },
+  {
+    "slug": "grant-staublin",
+    "name": "Grant Staublin",
+    "title": "Senior Design Technologist",
+    "linkedin": "https://www.linkedin.com/in/gcstaublin/",
+    "website": "https://grantstaublin.com/",
+    "avatarHash": "4c623280eb73",
+    "avatar": "grant-staublin.jpg"
+  },
+  {
     "slug": "emily-sullivan",
     "name": "Emily Sullivan",
     "title": "Product Designer @OnTheClock",
     "linkedin": "https://www.linkedin.com/in/emily-a-sullivan/",
+    "website": "https://emilysullivan.design/",
     "avatarHash": "864aab339694",
     "avatar": "emily-sullivan.png"
   },
@@ -321,6 +383,7 @@
   {
     "slug": "mark-tomlinson",
     "name": "Mark Tomlinson",
+    "linkedin": "https://www.linkedin.com/in/mark-tomlinson-dev/",
     "website": "https://sugarcube.sh",
     "avatarHash": "7bb09d2fc532",
     "avatar": "mark-tomlinson.jpg"
