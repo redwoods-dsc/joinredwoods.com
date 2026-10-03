@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "packageManager": "pnpm@10.33.3",
+  "packageManager": "pnpm@12.8.1",
   "scripts": {
     "start": "npm run dev",
     "dev": "astro dev",
@@ -19,23 +19,24 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.4",
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/markdown-satteri": "^0.4.2",
+    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/source-sans-3": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.0",
-    "astro": "^6.1.7",
-    "sharp": "^0.34.5"
+    "astro": "^7.3.5",
+    "sharp": "^0.35.5"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
   },
   "devDependencies": {
-    "@chromatic-com/playwright": "^0.13.3",
-    "@playwright/test": "^1.59.1",
-    "chromatic": "^18.1.0",
+    "@chromatic-com/playwright": "^1.0.0",
+    "@playwright/test": "^1.63.0",
+    "chromatic": "^18.10.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.8.3",
-    "prettier-plugin-astro": "^0.14.1"
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0"
   }
 }

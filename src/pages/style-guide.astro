@@ -529,7 +529,7 @@ const sections = [
           Leave <code>caption</code> off and the <code>alt</code> is shown as the caption, with the image's
           own alt emptied so a screen reader reads the sentence once rather than twice. Pass both when
           they should say different things and both are kept. Markdown images get the same treatment automatically;
-          see <code>rehypeFigureCaptions</code> in
+          see <code>figureCaptions</code> in
           <code>astro.config.mjs</code>.
         </p>
         <p>
@@ -538,8 +538,8 @@ const sections = [
           the alt can't be emptied the way it is above. With no separate
           <code>caption</code> the caption would repeat that name word for word, so it's hidden from assistive
           tech instead. Give a linked figure its own <code>caption</code> and both are read. Markdown
-          can't produce this shape: <code>rehypeFigureCaptions</code> only matches a paragraph whose one
-          element child is the image, and
+          can't produce this shape: <code>figureCaptions</code> only matches a paragraph whose one element
+          child is the image, and
           <code>[![alt](src)](href)</code> nests it inside the anchor.
         </p>
       </div>

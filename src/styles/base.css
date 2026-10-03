@@ -93,7 +93,7 @@ img {
   height: auto;
 }
 
-/* Markdown images become figures — see rehypeFigureCaptions in astro.config.mjs.
+/* Markdown images become figures — see figureCaptions in astro.config.mjs.
    The alt is emptied there and rendered here instead, so the sentence is
    announced once rather than twice. */
 figure {
@@ -108,8 +108,8 @@ figure img {
 }
 
 /* Figure's `border={false}`. Lives here rather than in the component because
-   markdown images are turned into figures by rehype and never pass through it,
-   so both routes have to read the same rule. */
+   markdown images are turned into figures by the Markdown processor and never
+   pass through it, so both routes have to read the same rule. */
 figure[data-border='false'] img {
   border-color: transparent;
 }
