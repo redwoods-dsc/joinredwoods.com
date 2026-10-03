@@ -6,7 +6,7 @@ If you update a convention in the codebase, update this file too so the next con
 
 ## 🧭 Project basics
 
-- **Astro 6** static site, TypeScript strict, no server runtime.
+- **Astro 7** static site, TypeScript strict, no server runtime.
 - **pnpm** — not npm, not yarn. Use `pnpm install`, `pnpm dev`, `pnpm build`.
 - **Node 22.12+** required.
 - The live style guide at `/style-guide` is the canonical reference for tokens and primitives. When you add either, update the style guide in the same change.

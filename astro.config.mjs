@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { satteri } from '@astrojs/markdown-satteri';
 
 /**
  * Turns `![caption](image.jpg)` into a figure with the alt text as its caption,
@@ -12,47 +13,41 @@ import sitemap from '@astrojs/sitemap';
  * caption sitting right below it. Only markdown images are touched: an <Image>
  * written in MDX is JSX by the time this runs, not an `img` element.
  */
-function rehypeFigureCaptions() {
-  return (tree) => {
-    const walk = (node) => {
-      if (!node.children) return;
-      node.children = node.children.map((child) => {
-        walk(child);
-        const isLoneImage =
-          child.type === 'element' &&
-          child.tagName === 'p' &&
-          child.children.filter((c) => c.type !== 'text' || c.value.trim()).length === 1 &&
-          child.children.some((c) => c.type === 'element' && c.tagName === 'img');
-        if (!isLoneImage) return child;
+const figureCaptions = {
+  name: 'figure-captions',
+  element: {
+    filter: ['p'],
+    visit(node) {
+      const meaningful = node.children.filter((c) => c.type !== 'text' || c.value.trim());
+      const img = meaningful[0];
+      if (meaningful.length !== 1 || img.type !== 'element' || img.tagName !== 'img') return;
+      const caption = img.properties.alt;
+      if (!caption) return;
 
-        const img = child.children.find((c) => c.type === 'element' && c.tagName === 'img');
-        const caption = img.properties.alt;
-        if (!caption) return child;
-        img.properties.alt = '';
-
-        return {
-          type: 'element',
-          tagName: 'figure',
-          properties: {},
-          children: [
-            img,
-            {
-              type: 'element',
-              tagName: 'figcaption',
-              properties: {},
-              children: [{ type: 'text', value: caption }],
-            },
-          ],
-        };
-      });
-    };
-    walk(tree);
-  };
-}
+      return {
+        type: 'element',
+        tagName: 'figure',
+        properties: {},
+        children: [
+          { ...img, properties: { ...img.properties, alt: '' } },
+          {
+            type: 'element',
+            tagName: 'figcaption',
+            properties: {},
+            children: [{ type: 'text', value: caption }],
+          },
+        ],
+      };
+    },
+  },
+};
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://joinredwoods.com',
+  // The 'jsx' default drops spaces between elements on separate lines, which
+  // glues quote attributions to their dash and article bylines to their dates.
+  compressHTML: true,
   integrations: [
     mdx(),
     /* Auto-discovers every built page, which means draft articles are already
@@ -85,7 +80,7 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   markdown: {
-    rehypePlugins: [rehypeFigureCaptions],
+    processor: satteri({ hastPlugins: [figureCaptions] }),
     shikiConfig: {
       theme: 'github-light-high-contrast',
     },

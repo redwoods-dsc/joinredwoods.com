@@ -79,7 +79,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
         questionAnswerBy is null when the build already knows it has closed, and
         the guard below is what makes that a no-op. It stays inside the script
         rather than wrapping it: Prettier's Astro plugin can't parse a raw
-        <script> nested in a JSX conditional. */
+        script nested in a JSX conditional. */
     }
     <script is:inline define:vars={{ questionAnswerBy }}>
       if (questionAnswerBy && Date.now() > Date.parse(questionAnswerBy)) {
