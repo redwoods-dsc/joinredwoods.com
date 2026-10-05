@@ -162,7 +162,7 @@ blockquote::before {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: var(--quote-rule-width);
 
   background-color: var(--color-green); /* The masks cut the tree out of this fill. */
