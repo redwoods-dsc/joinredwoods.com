@@ -132,12 +132,74 @@ ol {
  * the boundary between the two.
  */
 blockquote {
-  border-inline-start: var(--quote-rule-width) solid var(--color-accent);
-  padding-inline-start: var(--space-md);
+  /* Each height is its SVG's aspect ratio at the tree's 1rem width; changing
+     --quote-rule-width means rescaling these by hand. */
+  --crown-h: 3.125rem;
+  --trunk-fixed-h: 4rem;
+  --trunk-w: 0.24rem;
+  --branch-1: 0.5rem;
+  --branch-2: 1.5rem;
+  --branch-1-h: 0.48rem;
+  --branch-2-h: 0.54rem;
+  --crown-2-h: 2.67rem;
+  /* Shorter quotes drop crown 2 (lifting the branches into its place), then the
+     branches too. The `* 1000` in the clamps makes each a switch, not a squash. */
+  --crown-2-min: calc(
+    var(--crown-h) + var(--crown-2-h) + var(--branch-2) + var(--branch-2-h) + var(--trunk-fixed-h)
+  );
+  --branch-min: calc(var(--crown-h) + var(--branch-2) + var(--branch-2-h) + var(--trunk-fixed-h));
+
   margin-block: var(--space-xl);
   font-family: var(--font-serif);
   font-size: var(--font-size-blockquote);
   font-style: italic;
+  position: relative;
+  padding-inline-start: calc(var(--quote-rule-width) + var(--space-md));
+}
+
+blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: var(--quote-rule-width);
+
+  background-color: var(--color-green); /* The masks cut the tree out of this fill. */
+  mask-repeat: no-repeat;
+  /* One layer per piece; the gradient is the stretching trunk, which is only a
+     rectangle. mask-position and mask-size are read by index, so keep the order. */
+  mask-image:
+    url('../assets/tree-crown-1.svg'), url('../assets/tree-branch-1.svg'),
+    url('../assets/tree-branch-2.svg'), url('../assets/tree-crown-2.svg'),
+    linear-gradient(#000, #000), url('../assets/tree-trunk-fixed.svg');
+
+  /* A percentage here is the box height minus the layer's own, not the box
+     height, which is why the branch clamps add the branch's height back. */
+  mask-position:
+    center top,
+    center
+      calc(
+        var(--crown-h) + var(--branch-1) +
+          clamp(0px, (100% + var(--branch-1-h) - var(--crown-2-min)) * 1000, var(--crown-2-h))
+      ),
+    center
+      calc(
+        var(--crown-h) + var(--branch-2) +
+          clamp(0px, (100% + var(--branch-2-h) - var(--crown-2-min)) * 1000, var(--crown-2-h))
+      ),
+    center var(--crown-h),
+    center var(--crown-h),
+    center bottom;
+
+  mask-size:
+    var(--quote-rule-width) var(--crown-h),
+    var(--quote-rule-width) clamp(0px, (100% - var(--branch-min)) * 1000, var(--branch-1-h)),
+    var(--quote-rule-width) clamp(0px, (100% - var(--branch-min)) * 1000, var(--branch-2-h)),
+    var(--quote-rule-width) clamp(0px, (100% - var(--crown-2-min)) * 1000, var(--crown-2-h)),
+    /* Runs 2px into the trunk base so rounding can't open a hairline where they meet. */
+    var(--trunk-w) max(0px, calc(100% - var(--crown-h) - var(--trunk-fixed-h) + 2px)),
+    var(--quote-rule-width) var(--trunk-fixed-h);
 }
 
 /* Upright again: the attribution is a label about the quote, so it takes none
