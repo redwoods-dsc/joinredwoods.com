@@ -11,10 +11,10 @@ import type { Question } from '../lib/the-question';
 // them here — noon Eastern is 16:00Z, 5pm Eastern is 21:00Z.
 
 export const currentQuestion: Question = {
-  number: 81,
-  question: 'The Culture We Build',
-  cohosts: ['Shaun Bent'],
-  episodeDate: new Date('2026-09-24T16:00:00Z'),
-  answerBy: new Date('2026-09-23T21:00:00Z'),
-  answerUrl: 'https://bit.ly/4dNe2AF',
+  number: 82,
+  question: 'Design Systems for Sentient Design',
+  cohosts: ['Josh Clark', 'Veronika Kindred'],
+  episodeDate: new Date('2026-10-08T16:00:00Z'),
+  answerBy: new Date('2026-10-07T21:00:00Z'),
+  answerUrl: 'https://bit.ly/4dkYLac',
 };
