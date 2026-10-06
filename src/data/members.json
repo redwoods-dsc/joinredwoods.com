@@ -61,6 +61,14 @@
     "avatar": "brad-bice.png"
   },
   {
+    "slug": "vangelis-bouzoukas",
+    "name": "Vangelis Bouzoukas",
+    "title": "Director, Product Design @ Vialto",
+    "website": "https://www.vanbouzoukas.com",
+    "avatarHash": "bc6c702e9cbf",
+    "avatar": "vangelis-bouzoukas.png"
+  },
+  {
     "slug": "greg-bruening",
     "name": "Greg Bruening",
     "title": "Lead front-end developer, CPWA @ Common App",
@@ -120,6 +128,12 @@
     "avatar": "kelsey-cavitt.jpg"
   },
   {
+    "slug": "janesa-chan",
+    "name": "Janesa Chan",
+    "avatarHash": "b0771417ec6e",
+    "avatar": "janesa-chan.png"
+  },
+  {
     "slug": "brittany-clark-hogg",
     "name": "Brittany Clark (Hogg)",
     "title": "Design System Architect at Fullscript",
@@ -161,7 +175,7 @@
   {
     "slug": "kaelig-deloumeau-prigent",
     "name": "Kaelig Deloumeau-Prigent",
-    "linkedin": "https://www.linkedin.com/in/kaelig/en",
+    "linkedin": "https://www.linkedin.com/in/kaelig",
     "website": "https://x.com/kaelig",
     "avatarHash": "gf7e7b837bd0",
     "avatar": "kaelig-deloumeau-prigent.jpg"
@@ -184,6 +198,15 @@
     "avatar": "jeremy-elder.png"
   },
   {
+    "slug": "myla-fay",
+    "name": "Myla Fay",
+    "title": "Design systems at waymo",
+    "linkedin": "https://www.linkedin.com/in/myla-fay/",
+    "website": "https://www.mylafay.com",
+    "avatarHash": "0d19ae6b4035",
+    "avatar": "myla-fay.png"
+  },
+  {
     "slug": "frank",
     "name": "frank",
     "website": "https://frankstall.one",
@@ -197,6 +220,13 @@
     "linkedin": "https://www.linkedin.com/in/kelby-gassman/",
     "avatarHash": "f415c390ceb4",
     "avatar": "kelby-gassman.jpg"
+  },
+  {
+    "slug": "maxene-graze",
+    "name": "Maxene Graze",
+    "title": "Information Designer",
+    "avatarHash": "67c32926f12b",
+    "avatar": "maxene-graze.png"
   },
   {
     "slug": "cassie-groos",
@@ -243,12 +273,12 @@
     "avatar": "kyle-hyams.jpg"
   },
   {
-    "slug": "gregory-johnson",
-    "name": "Gregory Johnson",
+    "slug": "greg-johnson",
+    "name": "Greg Johnson",
     "title": "Design Engineer at ADP",
     "linkedin": "https://www.linkedin.com/in/gregjdc/",
     "avatarHash": "4ebf63422d0f",
-    "avatar": "gregory-johnson.png"
+    "avatar": "greg-johnson.png"
   },
   {
     "slug": "julesforrest",
@@ -274,19 +304,27 @@
     "avatar": "amy-lam.png"
   },
   {
-    "slug": "cassie-m",
-    "name": "Cassie M.",
-    "title": "Principal Design Systems Architect @ The Goodyear Tire & Rubber Co.",
-    "linkedin": "https://www.linkedin.com/in/cassiemilicia/",
-    "avatarHash": "5f383c0aaf68",
-    "avatar": "cassie-m.jpg"
-  },
-  {
     "slug": "pedro-martins",
     "name": "Pedro Martins",
     "title": "Design Systems Addict :)",
     "avatarHash": "91a14c8de026",
     "avatar": "pedro-martins.jpg"
+  },
+  {
+    "slug": "cassie-milicia",
+    "name": "Cassie Milicia",
+    "title": "Principal Design Systems Architect @ Goodyear",
+    "linkedin": "https://www.linkedin.com/in/cassiemilicia/",
+    "avatarHash": "af126c1b90d1",
+    "avatar": "cassie-milicia.png"
+  },
+  {
+    "slug": "msteinruck",
+    "name": "msteinruck",
+    "title": "Design System Lead, Superhuman",
+    "linkedin": "https://www.linkedin.com/in/marksteinruck/",
+    "avatarHash": "aa1d9b301ca9",
+    "avatar": "msteinruck.jpg"
   },
   {
     "slug": "doug-neiner",
@@ -413,6 +451,12 @@
     "website": "https://leovogel.com",
     "avatarHash": "31aea20a7d33",
     "avatar": "leo-vogel.png"
+  },
+  {
+    "slug": "philbert-widjaja",
+    "name": "Philbert Widjaja",
+    "avatarHash": "cce630042b09",
+    "avatar": "philbert-widjaja.png"
   },
   {
     "slug": "jane-wolf",
