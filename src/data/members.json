@@ -27,6 +27,14 @@
     "avatar": "peter-michaels-allen.jpg"
   },
   {
+    "slug": "alexandru-antihi",
+    "name": "Alexandru Antihi",
+    "linkedin": "https://www.linkedin.com/in/alexandruantihi/",
+    "website": "https://designbase.com/",
+    "avatarHash": "d6f179d81288",
+    "avatar": "alexandru-antihi.jpg"
+  },
+  {
     "slug": "boris-basque",
     "name": "Boris Basque",
     "title": "UX Lead, Design Systems",
@@ -212,6 +220,15 @@
     "website": "https://frankstall.one",
     "avatarHash": "g5c38c0743a8",
     "avatar": "frank.png"
+  },
+  {
+    "slug": "julia-gale",
+    "name": "Julia Gale",
+    "title": "Product Designer",
+    "linkedin": "https://www.linkedin.com/in/iuliiagale",
+    "website": "https://www.juliagale.com",
+    "avatarHash": "0c45b16e5706",
+    "avatar": "julia-gale.jpg"
   },
   {
     "slug": "kelby-gassman",
@@ -461,6 +478,7 @@
   {
     "slug": "jane-wolf",
     "name": "Jane Wolf",
+    "linkedin": "https://www.linkedin.com/in/janeuwolf/",
     "avatarHash": "30f3cbbdbaa1",
     "avatar": "jane-wolf.png"
   }
