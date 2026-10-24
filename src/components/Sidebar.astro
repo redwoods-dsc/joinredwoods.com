@@ -16,21 +16,19 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
   <section class="sidebar__card">
     <h2>From the Field Notes</h2>
     <div class="sidebar__list">
-      {
-        articles.map((article) => (
-          <EntryCard
-            href={`/field-notes/${article.id}/`}
-            secondaryLabel={article.data.authors.join(', ')}
-            primaryLabel={article.data.title}
-            date={article.data.date}
-            tone={article.data.tone}
-          />
-        ))
-      }
+      {articles.map((article) => (
+        <EntryCard
+          href={`/field-notes/${article.id}/`}
+          secondaryLabel={article.data.authors.join(', ')}
+          primaryLabel={article.data.title}
+          date={article.data.date}
+          tone={article.data.tone}
+        />
+      ))}
     </div>
-    <ArrowLink href="/field-notes/" direction="right" size="smaller" margin="md"
-      >Read all Field Notes</ArrowLink
-    >
+    <ArrowLink href="/field-notes/" direction="right" size="smaller" margin="md">
+      Read all Field Notes
+    </ArrowLink>
   </section>
   <QuestionPromo />
 </div>

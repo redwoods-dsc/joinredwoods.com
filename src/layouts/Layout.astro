@@ -51,12 +51,10 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <link rel="preload" as="font" type="font/woff2" href={sourceSansLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatinItalic} crossorigin />
-    {
-      /* The trees are a CSS background, so the preload scanner can't find them
+    {/* The trees are a CSS background, so the preload scanner can't find them
         on its own — without this the LCP request waits on the stylesheet. The
         media query mirrors the one in Header.astro that drops the image on
-        very short viewports. */
-    }
+        very short viewports. */}
     <link
       rel="preload"
       as="image"
@@ -67,8 +65,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     />
     <meta name="generator" content={Astro.generator} />
     <Seo {...seo} />
-    {
-      /* The build bakes in whichever state The Question was in when it ran, but
+    {/* The build bakes in whichever state The Question was in when it ran, but
         the survey closes on a deadline that no rebuild is waiting for, so the
         sidebar card would go on advertising a closed survey. Re-checking here —
         before a byte of <body> is parsed, with the stylesheet already inlined
@@ -79,8 +76,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
         questionAnswerBy is null when the build already knows it has closed, and
         the guard below is what makes that a no-op. It stays inside the script
         rather than wrapping it: Prettier's Astro plugin can't parse a raw
-        script nested in a JSX conditional. */
-    }
+        script nested in a JSX conditional. */}
     <script is:inline define:vars={{ questionAnswerBy }}>
       if (questionAnswerBy && Date.now() > Date.parse(questionAnswerBy)) {
         document.documentElement.dataset.questionExpired = '';
@@ -91,11 +87,9 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <Page aside={aside}>
       <slot />
     </Page>
-    {
-      /* Kept out of dev so `pnpm dev` doesn't report itself as traffic. The
+    {/* Kept out of dev so `pnpm dev` doesn't report itself as traffic. The
         raw <script> tags live in the component because Prettier's Astro
-        plugin can't parse one nested in a JSX conditional. */
-    }
+        plugin can't parse one nested in a JSX conditional. */}
     {import.meta.env.PROD && <Analytics />}
   </body>
 </html>
