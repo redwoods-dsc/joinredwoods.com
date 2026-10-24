@@ -164,9 +164,9 @@ An inline script in the document `<head>` then improves on it, adding whichever 
 
 | State       | When                   | What it adds                                  |
 | ----------- | ---------------------- | --------------------------------------------- |
-| `scheduled` | before `opensOn`       | nothing — the neutral card stands             |
+| `scheduled` | before `opensOn`       | nothing — the fallback stands                 |
 | `open`      | `opensOn` → `answerBy` | "is Open", and the Answer The Question button |
-| `closed`    | after `answerBy`       | the mailing-list signup for the next episode  |
+| `closed`    | after `answerBy`       | a pointer to the show on bencallahan.com      |
 
 Three things follow:
 

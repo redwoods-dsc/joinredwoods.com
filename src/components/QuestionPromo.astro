@@ -5,7 +5,6 @@ import ArrowLink from './ArrowLink.astro';
 import Button from './Button.astro';
 import {
   episodeNumber,
-  MAILING_LIST_URL,
   monthDay,
   PAST_EPISODES_URL,
   PREVIOUS_EPISODES_URL,
@@ -26,9 +25,6 @@ const { title, cohosts, answerBy, answerUrl, date } = episode.data;
 
 const schedule = questionSchedule(episode);
 const thisEpisode = episodeNumber(episode);
-/* The fallback names the episode after this one, since it only ever shows
-   once this question is out of the way. */
-const nextEpisode = String(episode.data.number + 1).padStart(3, '0');
 const cohostNames = new Intl.ListFormat('en-US').format(cohosts.map((cohost) => cohost.name));
 
 // Globbed rather than imported directly: a static import of a file that isn't
@@ -95,11 +91,9 @@ const artwork = Object.values(artworkModules)[0]?.default;
   )}
 
   <div class="question-promo__fallback">
-    <p class="question-promo__meta">
-      Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
-    </p>
-    <Button class="question-promo__cta" href={MAILING_LIST_URL} size="md">
-      Get The Question via Email
+    <p class="question-promo__meta">Our next episode is right around the corner.</p>
+    <Button class="question-promo__cta" href={PAST_EPISODES_URL} size="md">
+      Check out The Question
     </Button>
     <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller">
       See Previous Episodes

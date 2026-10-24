@@ -9,8 +9,6 @@ export const PAST_EPISODES_URL = 'https://bencallahan.com/the-question';
 
 export const PREVIOUS_EPISODES_URL = 'https://bencallahan.com/the-question#previous-episodes';
 
-export const MAILING_LIST_URL = 'https://bencallahan.com/the-question#signup';
-
 /**
  * Where the week is. `scheduled` until `opensOn` if the episode is set up
  * ahead, open until the survey closes, then closed.

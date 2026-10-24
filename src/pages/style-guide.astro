@@ -1117,10 +1117,10 @@ const sections = [
           fraction of what that file holds.
         </p>
         <p>
-          Two panels, both shipped. The <strong>fallback</strong> — the mailing-list signup — is the
-          one that's true at any moment, so it's what ships visible, and what a reader without
-          JavaScript sees. An inline script in the document head swaps in the open panel while the
-          survey is actually open, reading the episode's schedule as{' '}
+          Two panels, both shipped. The <strong>fallback</strong> — a pointer to the show itself —
+          is the one that's true at any moment, so it's what ships visible, and what a reader
+          without JavaScript sees. An inline script in the document head swaps in the open panel
+          while the survey is actually open, reading the episode's schedule as{' '}
           <code>&#123;at, state&#125;</code>
           pairs and taking the state whose moment has passed. The build and the browser read the
           same schedule, so they can't disagree, and the card can open itself on the morning a
