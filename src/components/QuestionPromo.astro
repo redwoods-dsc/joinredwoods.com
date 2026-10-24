@@ -9,19 +9,19 @@ import {
   PAST_EPISODES_URL,
   PREVIOUS_EPISODES_URL,
   questionSchedule,
-  type Episode,
+  type QuestionEpisode,
   type QuestionState,
 } from '../lib/the-question';
 
 interface Props {
-  episode: Episode;
+  episode: QuestionEpisode;
   /* Pins a state instead of letting the browser choose, for the style guide.
      The real card ships both panels and lets the head script pick. */
   state?: QuestionState;
 }
 
 const { episode, state } = Astro.props;
-const { title, cohosts, answerBy, answerUrl, date } = episode.data;
+const { title, cohosts, answerBy, answerUrl, date } = episode;
 
 const schedule = questionSchedule(episode);
 const thisEpisode = episodeNumber(episode);

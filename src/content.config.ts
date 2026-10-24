@@ -41,6 +41,8 @@ const episodes = defineCollection({
   schema: z
     .object({
       number: z.number().int().positive(),
+      /* "II" for the one episode that ran to two parts. */
+      part: z.string().optional(),
       title: z.string(),
       date: z.coerce.date(),
       cohosts: z.array(z.object({ name: z.string(), url: z.url() })).default([]),

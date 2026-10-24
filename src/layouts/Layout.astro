@@ -38,7 +38,7 @@ const background = await headerBackground();
 // schedule is sent rather than a verdict, because the page may be read from a
 // cache hours after it was built — see questionSchedule().
 const episode = await currentEpisode();
-const questionSchedule_ = episode ? questionSchedule(episode) : null;
+const questionSchedule_ = episode ? questionSchedule(episode.data) : null;
 ---
 
 <!doctype html>

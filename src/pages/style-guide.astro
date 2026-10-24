@@ -10,7 +10,7 @@ import EntryCard from '../components/EntryCard.astro';
 import MemberCard from '../components/MemberCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
-import type { Episode } from '../lib/the-question';
+import type { QuestionEpisode } from '../lib/the-question';
 import PageTitle from '../components/PageTitle.astro';
 import Lede from '../components/Lede.astro';
 import Note from '../components/Note.astro';
@@ -77,24 +77,18 @@ const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 // pinning the state it wants. Pinned rather than dated into a state, so the
 // Chromatic snapshots can't drift and the card's own clock never enters into
 // it — a pinned card ignores the head script entirely.
-const questionSample = {
-  id: '080',
-  collection: 'episodes',
-  data: {
-    number: 80,
-    title: 'Visualizing Design System Health',
-    date: new Date(Date.UTC(2099, 7, 28, 16)),
-    opensOn: new Date(Date.UTC(2099, 7, 24, 16)),
-    answerBy: new Date(Date.UTC(2099, 7, 27, 21)),
-    answerUrl: '#question-promo',
-    topic: 'the measures a system can actually stand behind',
-    cohosts: [
-      { name: 'Robin Di Capua', url: '#question-promo' },
-      { name: 'Taylor Cashdan', url: '#question-promo' },
-    ],
-    links: {},
-  },
-} as unknown as Episode;
+const questionSample: QuestionEpisode = {
+  number: 80,
+  title: 'Visualizing Design System Health',
+  date: new Date(Date.UTC(2099, 7, 28, 16)),
+  opensOn: new Date(Date.UTC(2099, 7, 24, 16)),
+  answerBy: new Date(Date.UTC(2099, 7, 27, 21)),
+  answerUrl: '#question-promo',
+  cohosts: [
+    { name: 'Robin Di Capua', url: '#question-promo' },
+    { name: 'Taylor Cashdan', url: '#question-promo' },
+  ],
+};
 
 // Document order, not grouped order: this list is both the jump nav and the
 // headings the two wide TableOfContents demos are fed, and that component marks

@@ -33,7 +33,7 @@ const articles = (await getCollection('field-notes', (entry) => !entry.data.draf
       Read all Field Notes
     </ArrowLink>
   </section>
-  {episode && <QuestionPromo episode={episode} />}
+  {episode && <QuestionPromo episode={episode.data} />}
 </div>
 
 <style>

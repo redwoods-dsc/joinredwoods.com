@@ -2,6 +2,24 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Episode = CollectionEntry<'episodes'>;
 
+/**
+ * What the card actually renders, which is a fraction of what an episode file
+ * holds. Typed on its own rather than as the collection entry, so the style
+ * guide can hand the card a literal without pretending it came off disk — an
+ * `as unknown as` cast there would switch off the checking that catches a
+ * renamed field.
+ */
+export interface QuestionEpisode {
+  number: number;
+  part?: string;
+  title: string;
+  date: Date;
+  cohosts: { name: string; url: string }[];
+  opensOn?: Date;
+  answerBy?: Date;
+  answerUrl?: string;
+}
+
 /** The show runs on Eastern time, and its dates read that way wherever shown. */
 const EASTERN = 'America/New_York';
 
@@ -26,8 +44,8 @@ export type QuestionState = 'open' | 'closed';
  * `at` is epoch milliseconds, which survives the trip into an inline script
  * with no parsing at the other end.
  */
-export function questionSchedule(episode: Episode): { at: number; state: QuestionState }[] {
-  const { answerBy, answerUrl, opensOn } = episode.data;
+export function questionSchedule(episode: QuestionEpisode): { at: number; state: QuestionState }[] {
+  const { answerBy, answerUrl, opensOn } = episode;
 
   /* An archived episode never opens: no deadline, or nowhere to answer. */
   if (!answerBy || !answerUrl) return [{ at: 0, state: 'closed' }];
@@ -50,8 +68,8 @@ export async function currentEpisode(): Promise<Episode | undefined> {
 }
 
 /** "083", the way the show numbers itself — not 83. */
-export const episodeNumber = ({ data }: Episode) =>
-  `${String(data.number).padStart(3, '0')}${data.part ? ` Part ${data.part}` : ''}`;
+export const episodeNumber = ({ number, part }: QuestionEpisode) =>
+  `${String(number).padStart(3, '0')}${part ? ` Part ${part}` : ''}`;
 
 /** "October 29" */
 export const monthDay = (date: Date) =>
