@@ -146,7 +146,7 @@ answerUrl: https://bit.ly/4dYVT3b
 ---
 ```
 
-**That frontmatter is the same shape bencallahan.com uses**, field for field, so the file that describes an episode there is the file that describes it here — copy it across unedited. This site reads a handful of those fields and ignores the rest; the schema in `src/content.config.ts` still declares them all, because a field it doesn't name is dropped without a word. If you add a field on one site, add it to both.
+**That frontmatter is the same shape bencallahan.com uses**, field for field, so the file that describes an episode there is the file that describes it here — copy it across unedited. This site reads a handful of those fields and ignores the rest: the schema in `src/content.config.ts` validates the ones the card renders and passes the others through untouched, so a file carrying `links` or `summary` for the other site is still a valid file here.
 
 Drop the new file in and push. The card shows **the newest episode by `date`**, so nothing has to be taken down, and the previous file can stay or go as you like. Dates are written in UTC, which is what the frontmatter parses unambiguously; the card converts to Eastern for display, so noon Eastern is `16:00:00.000Z` and 5pm Eastern is `21:00:00.000Z`.
 

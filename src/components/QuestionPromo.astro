@@ -10,7 +10,6 @@ import {
   PAST_EPISODES_URL,
   PREVIOUS_EPISODES_URL,
   questionSchedule,
-  scheduleLines,
   type Episode,
   type QuestionState,
 } from '../lib/the-question';
@@ -18,19 +17,19 @@ import {
 interface Props {
   episode: Episode;
   /* Pins a state instead of letting the browser choose, for the style guide.
-     The real card ships every panel and lets the head script pick. */
+     The real card ships both panels and lets the head script pick. */
   state?: QuestionState;
 }
 
 const { episode, state } = Astro.props;
-const { title, cohosts, topic, answerBy, answerUrl, date } = episode.data;
+const { title, cohosts, answerBy, answerUrl, date } = episode.data;
 
 const schedule = questionSchedule(episode);
-const lines = scheduleLines(episode);
 const thisEpisode = episodeNumber(episode);
-/* The closed panel names the episode after this one, since it only ever
-   appears once this question has gone. */
+/* The fallback names the episode after this one, since it only ever shows
+   once this question is out of the way. */
 const nextEpisode = String(episode.data.number + 1).padStart(3, '0');
+const cohostNames = new Intl.ListFormat('en-US').format(cohosts.map((cohost) => cohost.name));
 
 // Globbed rather than imported directly: a static import of a file that isn't
 // there yet is a build error, and the artwork lands separately.
@@ -41,11 +40,9 @@ const artworkModules = import.meta.glob<{ default: ImageMetadata }>(
 const artwork = Object.values(artworkModules)[0]?.default;
 ---
 
-{/* data-state is the pinned state or nothing; the head script writes
-     data-question-state on <html> and the CSS below reads whichever applies.
-     With no script and no pin, the neutral panel is what shows — which is why
-     every word of it has to be true before the survey opens, while it's open,
-     and after it has closed. Nothing in it may say "open" or "closed". */}
+{/* Both panels ship and the head script decides between them, so the one
+     that's true at any moment — the fallback — is what a reader without
+     JavaScript sees. */}
 <section class="question-promo" data-state={state} data-schedule={JSON.stringify(schedule)}>
   <h2 class="question-promo__title">
     The Question
@@ -57,7 +54,8 @@ const artwork = Object.values(artworkModules)[0]?.default;
   {artwork && (
     // The image is the whole of this link, so its alt is the link's
     // accessible name — it has to say where the link goes rather than
-    // describe the artwork.
+    // describe the artwork. That's why the strapline and the photo of Ben
+    // don't appear in it.
     <a class="question-promo__art-link" href={PAST_EPISODES_URL}>
       <Image
         class="question-promo__art"
@@ -69,55 +67,40 @@ const artwork = Object.values(artworkModules)[0]?.default;
     </a>
   )}
 
-  <div class="question-promo__panel">
-    <h3 class="question-promo__question">
-      Episode {thisEpisode}: {title}
-    </h3>
-    <div class="question-promo__details">
-      {cohosts.length > 0 && (
+  {answerBy && answerUrl && (
+    <div class="question-promo__live" hidden>
+      <h3 class="question-promo__question">
+        Episode {thisEpisode}: {title}
+      </h3>
+      <div class="question-promo__details">
+        {cohosts.length > 0 && (
+          <p class="question-promo__meta">
+            <i>with {cohostNames}</i>
+          </p>
+        )}
         <p class="question-promo__meta">
-          <i>
-            with{' '}
-            {cohosts.map((cohost, i) => (
-              <>
-                {i > 0 && (i === cohosts.length - 1 ? ' and ' : ', ')}
-                <a href={cohost.url}>{cohost.name}</a>
-              </>
-            ))}
-          </i>
-        </p>
-      )}
-      {topic && <p class="question-promo__meta">Exploring {topic}.</p>}
-
-      {/* The schedule as plain fact — the only form that stays true at every
-           moment, and so the only one the no-script card can carry. */}
-      <ul class="question-promo__schedule">
-        {lines.map((line) => (
-          <li class="question-promo__meta">{line}</li>
-        ))}
-      </ul>
-    </div>
-
-    {answerUrl && answerBy && (
-      <div class="question-promo__open-only" hidden>
-        <Button class="question-promo__cta" href={answerUrl} size="md">
-          Answer The Question
-        </Button>
-        <p class="question-promo__meta">
-          Answer by {monthDay(answerBy)} to get your invite to the deep dive on {monthDay(date)}!
+          {'Answer by'}
+          <time datetime={answerBy.toISOString()}>{monthDay(answerBy)}</time>
+          {'to get your invite to the deep dive on'}
+          <time datetime={date.toISOString()}>{monthDay(date)}</time>!
         </p>
       </div>
-    )}
-
-    <div class="question-promo__closed-only" hidden>
-      <p class="question-promo__meta">
-        Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
-      </p>
-      <Button class="question-promo__cta" href={MAILING_LIST_URL} size="md">
-        Get The Question via Email
+      <Button class="question-promo__cta" href={answerUrl} size="md">
+        Answer The Question
       </Button>
+      <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller">
+        See Previous Episodes
+      </ArrowLink>
     </div>
+  )}
 
+  <div class="question-promo__fallback">
+    <p class="question-promo__meta">
+      Episode {nextEpisode} is right around the corner! Sign up so you don't miss out.
+    </p>
+    <Button class="question-promo__cta" href={MAILING_LIST_URL} size="md">
+      Get The Question via Email
+    </Button>
     <ArrowLink href={PREVIOUS_EPISODES_URL} direction="right" size="smaller">
       See Previous Episodes
     </ArrowLink>
@@ -137,7 +120,7 @@ const artwork = Object.values(artworkModules)[0]?.default;
 
      The negative margin cancels the column gap so the panel below sits flush
      against the artwork and the two read as one card. It lives here rather
-     than on the panel because the artwork is globbed: with no image to find,
+     than on the panels because the artwork is globbed: with no image to find,
      nothing renders and there is no gap to cancel. */
   .question-promo__art-link {
     display: block;
@@ -159,7 +142,11 @@ const artwork = Object.values(artworkModules)[0]?.default;
   }
 
   /* base.css balances every heading, which splits a two-line question in a
-     narrow column at an awkward point. */
+     narrow column at an awkward point.
+
+     The negative bottom margin trims the panel's gap down to the one the
+     details block uses internally, so the heading and the lines under it read
+     as one group while the CTA keeps the full gap. */
   .question-promo__question {
     margin: 0;
     margin-block-end: calc(var(--space-2xs) - var(--space-sm));
@@ -174,12 +161,6 @@ const artwork = Object.values(artworkModules)[0]?.default;
     gap: var(--space-2xs);
   }
 
-  .question-promo__schedule {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
   /* Only lightly muted, and the panel's tint decides how far it can go: on the
      panel below, 20% transparent drops to 4.15:1 and misses AA, where 12%
      clears it at 4.94:1. Darkening the panel moves both numbers. */
@@ -188,14 +169,15 @@ const artwork = Object.values(artworkModules)[0]?.default;
     color: color-mix(in srgb, var(--color-text), transparent 12%);
   }
 
-  /* Square across the top because it butts up against the artwork — the
-     rounding there belongs to the image.
+  /* One panel shared by both states, so the deadline passing swaps content
+     without changing the card's shape. Square across the top because it butts
+     up against the artwork — the rounding there belongs to the image.
 
      White, so the panel lifts off the cream sidebar card rather than sinking
      into it. The pairing is only 1.15:1, the same near-invisible step the
      Callout's white tone makes — it reads as a change of plane, not a border. */
-  .question-promo__panel {
-    display: flex;
+  .question-promo__live,
+  .question-promo__fallback {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-sm);
@@ -204,27 +186,25 @@ const artwork = Object.values(artworkModules)[0]?.default;
     background: var(--color-gray-100);
   }
 
-  /* No display here: `hidden` is what keeps these out until a state asks for
-     them, and an author rule setting display would beat it. The rules at the
-     bottom set it, once. */
-  .question-promo__open-only,
-  .question-promo__closed-only {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-sm);
+  .question-promo__fallback {
+    display: flex;
   }
 
   .question-promo__cta {
     width: 100%;
   }
 
-  /* The three parts that can only be true in one state ship `hidden`, so a
-     card with no script running says nothing it might have to take back —
-     and so does one whose stylesheet never arrived. The rules below are what
-     bring a part back, which is why each sets display explicitly. */
+  /* The open panel and the word "Open" ship `hidden`, so the card says nothing
+     it might have to take back before the script has run — or if the
+     stylesheet never arrives. These rules are what bring them back, which is
+     why each sets display itself. */
+  :global(:root[data-question-state='open'])
+    .question-promo:not([data-state])
+    .question-promo__live,
+  .question-promo[data-state='open'] .question-promo__live {
+    display: flex;
+  }
 
-  /* The state is settled in Layout.astro's head script, before this markup is
-     parsed, so the swaps can never be seen happening. */
   :global(:root[data-question-state='open'])
     .question-promo:not([data-state])
     .question-promo__status,
@@ -232,17 +212,12 @@ const artwork = Object.values(artworkModules)[0]?.default;
     display: inline;
   }
 
+  /* One at a time: the fallback is the default, so the open state takes it
+     away. */
   :global(:root[data-question-state='open'])
     .question-promo:not([data-state])
-    .question-promo__open-only,
-  .question-promo[data-state='open'] .question-promo__open-only {
-    display: flex;
-  }
-
-  :global(:root[data-question-state='closed'])
-    .question-promo:not([data-state])
-    .question-promo__closed-only,
-  .question-promo[data-state='closed'] .question-promo__closed-only {
-    display: flex;
+    .question-promo__fallback,
+  .question-promo[data-state='open'] .question-promo__fallback {
+    display: none;
   }
 </style>

@@ -1113,30 +1113,23 @@ const sections = [
           <code>&lt;QuestionPromo episode /&gt;</code>. The sidebar card for The Question, the
           fortnightly community survey and live discussion Ben runs alongside Redwoods. It reads the
           newest file in the <code>episodes</code> collection, whose frontmatter is the same shape
-          bencallahan.com uses, so one file describes an episode on both sites.
+          bencallahan.com uses, so one file describes an episode on both sites. The card shows a
+          fraction of what that file holds.
         </p>
         <p>
-          <strong>What the card ships is neutral</strong>: the episode, its co-hosts and topic, and
-          the schedule as plain fact — <em>Opens…</em>, <em>Answer by…</em>, <em>Deep dive…</em>.
-          Every word of that is true before the survey opens, while it's open and after it closes,
-          which is what a reader without JavaScript, a search engine or a link preview sees. Nothing
-          in it says "open" or "closed".
+          Two panels, both shipped. The <strong>fallback</strong> — the mailing-list signup — is the
+          one that's true at any moment, so it's what ships visible, and what a reader without
+          JavaScript sees. An inline script in the document head swaps in the open panel while the
+          survey is actually open, reading the episode's schedule as{' '}
+          <code>&#123;at, state&#125;</code>
+          pairs and taking the state whose moment has passed. The build and the browser read the
+          same schedule, so they can't disagree, and the card can open itself on the morning a
+          survey goes live rather than waiting for a rebuild.
         </p>
         <p>
-          An inline script in the document head then improves on it. It gets the episode's schedule
-          as
-          <code>&#123;at, state&#125;</code> pairs and shows the state whose moment has passed, so
-          the page can open itself on the morning a survey goes live and close itself when the
-          deadline passes, with no rebuild. The build and the browser read the same schedule, so
-          they can't disagree, and running the script in the head rather than beside the markup is
-          what stops a state flashing on screen. Pass <code>state</code>, as the demos below do, to
-          pin one instead.
+          Running that script in the head rather than beside the markup is what stops a panel
+          flashing on screen. Pass <code>state</code>, as the demos below do, to pin one instead.
         </p>
-      </div>
-
-      <h3 class="subhead">No script, or not yet open</h3>
-      <div class="question-promo-demo">
-        <QuestionPromo episode={questionSample} />
       </div>
 
       <h3 class="subhead">Question open</h3>
@@ -1144,7 +1137,7 @@ const sections = [
         <QuestionPromo episode={questionSample} state="open" />
       </div>
 
-      <h3 class="subhead">Question closed</h3>
+      <h3 class="subhead">Question closed, or no script yet</h3>
       <div class="question-promo-demo">
         <QuestionPromo episode={questionSample} state="closed" />
       </div>
