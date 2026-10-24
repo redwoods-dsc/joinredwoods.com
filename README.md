@@ -152,31 +152,33 @@ Drop the new file in and push. The card shows **the newest episode by `date`**, 
 
 ### What the card says, and when
 
-The card ships **neutral**: the episode, its co-hosts and topic, and the schedule as plain fact.
+What ships is the **resting card** — the one that's true at any moment:
 
-> Opens Sunday, October 25, at Noon Eastern
-> Answer by Wednesday, October 28, at 5PM Eastern
-> Deep dive Thursday, October 29, at Noon Eastern
+> **The Question**
+> Our next episode is right around the corner.
+> [ Check out The Question ]
+> See Previous Episodes →
 
-Every word of that is true before the survey opens, while it's open, and after it closes — which matters, because that is exactly what a reader without JavaScript sees, and what a search engine indexes. **Nothing in the neutral card may say "open" or "closed", or promise anything in the future tense.**
+It names no date and makes no promise, which matters: it's what a reader without JavaScript sees, what a search engine indexes, and what anyone gets from a cached page built weeks earlier. **Nothing in it may say a survey is open.**
 
-An inline script in the document `<head>` then improves on it, adding whichever of three states applies:
+An inline script in the document `<head>` then improves on it. While the survey is actually open it swaps in the open panel — "is Open", the episode, its co-hosts, and the Answer The Question button. Every other moment, the resting card stands:
 
-| State       | When                   | What it adds                                  |
-| ----------- | ---------------------- | --------------------------------------------- |
-| `scheduled` | before `opensOn`       | nothing — the fallback stands                 |
-| `open`      | `opensOn` → `answerBy` | "is Open", and the Answer The Question button |
-| `closed`    | after `answerBy`       | a pointer to the show on bencallahan.com      |
+| What's true                                 | What shows       |
+| ------------------------------------------- | ---------------- |
+| The survey is open (`opensOn` → `answerBy`) | the open panel   |
+| The file is in but hasn't opened yet        | the resting card |
+| The deadline has passed                     | the resting card |
+| No JavaScript, or it failed                 | the resting card |
 
-Three things follow:
+The card has one resting panel and nothing different to say before a question opens than after one closes, so there are two states rather than three. Three things follow:
 
 - **The card can open itself**, on the morning a survey goes live, with no rebuild. The old version could only ever move from open to closed; this one reads the whole schedule.
 - **The build and the browser share one rule.** `questionSchedule()` in `src/lib/the-question.ts` returns the timeline as `{at, state}` pairs, and the script does nothing but look up the last step whose moment has passed. Two implementations of that rule would be two chances to disagree, so there is only one.
-- **The script runs in the head**, before the body is parsed, so a state never flashes on screen. If you move it, keep it there.
+- **The script runs in the head**, before the body is parsed, so a panel never flashes on screen. If you move it, keep it there.
 
 Omit `opensOn` and an episode is open as soon as its file exists. Omit `answerBy` or `answerUrl` — as an archived episode would — and the card is closed and stays closed.
 
-All three states are on the [style guide](http://localhost:4321/style-guide#question-promo), pinned side by side.
+Both states are on the [style guide](http://localhost:4321/style-guide#question-promo), pinned side by side.
 
 ## 👥 Updating the member list
 

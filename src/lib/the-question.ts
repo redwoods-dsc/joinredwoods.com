@@ -10,10 +10,12 @@ export const PAST_EPISODES_URL = 'https://bencallahan.com/the-question';
 export const PREVIOUS_EPISODES_URL = 'https://bencallahan.com/the-question#previous-episodes';
 
 /**
- * Where the week is. `scheduled` until `opensOn` if the episode is set up
- * ahead, open until the survey closes, then closed.
+ * Open while there's a survey to answer, closed the rest of the time — which
+ * covers both a question that has finished and one whose file is in but whose
+ * `opensOn` hasn't arrived. The card has one resting panel and says the same
+ * thing in either case, so it has no use for a third state.
  */
-export type QuestionState = 'scheduled' | 'open' | 'closed';
+export type QuestionState = 'open' | 'closed';
 
 /**
  * The card's whole rule, written as the moments it changes at: each step
@@ -23,10 +25,6 @@ export type QuestionState = 'scheduled' | 'open' | 'closed';
  *
  * `at` is epoch milliseconds, which survives the trip into an inline script
  * with no parsing at the other end.
- *
- * Mirrors episodeSchedule() in bencallahan.com, minus its `missed` state: that
- * site nudges anyone who arrives between the deadline and the deep dive, and
- * this card says the same thing to them as it does to anyone else.
  */
 export function questionSchedule(episode: Episode): { at: number; state: QuestionState }[] {
   const { answerBy, answerUrl, opensOn } = episode.data;
@@ -35,25 +33,10 @@ export function questionSchedule(episode: Episode): { at: number; state: Questio
   if (!answerBy || !answerUrl) return [{ at: 0, state: 'closed' }];
 
   return [
-    { at: 0, state: opensOn ? 'scheduled' : 'open' },
+    { at: 0, state: opensOn ? 'closed' : 'open' },
     ...(opensOn ? [{ at: opensOn.getTime(), state: 'open' as const }] : []),
     { at: answerBy.getTime(), state: 'closed' },
   ];
-}
-
-/** Shared by the build and, in spirit, by the inline script in Layout.astro. */
-export function stateAt(
-  schedule: { at: number; state: QuestionState }[],
-  now: number,
-): QuestionState {
-  let state = schedule[0].state;
-  for (const step of schedule) if (now >= step.at) state = step.state;
-  return state;
-}
-
-/** Where the schedule stands at a given moment. */
-export function questionState(episode: Episode, now = new Date()): QuestionState {
-  return stateAt(questionSchedule(episode), now.getTime());
 }
 
 /**
@@ -70,32 +53,10 @@ export async function currentEpisode(): Promise<Episode | undefined> {
 export const episodeNumber = ({ data }: Episode) =>
   `${String(data.number).padStart(3, '0')}${data.part ? ` Part ${data.part}` : ''}`;
 
-const formatter = (options: Intl.DateTimeFormatOptions) =>
-  new Intl.DateTimeFormat('en-US', { ...options, timeZone: EASTERN });
-
 /** "October 29" */
-export const monthDay = (date: Date) => formatter({ month: 'long', day: 'numeric' }).format(date);
-
-/** "Wednesday" */
-export const weekday = (date: Date) => formatter({ weekday: 'long' }).format(date);
-
-/** "Noon", "5PM" — the way the show writes its times. */
-export function timeOfDay(date: Date) {
-  const parts = formatter({ hour: 'numeric', minute: '2-digit' }).formatToParts(date);
-  const get = (type: string) => parts.find((part) => part.type === type)?.value ?? '';
-  if (get('hour') === '12' && get('minute') === '00' && get('dayPeriod') === 'PM') return 'Noon';
-  const minutes = get('minute') === '00' ? '' : `:${get('minute')}`;
-  return `${get('hour')}${minutes}${get('dayPeriod')}`;
-}
-
-/** "Opens Sunday, October 25, at Noon Eastern" and the two lines after it. */
-export function scheduleLines(episode: Episode): string[] {
-  const { opensOn, answerBy, date } = episode.data;
-  const at = (moment: Date) =>
-    `${weekday(moment)}, ${monthDay(moment)}, at ${timeOfDay(moment)} Eastern`;
-  return [
-    ...(opensOn ? [`Opens ${at(opensOn)}`] : []),
-    ...(answerBy ? [`Answer by ${at(answerBy)}`] : []),
-    `Deep dive ${at(date)}`,
-  ];
-}
+export const monthDay = (date: Date) =>
+  new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    timeZone: EASTERN,
+  }).format(date);
