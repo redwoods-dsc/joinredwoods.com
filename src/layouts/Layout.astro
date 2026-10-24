@@ -25,8 +25,7 @@ import Analytics from '../components/Analytics.astro';
 import type { Props as SeoProps } from '../components/Seo.astro';
 import { headerBackground } from '../lib/header-background';
 import { site } from '../lib/site';
-import { currentQuestion } from '../data/the-question';
-import { isLive } from '../lib/the-question';
+import { currentEpisode, questionSchedule } from '../lib/the-question';
 
 interface Props extends SeoProps {
   aside?: boolean;
@@ -35,10 +34,11 @@ interface Props extends SeoProps {
 const { aside = true, ...seo } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const background = await headerBackground();
-// Null once the build itself knows the survey has closed — QuestionPromo then
-// renders the closed state outright and the script below has nothing to
-// correct. See the comment on it for why the check lives up here.
-const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toISOString() : null;
+// The card ships neutral and this is what lets the browser improve on it. The
+// schedule is sent rather than a verdict, because the page may be read from a
+// cache hours after it was built — see questionSchedule().
+const episode = await currentEpisode();
+const questionSchedule_ = episode ? questionSchedule(episode) : null;
 ---
 
 <!doctype html>
@@ -77,9 +77,12 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
         the guard below is what makes that a no-op. It stays inside the script
         rather than wrapping it: Prettier's Astro plugin can't parse a raw
         script nested in a JSX conditional. */}
-    <script is:inline define:vars={{ questionAnswerBy }}>
-      if (questionAnswerBy && Date.now() > Date.parse(questionAnswerBy)) {
-        document.documentElement.dataset.questionExpired = '';
+    <script is:inline define:vars={{ questionSchedule_ }}>
+      if (questionSchedule_) {
+        const now = Date.now();
+        let state = questionSchedule_[0].state;
+        for (const step of questionSchedule_) if (now >= step.at) state = step.state;
+        document.documentElement.dataset.questionState = state;
       }
     </script>
   </head>

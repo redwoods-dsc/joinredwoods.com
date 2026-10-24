@@ -10,6 +10,7 @@ import EntryCard from '../components/EntryCard.astro';
 import MemberCard from '../components/MemberCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
+import type { Episode } from '../lib/the-question';
 import PageTitle from '../components/PageTitle.astro';
 import Lede from '../components/Lede.astro';
 import Note from '../components/Note.astro';
@@ -72,23 +73,28 @@ const calloutTones = ['green', 'blue', 'orange', 'dark', 'white'] as const;
 
 const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 
-// Fixed dates on both sides, so these demos render the same state forever and
-// the Chromatic snapshot can't drift. Passing a question explicitly also opts
-// the card out of browser-side expiry, which is what keeps the open demo open
-// even once the real question has closed.
-const questionOpenSample = {
-  number: 80,
-  question: 'How do we visualise design system health?',
-  cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
-  episodeDate: new Date(Date.UTC(2099, 7, 28)),
-  answerBy: new Date(Date.UTC(2099, 7, 27)),
-  answerUrl: '#question-promo',
-};
-const questionClosedSample = {
-  ...questionOpenSample,
-  episodeDate: new Date(Date.UTC(2020, 7, 28)),
-  answerBy: new Date(Date.UTC(2020, 7, 27)),
-};
+// One sample episode in the shape the collection loads, with each demo below
+// pinning the state it wants. Pinned rather than dated into a state, so the
+// Chromatic snapshots can't drift and the card's own clock never enters into
+// it — a pinned card ignores the head script entirely.
+const questionSample = {
+  id: '080',
+  collection: 'episodes',
+  data: {
+    number: 80,
+    title: 'Visualizing Design System Health',
+    date: new Date(Date.UTC(2099, 7, 28, 16)),
+    opensOn: new Date(Date.UTC(2099, 7, 24, 16)),
+    answerBy: new Date(Date.UTC(2099, 7, 27, 21)),
+    answerUrl: '#question-promo',
+    topic: 'the measures a system can actually stand behind',
+    cohosts: [
+      { name: 'Robin Di Capua', url: '#question-promo' },
+      { name: 'Taylor Cashdan', url: '#question-promo' },
+    ],
+    links: {},
+  },
+} as unknown as Episode;
 
 // Document order, not grouped order: this list is both the jump nav and the
 // headings the two wide TableOfContents demos are fed, and that component marks
@@ -1104,31 +1110,43 @@ const sections = [
       <div class="section__head">
         <h2>The Question</h2>
         <p>
-          <code>&lt;QuestionPromo question /&gt;</code>. The sidebar card for The Question, the
-          fortnightly community survey and live discussion Ben runs alongside Redwoods. It has two
-          states, chosen by one field: while the survey's <code>answerBy</code> deadline is in the
-          future it promotes the open question, and afterwards it falls back to the mailing list.
-          The heading says which, and the artwork links to past episodes in both states.
+          <code>&lt;QuestionPromo episode /&gt;</code>. The sidebar card for The Question, the
+          fortnightly community survey and live discussion Ben runs alongside Redwoods. It reads the
+          newest file in the <code>episodes</code> collection, whose frontmatter is the same shape
+          bencallahan.com uses, so one file describes an episode on both sites.
         </p>
         <p>
-          It reads <code>src/data/the-question.ts</code> by default — the only file that changes
-          when a new question goes live, with no step needed to take one down. Since nothing
-          rebuilds the site the moment a survey closes, the deadline is re-checked by an inline
-          script in the document head, which can only ever move the card from open to closed;
-          running it there rather than beside the markup is what stops a closed question flashing on
-          screen. Pass
-          <code>question</code> explicitly, as the demos below do, to pin a fixed state instead.
+          <strong>What the card ships is neutral</strong>: the episode, its co-hosts and topic, and
+          the schedule as plain fact — <em>Opens…</em>, <em>Answer by…</em>, <em>Deep dive…</em>.
+          Every word of that is true before the survey opens, while it's open and after it closes,
+          which is what a reader without JavaScript, a search engine or a link preview sees. Nothing
+          in it says "open" or "closed".
         </p>
+        <p>
+          An inline script in the document head then improves on it. It gets the episode's schedule
+          as
+          <code>&#123;at, state&#125;</code> pairs and shows the state whose moment has passed, so
+          the page can open itself on the morning a survey goes live and close itself when the
+          deadline passes, with no rebuild. The build and the browser read the same schedule, so
+          they can't disagree, and running the script in the head rather than beside the markup is
+          what stops a state flashing on screen. Pass <code>state</code>, as the demos below do, to
+          pin one instead.
+        </p>
+      </div>
+
+      <h3 class="subhead">No script, or not yet open</h3>
+      <div class="question-promo-demo">
+        <QuestionPromo episode={questionSample} />
       </div>
 
       <h3 class="subhead">Question open</h3>
       <div class="question-promo-demo">
-        <QuestionPromo question={questionOpenSample} />
+        <QuestionPromo episode={questionSample} state="open" />
       </div>
 
       <h3 class="subhead">Question closed</h3>
       <div class="question-promo-demo">
-        <QuestionPromo question={questionClosedSample} />
+        <QuestionPromo episode={questionSample} state="closed" />
       </div>
     </section>
 
