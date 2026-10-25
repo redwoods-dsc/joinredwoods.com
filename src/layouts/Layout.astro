@@ -25,8 +25,7 @@ import Analytics from '../components/Analytics.astro';
 import type { Props as SeoProps } from '../components/Seo.astro';
 import { headerBackground } from '../lib/header-background';
 import { site } from '../lib/site';
-import { currentQuestion } from '../data/the-question';
-import { isLive } from '../lib/the-question';
+import { currentEpisode, questionSchedule } from '../lib/the-question';
 
 interface Props extends SeoProps {
   aside?: boolean;
@@ -35,10 +34,11 @@ interface Props extends SeoProps {
 const { aside = true, ...seo } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const background = await headerBackground();
-// Null once the build itself knows the survey has closed — QuestionPromo then
-// renders the closed state outright and the script below has nothing to
-// correct. See the comment on it for why the check lives up here.
-const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toISOString() : null;
+// The card ships neutral and this is what lets the browser improve on it. The
+// schedule is sent rather than a verdict, because the page may be read from a
+// cache hours after it was built — see questionSchedule().
+const episode = await currentEpisode();
+const questionSchedule_ = episode ? questionSchedule(episode.data) : null;
 ---
 
 <!doctype html>
@@ -51,12 +51,10 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <link rel="preload" as="font" type="font/woff2" href={sourceSansLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatin} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sourceSerifLatinItalic} crossorigin />
-    {
-      /* The trees are a CSS background, so the preload scanner can't find them
+    {/* The trees are a CSS background, so the preload scanner can't find them
         on its own — without this the LCP request waits on the stylesheet. The
         media query mirrors the one in Header.astro that drops the image on
-        very short viewports. */
-    }
+        very short viewports. */}
     <link
       rel="preload"
       as="image"
@@ -67,8 +65,7 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     />
     <meta name="generator" content={Astro.generator} />
     <Seo {...seo} />
-    {
-      /* The build bakes in whichever state The Question was in when it ran, but
+    {/* The build bakes in whichever state The Question was in when it ran, but
         the survey closes on a deadline that no rebuild is waiting for, so the
         sidebar card would go on advertising a closed survey. Re-checking here —
         before a byte of <body> is parsed, with the stylesheet already inlined
@@ -79,11 +76,13 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
         questionAnswerBy is null when the build already knows it has closed, and
         the guard below is what makes that a no-op. It stays inside the script
         rather than wrapping it: Prettier's Astro plugin can't parse a raw
-        script nested in a JSX conditional. */
-    }
-    <script is:inline define:vars={{ questionAnswerBy }}>
-      if (questionAnswerBy && Date.now() > Date.parse(questionAnswerBy)) {
-        document.documentElement.dataset.questionExpired = '';
+        script nested in a JSX conditional. */}
+    <script is:inline define:vars={{ questionSchedule_ }}>
+      if (questionSchedule_) {
+        const now = Date.now();
+        let state = questionSchedule_[0].state;
+        for (const step of questionSchedule_) if (now >= step.at) state = step.state;
+        document.documentElement.dataset.questionState = state;
       }
     </script>
   </head>
@@ -91,11 +90,9 @@ const questionAnswerBy = isLive(currentQuestion) ? currentQuestion.answerBy.toIS
     <Page aside={aside}>
       <slot />
     </Page>
-    {
-      /* Kept out of dev so `pnpm dev` doesn't report itself as traffic. The
+    {/* Kept out of dev so `pnpm dev` doesn't report itself as traffic. The
         raw <script> tags live in the component because Prettier's Astro
-        plugin can't parse one nested in a JSX conditional. */
-    }
+        plugin can't parse one nested in a JSX conditional. */}
     {import.meta.env.PROD && <Analytics />}
   </body>
 </html>

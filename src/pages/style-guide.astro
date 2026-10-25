@@ -10,6 +10,7 @@ import EntryCard from '../components/EntryCard.astro';
 import MemberCard from '../components/MemberCard.astro';
 import Figure from '../components/Figure.astro';
 import QuestionPromo from '../components/QuestionPromo.astro';
+import type { QuestionEpisode } from '../lib/the-question';
 import PageTitle from '../components/PageTitle.astro';
 import Lede from '../components/Lede.astro';
 import Note from '../components/Note.astro';
@@ -72,22 +73,21 @@ const calloutTones = ['green', 'blue', 'orange', 'dark', 'white'] as const;
 
 const entryToneSample = new Date(Date.UTC(2025, 6, 10)); // 10 Jul 2025
 
-// Fixed dates on both sides, so these demos render the same state forever and
-// the Chromatic snapshot can't drift. Passing a question explicitly also opts
-// the card out of browser-side expiry, which is what keeps the open demo open
-// even once the real question has closed.
-const questionOpenSample = {
+// One sample episode in the shape the collection loads, with each demo below
+// pinning the state it wants. Pinned rather than dated into a state, so the
+// Chromatic snapshots can't drift and the card's own clock never enters into
+// it — a pinned card ignores the head script entirely.
+const questionSample: QuestionEpisode = {
   number: 80,
-  question: 'How do we visualise design system health?',
-  cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
-  episodeDate: new Date(Date.UTC(2099, 7, 28)),
-  answerBy: new Date(Date.UTC(2099, 7, 27)),
+  title: 'Visualizing Design System Health',
+  date: new Date(Date.UTC(2099, 7, 28, 16)),
+  opensOn: new Date(Date.UTC(2099, 7, 24, 16)),
+  answerBy: new Date(Date.UTC(2099, 7, 27, 21)),
   answerUrl: '#question-promo',
-};
-const questionClosedSample = {
-  ...questionOpenSample,
-  episodeDate: new Date(Date.UTC(2020, 7, 28)),
-  answerBy: new Date(Date.UTC(2020, 7, 27)),
+  cohosts: [
+    { name: 'Robin Di Capua', url: '#question-promo' },
+    { name: 'Taylor Cashdan', url: '#question-promo' },
+  ],
 };
 
 // Document order, not grouped order: this list is both the jump nav and the
@@ -138,7 +138,9 @@ const sections = [
         pattern? Add an example here too, so contributors keep one place to look.
       </p>
       <nav class="guide__nav" aria-label="Sections">
-        {sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+        {sections.map((s) => (
+          <a href={`#${s.id}`}>{s.label}</a>
+        ))}
       </nav>
     </header>
 
@@ -153,72 +155,64 @@ const sections = [
 
       <h3 class="subhead">Brand</h3>
       <div class="swatches">
-        {
-          brand.map((c) => (
-            <div class="swatch" style={`--swatch: var(${c.token})`}>
-              <div class="swatch__color" />
-              <div class="swatch__meta">
-                <span class="swatch__name">{c.name}</span>
-                <code class="swatch__token">{c.token}</code>
-              </div>
+        {brand.map((c) => (
+          <div class="swatch" style={`--swatch: var(${c.token})`}>
+            <div class="swatch__color" />
+            <div class="swatch__meta">
+              <span class="swatch__name">{c.name}</span>
+              <code class="swatch__token">{c.token}</code>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
 
       <h3 class="subhead">Gray Scale</h3>
       <div class="swatches">
-        {
-          grayScale.map((step) => (
-            <div class="swatch" style={`--swatch: var(--color-gray-${step})`}>
-              <div class="swatch__color" />
-              <div class="swatch__meta">
-                <span class="swatch__name">gray-{step}</span>
-                <code class="swatch__token">--color-gray-{step}</code>
-              </div>
+        {grayScale.map((step) => (
+          <div class="swatch" style={`--swatch: var(--color-gray-${step})`}>
+            <div class="swatch__color" />
+            <div class="swatch__meta">
+              <span class="swatch__name">gray-{step}</span>
+              <code class="swatch__token">--color-gray-{step}</code>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
 
       <h3 class="subhead">Alpha</h3>
       <div class="swatches">
-        {
-          alpha.map((step) => (
-            <div class="swatch" style={`--swatch: var(--color-gray-alpha-${step})`}>
-              <div class="swatch__color" />
-              <div class="swatch__meta">
-                <span class="swatch__name">gray-alpha-{step}</span>
-                <code class="swatch__token">--color-gray-alpha-{step}</code>
-              </div>
+        {alpha.map((step) => (
+          <div class="swatch" style={`--swatch: var(--color-gray-alpha-${step})`}>
+            <div class="swatch__color" />
+            <div class="swatch__meta">
+              <span class="swatch__name">gray-alpha-{step}</span>
+              <code class="swatch__token">--color-gray-alpha-{step}</code>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
 
       <h3 class="subhead">Semantic</h3>
       <div class="swatches">
-        {
-          semanticColors.map((c) => (
-            <div class="swatch" style={`--swatch: var(${c.token})`}>
-              <div class="swatch__color" />
-              <div class="swatch__meta">
-                <span class="swatch__name">{c.name}</span>
-                <code class="swatch__token">{c.token}</code>
-              </div>
+        {semanticColors.map((c) => (
+          <div class="swatch" style={`--swatch: var(${c.token})`}>
+            <div class="swatch__color" />
+            <div class="swatch__meta">
+              <span class="swatch__name">{c.name}</span>
+              <code class="swatch__token">{c.token}</code>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
 
       <h3 class="subhead">Selection</h3>
       <p>
-        <code>--selection-bg</code> and <code>--selection-fg</code> are what <code>::selection</code
-        > paints with — a wash of <code>--color-focus</code> over the page's own text by default. The
-        pseudo-element inherits custom properties from the element it originates on, so a block that reverses
-        its ground sets the pair once and every selection inside it follows; the callout tones, entry
-        cards and the header each do. Select this paragraph and then some copy inside a
-        <a href="#callout">callout</a> to see the difference.
+        <code>--selection-bg</code> and <code>--selection-fg</code> are what{' '}
+        <code>::selection</code> paints with — a wash of <code>--color-focus</code> over the page's
+        own text by default. The pseudo-element inherits custom properties from the element it
+        originates on, so a block that reverses its ground sets the pair once and every selection
+        inside it follows; the callout tones, entry cards and the header each do. Select this
+        paragraph and then some copy inside a<a href="#callout">callout</a> to see the difference.
       </p>
     </section>
 
@@ -226,38 +220,36 @@ const sections = [
       <div class="section__head">
         <h2>Typography</h2>
         <p>
-          <code>var(--font-serif)</code> for headings, <code>var(--font-sans)</code> for body copy. Headings
-          balance; paragraphs use <code>text-wrap: pretty</code> and cap at
+          <code>var(--font-serif)</code> for headings, <code>var(--font-sans)</code> for body copy.
+          Headings balance; paragraphs use <code>text-wrap: pretty</code> and cap at
           <code>--layout-prose-max</code>.
         </p>
         <p>
           Each heading level has a token named for it, so a level's size is changed in one place
           rather than by repointing it at a different step of a t-shirt scale.
           <code>--font-size-h1</code> through <code>--font-size-h3</code> and
-          <code>--font-size-blockquote</code> are <code>clamp()</code> steps that grow with the viewport
-          between 360px and 1800px — the samples below resize as you drag the window.
-          <code>--font-size-h4</code> down alias the static scale: at those sizes the fluid range would
-          be smaller than the rounding. Body copy and UI text stay static at every width.
+          <code>--font-size-blockquote</code> are <code>clamp()</code> steps that grow with the
+          viewport between 360px and 1800px — the samples below resize as you drag the window.
+          <code>--font-size-h4</code> down alias the static scale: at those sizes the fluid range
+          would be smaller than the rounding. Body copy and UI text stay static at every width.
         </p>
       </div>
 
       <div class="type-scale">
-        {
-          typeSamples.map((t) => (
-            <div class="type-row">
-              <div class="type-row__sample">
-                <t.tag>{t.label}</t.tag>
-              </div>
-              <code class="type-row__token">{t.token}</code>
+        {typeSamples.map((t) => (
+          <div class="type-row">
+            <div class="type-row__sample">
+              <t.tag>{t.label}</t.tag>
             </div>
-          ))
-        }
+            <code class="type-row__token">{t.token}</code>
+          </div>
+        ))}
         <div class="type-row">
           <div class="type-row__sample">
             <p>
               Body paragraph. The quick brown fox jumps over the lazy dog. Use this for the bulk of
-              flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code> for
-              pleasant line breaks.
+              flowing content — it inherits from <code>body</code> and wraps on <code>pretty</code>{' '}
+              for pleasant line breaks.
             </p>
           </div>
           <code class="type-row__token">--font-size-md</code>
@@ -279,8 +271,8 @@ const sections = [
       <h3 class="subhead">Heading hierarchy</h3>
       <p>
         Each page has one h1, and it's the page's title: <code>ContentPage</code> renders it from
-        <code>title</code>, and a page without one opens on a <code>&lt;PageTitle&gt;</code> instead.
-        The logo is the nav's home link, not a heading. So body copy starts at h2 —
+        <code>title</code>, and a page without one opens on a <code>&lt;PageTitle&gt;</code>{' '}
+        instead. The logo is the nav's home link, not a heading. So body copy starts at h2 —
         <code>##</code> in Markdown — and steps down one level at a time.
       </p>
 
@@ -295,14 +287,16 @@ const sections = [
         fine down to h4, which is 21px bold, but h5 and h6 fall under the 18.66px threshold that
         makes large text large, and body copy fails outright. Keep it in the top four levels.
       </p>
-      <h2>A heading with an <span class="accent">accented phrase</span></h2>
+      <h2>
+        A heading with an <span class="accent">accented phrase</span>
+      </h2>
 
       <h3 class="subhead">Heading rhythm</h3>
       <p>
         In <code>base.css</code> every heading gets <code>--space-lg</code> above it and
-        <code>--space-xs</code> below, except h1, which always opens its block and takes nothing above.
-        The tight space below is deliberate — a heading should sit with the content it introduces rather
-        than float between two blocks.
+        <code>--space-xs</code> below, except h1, which always opens its block and takes nothing
+        above. The tight space below is deliberate — a heading should sit with the content it
+        introduces rather than float between two blocks.
       </p>
       <p>
         Content pages open the space above up a step from the base scale, since a lone measure of
@@ -310,20 +304,41 @@ const sections = [
       </p>
       <table>
         <thead>
-          <tr><th>Space above</th><th>Content page</th><th>Base</th></tr>
+          <tr>
+            <th>Space above</th>
+            <th>Content page</th>
+            <th>Base</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>h2</td><td>--space-xl (32px)</td><td>--space-lg (24px)</td></tr>
-          <tr><td>h3</td><td>--space-lg (24px)</td><td>--space-lg (24px)</td></tr>
-          <tr><td>h4, h5, h6</td><td>--space-md (16px)</td><td>--space-lg (24px)</td></tr>
-          <tr><td>paragraph</td><td>--space-md (16px)</td><td>--space-md (16px)</td></tr>
+          <tr>
+            <td>h2</td>
+            <td>--space-xl (32px)</td>
+            <td>--space-lg (24px)</td>
+          </tr>
+          <tr>
+            <td>h3</td>
+            <td>--space-lg (24px)</td>
+            <td>--space-lg (24px)</td>
+          </tr>
+          <tr>
+            <td>h4, h5, h6</td>
+            <td>--space-md (16px)</td>
+            <td>--space-lg (24px)</td>
+          </tr>
+          <tr>
+            <td>paragraph</td>
+            <td>--space-md (16px)</td>
+            <td>--space-md (16px)</td>
+          </tr>
         </tbody>
       </table>
       <p>
         h4 and below land on the same gap as a paragraph, on purpose: at that depth a heading reads
         as a run-in label rather than a section break. A page intro carries
-        <code>--space-3xl</code> below it, dropping to <code>--space-xl</code> when it holds a subtitle
-        or a byline — either one closes the block visually, so the larger gap stops earning its place.
+        <code>--space-3xl</code> below it, dropping to <code>--space-xl</code> when it holds a
+        subtitle or a byline — either one closes the block visually, so the larger gap stops earning
+        its place.
       </p>
     </section>
 
@@ -333,16 +348,23 @@ const sections = [
         <p>
           Anchor defaults live in <code>base.css</code>. A link stays underlined and keeps its
           colour on hover; the only thing that moves is a half-opaque white ground behind it. Links
-          that are wholly an image and links inside a <code>&lt;nav&gt;</code> are excluded — a panel
-          behind a picture is a flash of white, and a row of nav links each growing its own card reads
-          as chrome. Focus rings come from <code>--color-focus</code>.
+          that are wholly an image and links inside a <code>&lt;nav&gt;</code> are excluded — a
+          panel behind a picture is a flash of white, and a row of nav links each growing its own
+          card reads as chrome. Focus rings come from <code>--color-focus</code>.
         </p>
       </div>
       <ul class="link-list">
-        <li><a href="#links">Default link — hover to see the ground</a></li>
-        <li><a href="https://example.com" rel="external">External link</a></li>
         <li>
-          Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump to
+          <a href="#links">Default link — hover to see the ground</a>
+        </li>
+        <li>
+          <a href="https://example.com" rel="external">
+            External link
+          </a>
+        </li>
+        <li>
+          Inline: visit the <a href="#colors">colors section</a> to see tokens in context, or jump
+          to
           <a href="#typography">typography</a>.
         </li>
       </ul>
@@ -350,12 +372,14 @@ const sections = [
       <h3 class="subhead">On accent background</h3>
       <p>
         <code>--color-focus</code> is the same hue as <code>--color-accent</code>, so the default
-        ring disappears on an accent-colored surface. Override <code>outline-color</code> to <code
-          >--color-accent-contrast</code
-        > wherever a link sits on <code>--color-accent</code> (see the header nav).
+        ring disappears on an accent-colored surface. Override <code>outline-color</code> to{' '}
+        <code>--color-accent-contrast</code> wherever a link sits on <code>--color-accent</code>{' '}
+        (see the header nav).
       </p>
       <div class="link-on-accent">
-        <a href="#links" class="link-on-accent__link">Link on accent — tab to reveal the ring</a>
+        <a href="#links" class="link-on-accent__link">
+          Link on accent — tab to reveal the ring
+        </a>
       </div>
     </section>
 
@@ -369,8 +393,11 @@ const sections = [
       </div>
       <p>
         A paragraph with <strong>bold text</strong>, <em>italic text</em>, and
-        <strong><em>bold italic</em></strong> together. You can also use <code>inline code</code> for
-        technical terms like <code>Array.prototype.map()</code>.
+        <strong>
+          <em>bold italic</em>
+        </strong>{' '}
+        together. You can also use <code>inline code</code> for technical terms like{' '}
+        <code>Array.prototype.map()</code>.
       </p>
     </section>
 
@@ -413,8 +440,8 @@ const sections = [
         <h2>Blockquotes</h2>
         <p>
           A redwood runs down the start edge in <code>--color-accent</code>, masked from the
-          <code>tree-*.svg</code> pieces so the trunk stretches with the quote. Shorter quotes drop the
-          lower crown, then the branches. Styled in <code>base.css</code>, so a Markdown
+          <code>tree-*.svg</code> pieces so the trunk stretches with the quote. Shorter quotes drop
+          the lower crown, then the branches. Styled in <code>base.css</code>, so a Markdown
           <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
         </p>
         <p>
@@ -422,8 +449,8 @@ const sections = [
           <code>--font-size-blockquote</code>, which clamps from 21px to 24px so it stays a step
           above body copy at every width — a change of voice rather than indented body text, without
           ever reading as a heading. An attribution line goes back upright on the sans body scale —
-          it's a label about the quote, not part of it — while <code>&lt;cite&gt;</code> keeps its own
-          italic.
+          it's a label about the quote, not part of it — while <code>&lt;cite&gt;</code> keeps its
+          own italic.
         </p>
         <p>
           Past 1700px, where the main column runs wider than the measure, the quoted text holds the
@@ -432,9 +459,9 @@ const sections = [
       </div>
       <p>
         The tree switches on the quote's own height, not the viewport. Below
-        <code>--crown-2-min</code> (about 189px) the lower crown drops out and the branches move up under
-        the top crown; below <code>--branch-min</code> (about 147px) the branches go too. The trunk stretches
-        in every case. The examples below run short, medium and full.
+        <code>--crown-2-min</code> (about 189px) the lower crown drops out and the branches move up
+        under the top crown; below <code>--branch-min</code> (about 147px) the branches go too. The
+        trunk stretches in every case. The examples below run short, medium and full.
       </p>
       <blockquote>
         <p>The best time to plant a tree was twenty years ago. The second best time is now.</p>
@@ -443,9 +470,12 @@ const sections = [
       <h3 class="subhead">Multi-paragraph</h3>
       <blockquote>
         <p>This is the first paragraph inside the quote.</p>
-        <p>The second can carry <strong>bold</strong> and <em>italic</em>.</p>
         <p>
-          By the third, it's tall enough<br />
+          The second can carry <strong>bold</strong> and <em>italic</em>.
+        </p>
+        <p>
+          By the third, it's tall enough
+          <br />
           for the branches but not the lower crown.
         </p>
       </blockquote>
@@ -454,20 +484,27 @@ const sections = [
       <p>
         <code>&lt;Quote cite role link&gt;</code>. A blockquote with an attribution line, so pull
         quotes can be written in Markdown without hand-rolling the
-        <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is optional.
+        <code>&lt;footer&gt;</code>/<code>&lt;cite&gt;</code> markup each time. <code>role</code> is
+        optional.
       </p>
       <p>
-        <code>link</code> wraps the name in an anchor — a profile, a talk, whatever the attribution should
-        point at. It sits inside <code>&lt;cite&gt;</code> so the element still names the source rather
-        than the link naming it, and the role stays outside, unlinked.
+        <code>link</code> wraps the name in an anchor — a profile, a talk, whatever the attribution
+        should point at. It sits inside <code>&lt;cite&gt;</code> so the element still names the
+        source rather than the link naming it, and the role stays outside, unlinked.
       </p>
       <Quote cite="Ada Example" role="Design Systems Lead at Example Co" link="#quotes">
-        “Tall enough for the whole tree:<br />
-        the upper crown,<br />
-        the lower crown,<br />
-        both branches,<br />
-        and a trunk that stretches<br />
-        the rest of the way down.<br />
+        “Tall enough for the whole tree:
+        <br />
+        the upper crown,
+        <br />
+        the lower crown,
+        <br />
+        both branches,
+        <br />
+        and a trunk that stretches
+        <br />
+        the rest of the way down.
+        <br />
         Only the name carries the link.”
       </Quote>
     </section>
@@ -476,8 +513,8 @@ const sections = [
       <div class="section__head">
         <h2>Horizontal rules</h2>
         <p>
-          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin. Styled
-          in <code>base.css</code>.
+          Thin divider using <code>--color-border</code>, with <code>--space-lg</code> block margin.
+          Styled in <code>base.css</code>.
         </p>
       </div>
       <p>Content above the rule.</p>
@@ -498,12 +535,28 @@ const sections = [
       </div>
       <table>
         <thead>
-          <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>--space-xs</td><td>8px</td><td>Tight gaps</td></tr>
-          <tr><td>--space-md</td><td>16px</td><td>Default spacing</td></tr>
-          <tr><td>--space-lg</td><td>24px</td><td>Section padding</td></tr>
+          <tr>
+            <td>--space-xs</td>
+            <td>8px</td>
+            <td>Tight gaps</td>
+          </tr>
+          <tr>
+            <td>--space-md</td>
+            <td>16px</td>
+            <td>Default spacing</td>
+          </tr>
+          <tr>
+            <td>--space-lg</td>
+            <td>24px</td>
+            <td>Section padding</td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -513,8 +566,8 @@ const sections = [
         <h2>Images</h2>
         <p>
           Images are fluid by default — <code>max-width: 100%</code> and
-          <code>height: auto</code> via <code>base.css</code>. Use Astro's <code>&lt;Image&gt;</code
-          >
+          <code>height: auto</code> via <code>base.css</code>. Use Astro's{' '}
+          <code>&lt;Image&gt;</code>
           component for assets in <code>src/assets/</code> so they're optimized.
         </p>
       </div>
@@ -527,25 +580,25 @@ const sections = [
         <p>
           <code>&lt;Figure src alt caption /&gt;</code>. An article image with a caption under it.
           Everything after <code>alt</code> and <code>caption</code> passes through to Astro's
-          <code>&lt;Image&gt;</code>, so <code>width</code>, <code>quality</code> and the rest are available
-          — the reason to reach for this over markdown's <code>![alt](src)</code>, which takes no
-          options at all.
+          <code>&lt;Image&gt;</code>, so <code>width</code>, <code>quality</code> and the rest are
+          available — the reason to reach for this over markdown's <code>![alt](src)</code>, which
+          takes no options at all.
         </p>
         <p>
-          Leave <code>caption</code> off and the <code>alt</code> is shown as the caption, with the image's
-          own alt emptied so a screen reader reads the sentence once rather than twice. Pass both when
-          they should say different things and both are kept. Markdown images get the same treatment automatically;
-          see <code>figureCaptions</code> in
+          Leave <code>caption</code> off and the <code>alt</code> is shown as the caption, with the
+          image's own alt emptied so a screen reader reads the sentence once rather than twice. Pass
+          both when they should say different things and both are kept. Markdown images get the same
+          treatment automatically; see <code>figureCaptions</code> in
           <code>astro.config.mjs</code>.
         </p>
         <p>
-          <code>link</code> wraps the image in an anchor. The picture is then the whole of that link,
-          so its <code>alt</code> is the link's accessible name and has to say where it goes — which means
-          the alt can't be emptied the way it is above. With no separate
-          <code>caption</code> the caption would repeat that name word for word, so it's hidden from assistive
-          tech instead. Give a linked figure its own <code>caption</code> and both are read. Markdown
-          can't produce this shape: <code>figureCaptions</code> only matches a paragraph whose one element
-          child is the image, and
+          <code>link</code> wraps the image in an anchor. The picture is then the whole of that
+          link, so its <code>alt</code> is the link's accessible name and has to say where it goes —
+          which means the alt can't be emptied the way it is above. With no separate
+          <code>caption</code> the caption would repeat that name word for word, so it's hidden from
+          assistive tech instead. Give a linked figure its own <code>caption</code> and both are
+          read. Markdown can't produce this shape: <code>figureCaptions</code> only matches a
+          paragraph whose one element child is the image, and
           <code>[![alt](src)](href)</code> nests it inside the anchor.
         </p>
       </div>
@@ -590,8 +643,8 @@ const sections = [
       </div>
       <h3 class="subhead">Inline</h3>
       <p>
-        Use <code>var(--color-accent)</code> for brand highlights, or run <code>pnpm dev</code> to start
-        the server.
+        Use <code>var(--color-accent)</code> for brand highlights, or run <code>pnpm dev</code> to
+        start the server.
       </p>
       <h3 class="subhead">Block (with language)</h3>
       <Code code={codeSampleJs} lang="js" theme="github-light-high-contrast" />
@@ -609,15 +662,13 @@ const sections = [
         </p>
       </div>
       <div class="scale-list">
-        {
-          spacingSteps.map((step) => (
-            <div class="scale-row">
-              <span class="scale-row__label">space-{step}</span>
-              <div class="scale-row__bar" style={`width: var(--space-${step})`} />
-              <code class="scale-row__token">--space-{step}</code>
-            </div>
-          ))
-        }
+        {spacingSteps.map((step) => (
+          <div class="scale-row">
+            <span class="scale-row__label">space-{step}</span>
+            <div class="scale-row__bar" style={`width: var(--space-${step})`} />
+            <code class="scale-row__token">--space-{step}</code>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -627,15 +678,13 @@ const sections = [
         <p>Rounded corners, from crisp to pill.</p>
       </div>
       <div class="radii-grid">
-        {
-          radiiSteps.map((step) => (
-            <div class="radii-sample">
-              <div class="radii-sample__tile" style={`border-radius: var(--radius-${step})`} />
-              <span class="radii-sample__name">radius-{step}</span>
-              <code class="radii-sample__token">--radius-{step}</code>
-            </div>
-          ))
-        }
+        {radiiSteps.map((step) => (
+          <div class="radii-sample">
+            <div class="radii-sample__tile" style={`border-radius: var(--radius-${step})`} />
+            <span class="radii-sample__name">radius-{step}</span>
+            <code class="radii-sample__token">--radius-{step}</code>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -643,23 +692,23 @@ const sections = [
       <div class="section__head">
         <h2>Buttons</h2>
         <p>
-          <code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is set
-          the component renders an <code>&lt;a&gt;</code> styled as a button.
+          <code>&lt;Button variant size href type disabled /&gt;</code>. When <code>href</code> is
+          set the component renders an <code>&lt;a&gt;</code> styled as a button.
         </p>
       </div>
 
       <h3 class="subhead">Variants (size md)</h3>
       <div class="cluster">
-        {
-          buttonVariants.map((v) => (
-            <Button variant={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</Button>
-          ))
-        }
+        {buttonVariants.map((v) => (
+          <Button variant={v}>{v.charAt(0).toUpperCase() + v.slice(1)}</Button>
+        ))}
       </div>
 
       <h3 class="subhead">Sizes (primary)</h3>
       <div class="cluster cluster--baseline">
-        {buttonSizes.map((s) => <Button size={s}>Size {s}</Button>)}
+        {buttonSizes.map((s) => (
+          <Button size={s}>Size {s}</Button>
+        ))}
       </div>
 
       <h3 class="subhead">States</h3>
@@ -671,7 +720,9 @@ const sections = [
 
       <h3 class="subhead">Rendered as anchor</h3>
       <div class="cluster">
-        <Button variant="secondary" href="#buttons">Anchor button</Button>
+        <Button variant="secondary" href="#buttons">
+          Anchor button
+        </Button>
       </div>
     </section>
 
@@ -680,40 +731,41 @@ const sections = [
         <h2>Button row</h2>
         <p>
           <code>&lt;ButtonRow margin&gt;</code>. Lays a group of buttons out in a wrapping row with
-          <code>--space-sm</code> between them. <code>base.css</code> spaces prose through adjacency (<code
-            >p + p</code
-          >, <code>ul + p</code>), which a wrapper element breaks, so the row carries its own block
-          margin — at the <code>md</code> default that collapses against its neighbours to the same gaps
-          the adjacency chain produced.
+          <code>--space-sm</code> between them. <code>base.css</code> spaces prose through adjacency
+          (<code>p + p</code>, <code>ul + p</code>), which a wrapper element breaks, so the row
+          carries its own block margin — at the <code>md</code> default that collapses against its
+          neighbours to the same gaps the adjacency chain produced.
         </p>
         <p>
-          <code>margin</code> takes <code>none</code>, <code>sm</code>, <code>md</code>, <code
-            >lg</code
-          > or <code>xl</code>, for a row that should sit apart from the prose rather than in its
-          rhythm. Margins collapse, so a step up only shows once it beats the neighbour's own.
+          <code>margin</code> takes <code>none</code>, <code>sm</code>, <code>md</code>,{' '}
+          <code>lg</code> or <code>xl</code>, for a row that should sit apart from the prose rather
+          than in its rhythm. Margins collapse, so a step up only shows once it beats the
+          neighbour's own.
         </p>
       </div>
 
       <ButtonRow>
-        <Button href="#button-row" size="sm">Join Redwoods</Button>
-        <Button href="#button-row" variant="secondary" size="sm">Read our values ↓</Button>
+        <Button href="#button-row" size="sm">
+          Join Redwoods
+        </Button>
+        <Button href="#button-row" variant="secondary" size="sm">
+          Read our values ↓
+        </Button>
       </ButtonRow>
 
       <h3 class="subhead">Margins</h3>
       <div class="button-row-demo">
-        {
-          (['none', 'sm', 'md', 'lg', 'xl'] as const).map((m) => (
-            <div class="button-row-demo__case">
-              <p>Prose above the row.</p>
-              <ButtonRow margin={m}>
-                <Button href="#button-row" size="sm">
-                  margin: {m}
-                </Button>
-              </ButtonRow>
-              <p>Prose below the row.</p>
-            </div>
-          ))
-        }
+        {(['none', 'sm', 'md', 'lg', 'xl'] as const).map((m) => (
+          <div class="button-row-demo__case">
+            <p>Prose above the row.</p>
+            <ButtonRow margin={m}>
+              <Button href="#button-row" size="sm">
+                margin: {m}
+              </Button>
+            </ButtonRow>
+            <p>Prose below the row.</p>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -737,29 +789,27 @@ const sections = [
       <h3 class="subhead">Direction</h3>
       <div class="stack">
         <ArrowLink href="#arrow-link">Back to Field Notes</ArrowLink>
-        <ArrowLink href="#arrow-link" direction="right">Read all Field Notes</ArrowLink>
+        <ArrowLink href="#arrow-link" direction="right">
+          Read all Field Notes
+        </ArrowLink>
       </div>
 
       <h3 class="subhead">Size</h3>
       <div class="stack">
-        {
-          arrowLinkSizes.map((z) => (
-            <ArrowLink href="#arrow-link" direction="right" size={z} margin="sm">
-              size: {z}
-            </ArrowLink>
-          ))
-        }
+        {arrowLinkSizes.map((z) => (
+          <ArrowLink href="#arrow-link" direction="right" size={z} margin="sm">
+            size: {z}
+          </ArrowLink>
+        ))}
       </div>
 
       <h3 class="subhead">Margin</h3>
       <div class="stack">
-        {
-          arrowLinkMargins.map((m) => (
-            <ArrowLink href="#arrow-link" direction="right" margin={m}>
-              margin: {m}
-            </ArrowLink>
-          ))
-        }
+        {arrowLinkMargins.map((m) => (
+          <ArrowLink href="#arrow-link" direction="right" margin={m}>
+            margin: {m}
+          </ArrowLink>
+        ))}
       </div>
     </section>
 
@@ -768,24 +818,25 @@ const sections = [
         <h2>Page title</h2>
         <p>
           <code>&lt;PageTitle&gt;</code>. A page's <code>&lt;h1&gt;</code>, for the one case
-          <code>ContentPage</code>'s <code>title</code> can't cover: a headline authored in the body of
-          an <code>.mdx</code> page, because it carries inline markup. Use it once, on a page with no
+          <code>ContentPage</code>'s <code>title</code> can't cover: a headline authored in the body
+          of an <code>.mdx</code> page, because it carries inline markup. Use it once, on a page
+          with no
           <code>title</code> of its own.
         </p>
         <p>
           It adds no size — the base <code>h1</code> gives it
-          <code>--font-size-h1</code>, the same as a <code>ContentPage</code> title, so the two can't
-          drift. What it does add is <code>inlineSlot</code>: MDX wraps a component's children in a
-          paragraph whenever they sit on their own lines, and Prettier decides whether they do, so a
-          plain <code>&lt;h1&gt;</code> here would ship as
+          <code>--font-size-h1</code>, the same as a <code>ContentPage</code> title, so the two
+          can't drift. What it does add is <code>inlineSlot</code>: MDX wraps a component's children
+          in a paragraph whenever they sit on their own lines, and Prettier decides whether they do,
+          so a plain <code>&lt;h1&gt;</code> here would ship as
           <code>&lt;h1&gt;&lt;p&gt;…&lt;/p&gt;&lt;/h1&gt;</code>. That is the whole reason this
           component exists.
         </p>
       </div>
 
       <PageTitle>
-        Redwoods is a group of <span class="accent">life-long learners</span> committed to supporting
-        each other.
+        Redwoods is a group of <span class="accent">life-long learners</span> committed to
+        supporting each other.
       </PageTitle>
     </section>
 
@@ -800,9 +851,9 @@ const sections = [
           <code>--space-xl</code> so it reads as the end of the block rather than another beat.
         </p>
         <p>
-          It owns the gap below it: <code>display: flow-root</code> traps the last child's trailing margin
-          inside the block, and the block-start margin of whatever follows is zeroed, so the space under
-          a lede is one number at every width rather than a collapsed pair.
+          It owns the gap below it: <code>display: flow-root</code> traps the last child's trailing
+          margin inside the block, and the block-start margin of whatever follows is zeroed, so the
+          space under a lede is one number at every width rather than a collapsed pair.
           <code>src/pages/index.mdx</code> is the canonical use.
         </p>
       </div>
@@ -811,8 +862,8 @@ const sections = [
         <Lede>
           <h3 class="lede-demo__title">An opening block at display size</h3>
           <p>
-            The copy under the headline steps away from it by <code>--space-lg</code> rather than the
-            paragraph gap it would get from the base scale.
+            The copy under the headline steps away from it by <code>--space-lg</code> rather than
+            the paragraph gap it would get from the base scale.
           </p>
         </Lede>
         <h4>Our Values</h4>
@@ -833,11 +884,11 @@ const sections = [
           the sentence stresses, and nothing a screen reader should announce differently.
         </p>
         <p>
-          <code>ContentPage</code> takes a <code>note</code> string in frontmatter and renders this same
-          component, so plain sentences never touch the body. Reach for the component directly when the
-          sentence interpolates a value — frontmatter is YAML and would flatten
-          <code>{'{MONTHLY_PRICE}'}</code> into a hard-coded number. <code>src/pages/join.mdx</code> is
-          the canonical use.
+          <code>ContentPage</code> takes a <code>note</code> string in frontmatter and renders this
+          same component, so plain sentences never touch the body. Reach for the component directly
+          when the sentence interpolates a value — frontmatter is YAML and would flatten
+          <code>{'{MONTHLY_PRICE}'}</code> into a hard-coded number. <code>src/pages/join.mdx</code>{' '}
+          is the canonical use.
         </p>
       </div>
 
@@ -852,8 +903,8 @@ const sections = [
         <h2>Callout</h2>
         <p>
           <code>&lt;Callout tone /&gt;</code>. Sets a run of body content on its own ground, filling
-          the content card edge to edge. Wrap it around whole sections in <code>.mdx</code> — headings,
-          prose, quotes and buttons all come along.
+          the content card edge to edge. Wrap it around whole sections in <code>.mdx</code> —
+          headings, prose, quotes and buttons all come along.
         </p>
         <p>
           Only the colour reaches the card's edges; the box stays on the column so prose keeps its
@@ -863,9 +914,10 @@ const sections = [
         <p>
           The four coloured tones reverse what sits inside them: prose and headings inherit the
           light foreground, a quote's rule takes it instead of the accent, the button pair inverts,
-          and the focus ring switches off <code>--color-focus</code> — orange on the orange tone is 1.00:1,
-          an indicator nobody can see. Text selection swaps the tone's own pair too, since the page's
-          orange wash disappears on the orange tone and drops dark text onto the dark one.
+          and the focus ring switches off <code>--color-focus</code> — orange on the orange tone is
+          1.00:1, an indicator nobody can see. Text selection swaps the tone's own pair too, since
+          the page's orange wash disappears on the orange tone and drops dark text onto the dark
+          one.
           <code>white</code> reverses nothing, since the base styles are already right.
         </p>
         <p>
@@ -877,25 +929,22 @@ const sections = [
       </div>
 
       <div class="callout-tones">
-        {
-          calloutTones.map((t) => (
-            <Callout tone={t}>
-              <h3>tone: {t}</h3>
-              <p>
-                Body copy on the {t} ground, with <a href="#callout">a link</a> to show how it
-                reads.
-              </p>
-              <ButtonRow>
-                <Button href="#callout" size="sm">
-                  Primary
-                </Button>
-                <Button href="#callout" variant="secondary" size="sm">
-                  Secondary
-                </Button>
-              </ButtonRow>
-            </Callout>
-          ))
-        }
+        {calloutTones.map((t) => (
+          <Callout tone={t}>
+            <h3>tone: {t}</h3>
+            <p>
+              Body copy on the {t} ground, with <a href="#callout">a link</a> to show how it reads.
+            </p>
+            <ButtonRow>
+              <Button href="#callout" size="sm">
+                Primary
+              </Button>
+              <Button href="#callout" variant="secondary" size="sm">
+                Secondary
+              </Button>
+            </ButtonRow>
+          </Callout>
+        ))}
       </div>
 
       <h3 class="subhead">Stacked</h3>
@@ -998,25 +1047,27 @@ const sections = [
           column of them reads as a list rather than a jumble. A word carrying a capital of its own
           is left alone, so UX and GetYourGuide survive. All of that is the card's doing, not the
           data's:
-          <code>members.json</code> still says what people actually put in Slack. Rangers, listed by hand
-          in <code>src/data/rangers.ts</code>, get a tree after their name, labelled "Redwoods
+          <code>members.json</code> still says what people actually put in Slack. Rangers, listed by
+          hand in <code>src/data/rangers.ts</code>, get a tree after their name, labelled "Redwoods
           Ranger" so a screen reader announces what it means rather than the emoji's name.
         </p>
         <p>
           A member with no photo in Slack — neither an upload nor a Gravatar — gets a drawn stand of
-          redwoods on the green instead, rotated from <code>src/assets/member-stands</code> and keyed
-          off their slug rather than their position, so a new member joining partway up the alphabet does
-          not reshuffle everyone else's. None of the demos below has a photo, so all three show one; with
-          that folder empty they would be a plain green ground. Slack hands back whatever was uploaded
-          — about a third are PNGs — so the glob that resolves photos matches more than
+          redwoods on the green instead, rotated from <code>src/assets/member-stands</code> and
+          keyed off their slug rather than their position, so a new member joining partway up the
+          alphabet does not reshuffle everyone else's. None of the demos below has a photo, so all
+          three show one; with that folder empty they would be a plain green ground. Slack hands
+          back whatever was uploaded — about a third are PNGs — so the glob that resolves photos
+          matches more than
           <code>.jpg</code>, and the file's extension has to match its bytes or the image endpoint
           fails outright.
         </p>
         <p>
           The two icon links are the only ones on the site whose accessible name is not their text,
-          since they have none: each carries an <code>aria-label</code> naming the person and where the
-          link goes. base.css's half-opaque white hover has nothing to show against on the card's white,
-          so the links take the same 12%-toward-black step as a link in the white callout.
+          since they have none: each carries an <code>aria-label</code> naming the person and where
+          the link goes. base.css's half-opaque white hover has nothing to show against on the
+          card's white, so the links take the same 12%-toward-black step as a link in the white
+          callout.
         </p>
         <p>
           The photo runs flush to the card's top, left and bottom, with its outer corners rounded to
@@ -1053,27 +1104,37 @@ const sections = [
       <div class="section__head">
         <h2>The Question</h2>
         <p>
-          <code>&lt;QuestionPromo question /&gt;</code>. The sidebar card for The Question, the
-          fortnightly community survey and live discussion Ben runs alongside Redwoods. It has two
-          states, chosen by one field: while the survey's <code>answerBy</code> deadline is in the future
-          it promotes the open question, and afterwards it falls back to the mailing list. The heading
-          says which, and the artwork links to past episodes in both states.
+          <code>&lt;QuestionPromo episode /&gt;</code>. The sidebar card for The Question, the
+          fortnightly community survey and live discussion Ben runs alongside Redwoods. It reads the
+          newest file in the <code>episodes</code> collection, whose frontmatter is the same shape
+          bencallahan.com uses, so one file describes an episode on both sites. The card shows a
+          fraction of what that file holds.
         </p>
         <p>
-          It reads <code>src/data/the-question.ts</code> by default — the only file that changes when
-          a new question goes live, with no step needed to take one down. Since nothing rebuilds the site
-          the moment a survey closes, the deadline is re-checked by an inline script in the document head,
-          which can only ever move the card from open to closed; running it there rather than beside the
-          markup is what stops a closed question flashing on screen. Pass
-          <code>question</code> explicitly, as the demos below do, to pin a fixed state instead.
+          Two panels, both shipped. The <strong>fallback</strong> — a pointer to the show itself —
+          is the one that's true at any moment, so it's what ships visible, and what a reader
+          without JavaScript sees. An inline script in the document head swaps in the open panel
+          while the survey is actually open, reading the episode's schedule as{' '}
+          <code>&#123;at, state&#125;</code>
+          pairs and taking the state whose moment has passed. The build and the browser read the
+          same schedule, so they can't disagree, and the card can open itself on the morning a
+          survey goes live rather than waiting for a rebuild.
+        </p>
+        <p>
+          Running that script in the head rather than beside the markup is what stops a panel
+          flashing on screen. Pass <code>state</code>, as the demos below do, to pin one instead.
         </p>
       </div>
 
       <h3 class="subhead">Question open</h3>
-      <div class="question-promo-demo"><QuestionPromo question={questionOpenSample} /></div>
+      <div class="question-promo-demo">
+        <QuestionPromo episode={questionSample} state="open" />
+      </div>
 
-      <h3 class="subhead">Question closed</h3>
-      <div class="question-promo-demo"><QuestionPromo question={questionClosedSample} /></div>
+      <h3 class="subhead">Question closed, or no script yet</h3>
+      <div class="question-promo-demo">
+        <QuestionPromo episode={questionSample} state="closed" />
+      </div>
     </section>
 
     <section id="header" class="section">
@@ -1081,20 +1142,21 @@ const sections = [
         <h2>Header</h2>
         <p>
           <code>&lt;Header /&gt;</code>. The site nav and tagline. The logo leads the nav as its
-          home link, and is marked <code>aria-current</code> on the homepage. Mounted once by the layout
-          shell, so pages never import it themselves. It takes two shapes: a full-height rail at 850&ndash;1000px
-          and above 1300px, and a full-width card everywhere else — see Layout for what each breakpoint
-          does.
+          home link, and is marked <code>aria-current</code> on the homepage. Mounted once by the
+          layout shell, so pages never import it themselves. It takes two shapes: a full-height rail
+          at 850&ndash;1000px and above 1300px, and a full-width card everywhere else — see Layout
+          for what each breakpoint does.
         </p>
         <p>
-          The trees are a background image, anchored to the bottom of the card on tall viewports (<code
-            >min-height: 1024px</code
-          >). The 1000&ndash;1300px band restates its position so that flip can't swap the canopy
-          for the trunks.
+          The trees are a background image, anchored to the bottom of the card on tall viewports (
+          <code>min-height: 1024px</code>). The 1000&ndash;1300px band restates its position so that
+          flip can't swap the canopy for the trunks.
         </p>
       </div>
 
-      <div class="header-demo"><Header /></div>
+      <div class="header-demo">
+        <Header />
+      </div>
     </section>
 
     <section id="footer" class="section">
@@ -1108,7 +1170,9 @@ const sections = [
         </p>
       </div>
 
-      <div class="footer-demo"><Footer /></div>
+      <div class="footer-demo">
+        <Footer />
+      </div>
     </section>
 
     <section id="toc" class="section">
@@ -1121,11 +1185,11 @@ const sections = [
           currently reading is marked by an accent segment of that rail. Defaults to h2 through h4.
         </p>
         <p>
-          Where the <code>main</code> column is at least 960px wide it renders as the sticky rail below;
-          narrower than that it collapses to a closed disclosure, so the list stays reachable on a phone
-          without pushing the article down. The active marker is progressive enhancement — an <code
-            >IntersectionObserver</code
-          > sets <code>aria-current</code>, and with scripting off every link still works.
+          Where the <code>main</code> column is at least 960px wide it renders as the sticky rail
+          below; narrower than that it collapses to a closed disclosure, so the list stays reachable
+          on a phone without pushing the article down. The active marker is progressive enhancement
+          — an <code>IntersectionObserver</code> sets <code>aria-current</code>, and with scripting
+          off every link still works.
         </p>
       </div>
 
@@ -1166,8 +1230,8 @@ const sections = [
 
       <h3 class="subhead">Depth limit</h3>
       <p>
-        The same headings at <code>maxDepth={3}</code> — the h4 drops out rather than being flattened
-        into its parent:
+        The same headings at <code>maxDepth={3}</code> — the h4 drops out rather than being
+        flattened into its parent:
       </p>
       <TableOfContents
         maxDepth={3}
@@ -1197,8 +1261,8 @@ const sections = [
         <p>
           Every page uses one responsive shell of four regions — <code>header</code>,
           <code>main</code>, <code>aside</code> and <code>footer</code> — owned by
-          <code>Page.astro</code>. Pages provide <code>main</code> content through the default slot; the
-          other three are global and identical everywhere, the aside being
+          <code>Page.astro</code>. Pages provide <code>main</code> content through the default slot;
+          the other three are global and identical everywhere, the aside being
           <code>Sidebar.astro</code>. A page wanting the full width opts out with
           <code>&lt;Layout aside=&#123;false&#125;&gt;</code>, which drops the region from the grid
           rather than leaving an empty card — this page is the only one that does.
@@ -1212,48 +1276,46 @@ const sections = [
           space between cards.
         </p>
         <p>
-          <code>.header</code> and <code>.sidebar</code> are the exceptions, and for one reason: a card
-          that holds its own position has to be the painted box, or its background scrolls out from under
-          its contents.
+          <code>.header</code> and <code>.sidebar</code> are the exceptions, and for one reason: a
+          card that holds its own position has to be the painted box, or its background scrolls out
+          from under its contents.
         </p>
       </div>
 
       <h3 class="subhead">Breakpoints</h3>
       <p>
-        Driven by three breakpoints. These are raw <code>px</code> values rather than tokens because CSS
-        custom properties cannot be used inside <code>@media</code> conditions. The middle state is bounded
-        at both ends (<code>1299.98px</code>, so no width falls between two blocks), which is why
-        the rail states either side of it need no unwinding.
+        Driven by three breakpoints. These are raw <code>px</code> values rather than tokens because
+        CSS custom properties cannot be used inside <code>@media</code> conditions. The middle state
+        is bounded at both ends (<code>1299.98px</code>, so no width falls between two blocks),
+        which is why the rail states either side of it need no unwinding.
       </p>
       <ul>
         <li>
-          <strong>&lt; 850px</strong> — single column: header, main, aside and footer stacked as four
-          free-standing rounded cards, a <code>--space-lg</code> gap apart. This is the base state, and
-          the one the others are written as departures from: the gap, the fill and the full
+          <strong>&lt; 850px</strong> — single column: header, main, aside and footer stacked as
+          four free-standing rounded cards, a <code>--space-lg</code> gap apart. This is the base
+          state, and the one the others are written as departures from: the gap, the fill and the
+          full
           <code>border-radius</code> all sit outside a media query.
         </li>
         <li>
-          <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (<code
-            >--layout-rail</code
-          >), full-viewport-height card pinned with
+          <strong>850–1000px</strong> — the header becomes the rail: a fixed-width (
+          <code>--layout-rail</code>), full-viewport-height card pinned with
           <code>position: fixed</code>, while main, aside and footer stack beside it as three
           free-standing cards, the same as below 850px. The slack goes to main rather than the
           aside, so the sidebar's card ends where its content does.
         </li>
         <li>
-          <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width card
-          it is below 850px, now spanning the top of the grid, capped at
-          <code>--layout-header-min</code> and in normal flow so it scrolls with the page, and main and
-          aside sit beside it as two columns with the footer spanning both. All four stand free again.
-          The aside is the reason: stacked beside the rail it takes that column's full width, which by
-          1300px is 878px — far wider than the sidebar's cards are drawn for.
+          <strong>1000–1300px</strong> — the rail lies down. The header goes back to the full-width
+          card it is below 850px, now spanning the top of the grid, capped at
+          <code>--layout-header-min</code> and in normal flow so it scrolls with the page, and main
+          and aside sit beside it as two columns with the footer spanning both. All four stand free
+          again. The aside is the reason: stacked beside the rail it takes that column's full width,
+          which by 1300px is 878px — far wider than the sidebar's cards are drawn for.
         </li>
         <li>
-          <strong>&gt; 1300px</strong> — the rail returns, and the aside keeps its own column (<code
-            >--layout-aside</code
-          >) with the footer spanning main and aside beneath them. The shell grows fluidly to <code
-            >--layout-shell-max</code
-          >, centered beyond that.
+          <strong>&gt; 1300px</strong> — the rail returns, and the aside keeps its own column (
+          <code>--layout-aside</code>) with the footer spanning main and aside beneath them. The
+          shell grows fluidly to <code>--layout-shell-max</code>, centered beyond that.
         </li>
       </ul>
       <p>
@@ -1264,12 +1326,13 @@ const sections = [
         on the rail's bottom edge rather than growing into a tall empty card.
       </p>
       <p>
-        1300px is a deliberate trade, worth knowing before anyone <q>fixes</q> it. Bringing the rail back
-        costs main its width plus a gap, dropping it from 779px to 407px, and main only clears
-        <code>--layout-prose-max</code> again from about 1645px up. Three columns on a 1440px laptop is
-        the shape this layout is for, and a narrow main column is the price. The aside doesn't move:
-        <code>--layout-aside</code> is floored at 400px, which is above the percentage either side of
-        the switch.
+        1300px is a deliberate trade, worth knowing before anyone <q>fixes</q> it. Bringing the rail
+        back costs main its width plus a gap, dropping it from 779px to 407px, and main only clears
+        <code>--layout-prose-max</code> again from about 1645px up. Three columns on a 1440px laptop
+        is the shape this layout is for, and a narrow main column is the price. The aside doesn't
+        move:
+        <code>--layout-aside</code> is floored at 400px, which is above the percentage either side
+        of the switch.
       </p>
     </section>
   </div>
