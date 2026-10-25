@@ -33,20 +33,18 @@ const label = await inlineSlot(Astro.slots);
   data-size={size}
   {...rest}
 >
-  {
-    direction === 'left' && (
-      <>
-        <span aria-hidden="true">&larr;</span>{' '}
-      </>
-    )
-  }<Fragment set:html={label} />{
-    direction === 'right' && (
-      <>
-        {' '}
-        <span aria-hidden="true">&rarr;</span>
-      </>
-    )
-  }
+  {direction === 'left' && (
+    <>
+      <span aria-hidden="true">&larr;</span>{' '}
+    </>
+  )}
+  <Fragment set:html={label} />
+  {direction === 'right' && (
+    <>
+      {' '}
+      <span aria-hidden="true">&rarr;</span>
+    </>
+  )}
 </a>
 
 <style>
