@@ -169,6 +169,8 @@
   {
     "slug": "kevin-coyle",
     "name": "Kevin Coyle",
+    "title": "Founder - Spektral | AI Architect Pfizer",
+    "website": "https://kevincoyle.co.uk",
     "avatarHash": "9c8f61336751",
     "avatar": "kevin-coyle.jpg"
   },
@@ -222,15 +224,6 @@
     "avatar": "frank.png"
   },
   {
-    "slug": "julia-gale",
-    "name": "Julia Gale",
-    "title": "Product Designer",
-    "linkedin": "https://www.linkedin.com/in/iuliiagale",
-    "website": "https://www.juliagale.com",
-    "avatarHash": "0c45b16e5706",
-    "avatar": "julia-gale.jpg"
-  },
-  {
     "slug": "kelby-gassman",
     "name": "Kelby Gassman",
     "title": "Design Systems Designer",
@@ -260,7 +253,7 @@
     "title": "Sr. Product Manager, Design Systems at lululemon",
     "linkedin": "https://www.linkedin.com/in/mayahampton/",
     "website": "https://himaya.medium.com/",
-    "avatarHash": "d022063f2cb8",
+    "avatarHash": "2be632453313",
     "avatar": "maya-hampton.png"
   },
   {
@@ -283,7 +276,7 @@
   {
     "slug": "kyle-hyams",
     "name": "Kyle Hyams",
-    "title": "Design Lead, Design Systems @ Epic Games",
+    "title": "Senior Systems Designer @ Epic Games",
     "linkedin": "https://www.linkedin.com/in/kylehyams",
     "website": "https://kylehyams.design",
     "avatarHash": "a4049b411420",
@@ -383,14 +376,6 @@
     "name": "Erin Potter",
     "avatarHash": "8b9b7a40db46",
     "avatar": "erin-potter.png"
-  },
-  {
-    "slug": "jonathan-simcoe",
-    "name": "Jonathan Simcoe",
-    "title": "Systems designer @ Mercury",
-    "website": "https://mercury.com",
-    "avatarHash": "4bcf294ad876",
-    "avatar": "jonathan-simcoe.jpg"
   },
   {
     "slug": "caleb-smith",
