@@ -61,29 +61,27 @@ const headingArt = headingImage
 
 <Layout {...seo} description={seo.description ?? subtitle} aside={aside}>
   <div class="content-page">
-    {
-      title && (
-        <header class="content-page__intro">
-          <slot name="breadcrumb" />
-          <h1 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h1>
-          {Astro.slots.has('meta') && (
-            <div class="content-page__meta">
-              <slot name="meta" />
-            </div>
-          )}
-          {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
-          {note && <Note>{note}</Note>}
-        </header>
-      )
-    }
-    {
-      toc && (
-        <div class="content-page__rail">
-          <slot name="toc" />
-        </div>
-      )
-    }
-    <div class="content-page__body"><slot /></div>
+    {title && (
+      <header class="content-page__intro">
+        <slot name="breadcrumb" />
+        <h1 style={headingArt && `--heading-art: url(${headingArt.src})`}>{title}</h1>
+        {Astro.slots.has('meta') && (
+          <div class="content-page__meta">
+            <slot name="meta" />
+          </div>
+        )}
+        {subtitle && <p class="content-page__subtitle">{subtitle}</p>}
+        {note && <Note>{note}</Note>}
+      </header>
+    )}
+    {toc && (
+      <div class="content-page__rail">
+        <slot name="toc" />
+      </div>
+    )}
+    <div class="content-page__body">
+      <slot />
+    </div>
   </div>
 </Layout>
 

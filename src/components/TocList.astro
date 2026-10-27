@@ -10,16 +10,14 @@ const { nodes, depth = 0 } = Astro.props;
 ---
 
 <ul class="toc__list" class:list={{ 'toc__list--root': depth === 0 }}>
-  {
-    nodes.map((node) => (
-      <li class="toc__item">
-        <a class="toc__link" href={`#${node.slug}`} style={`--toc-indent: ${depth}`}>
-          {node.text}
-        </a>
-        {node.children.length > 0 && <Astro.self nodes={node.children} depth={depth + 1} />}
-      </li>
-    ))
-  }
+  {nodes.map((node) => (
+    <li class="toc__item">
+      <a class="toc__link" href={`#${node.slug}`} style={`--toc-indent: ${depth}`}>
+        {node.text}
+      </a>
+      {node.children.length > 0 && <Astro.self nodes={node.children} depth={depth + 1} />}
+    </li>
+  ))}
 </ul>
 
 <style>

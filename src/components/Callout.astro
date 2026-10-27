@@ -9,7 +9,9 @@ const { tone = 'green', class: className, ...rest } = Astro.props;
 ---
 
 <section class:list={['callout', className]} data-tone={tone} {...rest}>
-  <div class="callout__inner"><slot /></div>
+  <div class="callout__inner">
+    <slot />
+  </div>
 </section>
 
 <style>
