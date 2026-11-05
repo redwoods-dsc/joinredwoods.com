@@ -232,11 +232,13 @@
     "avatar": "kelby-gassman.jpg"
   },
   {
-    "slug": "maxene-graze",
-    "name": "Maxene Graze",
-    "title": "Information Designer",
-    "avatarHash": "67c32926f12b",
-    "avatar": "maxene-graze.png"
+    "slug": "rachael-greene",
+    "name": "Rachael Greene",
+    "title": "Principal Designer, Design Systems @SageSure",
+    "linkedin": "https://www.linkedin.com/in/rachaelegreene/",
+    "website": "https://www.rachaelgreene.com",
+    "avatarHash": "bd64053b2640",
+    "avatar": "rachael-greene.png"
   },
   {
     "slug": "cassie-groos",
@@ -466,5 +468,13 @@
     "linkedin": "https://www.linkedin.com/in/janeuwolf/",
     "avatarHash": "30f3cbbdbaa1",
     "avatar": "jane-wolf.png"
+  },
+  {
+    "slug": "daniel-yuschick",
+    "name": "Daniel Yuschick",
+    "title": "Lead Design System Developer",
+    "linkedin": "https://www.linkedin.com/in/danielyuschick/",
+    "avatarHash": "86d90b8af218",
+    "avatar": "daniel-yuschick.png"
   }
 ]
