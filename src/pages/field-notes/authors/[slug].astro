@@ -30,26 +30,24 @@ const articles = allArticles
   title={name}
   description={`Field notes written by ${name} for the Redwoods design system community.`}
 >
-  <ArrowLink slot="breadcrumb" href="/field-notes/" size="smaller" margin="md"
-    >Back to Field Notes</ArrowLink
-  >
+  <ArrowLink slot="breadcrumb" href="/field-notes/" size="smaller" margin="md">
+    Back to Field Notes
+  </ArrowLink>
   <h2>Articles</h2>
   <ul class="article-list">
-    {
-      articles.map((article) => (
-        <li>
-          <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
-          <time datetime={article.data.date.toISOString()}>
-            {article.data.date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              timeZone: 'UTC',
-            })}
-          </time>
-        </li>
-      ))
-    }
+    {articles.map((article) => (
+      <li>
+        <a href={`/field-notes/${article.id}/`}>{article.data.title}</a>
+        <time datetime={article.data.date.toISOString()}>
+          {article.data.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC',
+          })}
+        </time>
+      </li>
+    ))}
   </ul>
 </ContentPage>
 

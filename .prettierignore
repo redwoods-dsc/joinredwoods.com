@@ -2,3 +2,10 @@ dist/
 .astro/
 node_modules/
 pnpm-lock.yaml
+
+# Quote.astro's attribution is spaced by its line breaks: "— Name, Role" takes
+# a space after the dash and none before the comma. Prettier 3.9 rewraps that
+# line, which glues the dash to the name and pushes a space in front of the
+# comma — a visible change on every quote on the site. Formatting it means
+# first moving that punctuation somewhere wrapping can't reach.
+src/components/Quote.astro

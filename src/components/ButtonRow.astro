@@ -11,7 +11,9 @@ interface Props {
 const { margin = 'md', class: className } = Astro.props;
 ---
 
-<div class:list={['button-row', className]} data-margin={margin}><slot /></div>
+<div class:list={['button-row', className]} data-margin={margin}>
+  <slot />
+</div>
 
 <style>
   .button-row {

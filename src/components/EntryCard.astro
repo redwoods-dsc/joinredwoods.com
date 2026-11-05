@@ -36,41 +36,35 @@ const sameYear = isRange && date.getUTCFullYear() === endDate.getUTCFullYear();
 ---
 
 <a class:list={['entry-card', className]} href={href} data-tone={tone} {...rest}>
-  {
-    !isRange && (
-      <span class="entry-card__date">
-        <time class="entry-card__day" datetime={iso(date)}>
-          {day(date)}
-        </time>
-        <span class="entry-card__month">
-          {month(date)} {year(date)}
-        </span>
+  {!isRange && (
+    <span class="entry-card__date">
+      <time class="entry-card__day" datetime={iso(date)}>
+        {day(date)}
+      </time>
+      <span class="entry-card__month">
+        {month(date)} {year(date)}
       </span>
-    )
-  }
-  {
-    isRange && sameMonth && (
-      <span class="entry-card__date">
-        <span class="entry-card__day">{`${day(date)}–${day(endDate)}`}</span>
-        <span class="entry-card__month">
-          {month(date)} {year(endDate)}
-        </span>
+    </span>
+  )}
+  {isRange && sameMonth && (
+    <span class="entry-card__date">
+      <span class="entry-card__day">{`${day(date)}–${day(endDate)}`}</span>
+      <span class="entry-card__month">
+        {month(date)} {year(endDate)}
       </span>
-    )
-  }
-  {
-    isRange && !sameMonth && (
-      <span class="entry-card__date entry-card__date--split">
-        <time class="entry-card__split-line" datetime={iso(date)}>
-          <span class="entry-card__split-day">{day(date)}</span> {month(date)}
-          {sameYear ? '' : ` ${year(date)}`} &#8211;
-        </time>
-        <time class="entry-card__split-line" datetime={iso(endDate)}>
-          <span class="entry-card__split-day">{day(endDate)}</span> {month(endDate)} {year(endDate)}
-        </time>
-      </span>
-    )
-  }
+    </span>
+  )}
+  {isRange && !sameMonth && (
+    <span class="entry-card__date entry-card__date--split">
+      <time class="entry-card__split-line" datetime={iso(date)}>
+        <span class="entry-card__split-day">{day(date)}</span> {month(date)}
+        {sameYear ? '' : ` ${year(date)}`} &#8211;
+      </time>
+      <time class="entry-card__split-line" datetime={iso(endDate)}>
+        <span class="entry-card__split-day">{day(endDate)}</span> {month(endDate)} {year(endDate)}
+      </time>
+    </span>
+  )}
 
   <span class="entry-card__body">
     <span class="entry-card__secondary">{secondaryLabel}</span>
