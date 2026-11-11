@@ -129,27 +129,56 @@ To check what a page actually emits, run `pnpm build` and read the `<head>` of t
 
 ## ❓ Updating The Question
 
-[The Question](https://bencallahan.com/the-question) is the fortnightly community survey and live discussion Ben runs alongside Redwoods. The sidebar advertises it, and **`src/data/the-question.ts` is the only file you need to touch**:
+[The Question](https://bencallahan.com/the-question) is the fortnightly community survey and live discussion Ben runs alongside Redwoods, and the sidebar advertises the current one. **An episode is one Markdown file** in `src/content/episodes/`, named for its number:
 
-```ts
-export const currentQuestion: Question = {
-  number: 80,
-  question: 'How do we visualise design system health?',
-  cohosts: ['Robin Di Capua', 'Taylor Cashdan'],
-  episodeDate: new Date('2026-08-28T16:00:00Z'), // Fri 28 Aug 2026, noon Eastern
-  answerBy: new Date('2026-08-27T21:00:00Z'), // Wed 27 Aug 2026, 5pm Eastern
-  answerUrl: 'https://bit.ly/4wVx4fe',
-};
+```markdown
+---
+number: 83
+title: Design Systems Beyond Handoff
+date: 2026-10-29T16:00:00.000Z
+opensOn: 2026-10-25T16:00:00.000Z
+cohosts:
+  - name: Christophe Coutzoukis
+    url: https://bit.ly/4yJXtOF
+topic: the way collaboration is changing as everyone begins working in code
+answerBy: 2026-10-28T21:00:00.000Z
+answerUrl: https://bit.ly/4dYVT3b
+---
 ```
 
-Overwrite the fields and push. That's the whole job — **there is no step to take a question down.** `answerBy` is the only thing that decides which state the card shows: while it's in the future the card promotes the open question, and once it passes the card falls back to the mailing-list signup by itself. The link to past episodes is there either way.
+**That frontmatter is the same shape bencallahan.com uses**, field for field, so the file that describes an episode there is the file that describes it here — copy it across unedited. This site reads a handful of those fields and ignores the rest: the schema in `src/content.config.ts` validates the ones the card renders and passes the others through untouched, so a file carrying `links` or `summary` for the other site is still a valid file here.
 
-That fallback happens in the browser, because it has to. The site is statically built and nothing rebuilds it at the moment a survey closes, so `Layout.astro` writes a few lines of inline script into the document `<head>` that re-check the deadline and, if it has passed, set `data-question-expired` on `<html>`. `QuestionPromo.astro` has both states in the markup and swaps them on that attribute in CSS. Two things follow from that:
+Drop the new file in and push. The card shows **the newest episode by `date`**, so nothing has to be taken down, and the previous file can stay or go as you like. Dates are written in UTC, which is what the frontmatter parses unambiguously; the card converts to Eastern for display, so noon Eastern is `16:00:00.000Z` and 5pm Eastern is `21:00:00.000Z`.
 
-- The check runs **before any of the page body is parsed**, which is the point — deciding it further down the page would let a closed question flash on screen first. If you move that script, keep it in the head.
-- It only ever moves the card from open to closed, never the other way. A new question can't appear without a build, so there's nothing to undo.
+### What the card says, and when
 
-Both states are on the [style guide](http://localhost:4321/style-guide#question-promo) if you want to look at them side by side.
+What ships is the **resting card** — the one that's true at any moment:
+
+> **The Question**
+> Our next episode is right around the corner.
+> [ Check out The Question ]
+> See Previous Episodes →
+
+It names no date and makes no promise, which matters: it's what a reader without JavaScript sees, what a search engine indexes, and what anyone gets from a cached page built weeks earlier. **Nothing in it may say a survey is open.**
+
+An inline script in the document `<head>` then improves on it. While the survey is actually open it swaps in the open panel — "is Open", the episode, its co-hosts, and the Answer The Question button. Every other moment, the resting card stands:
+
+| What's true                                 | What shows       |
+| ------------------------------------------- | ---------------- |
+| The survey is open (`opensOn` → `answerBy`) | the open panel   |
+| The file is in but hasn't opened yet        | the resting card |
+| The deadline has passed                     | the resting card |
+| No JavaScript, or it failed                 | the resting card |
+
+The card has one resting panel and nothing different to say before a question opens than after one closes, so there are two states rather than three. Three things follow:
+
+- **The card can open itself**, on the morning a survey goes live, with no rebuild. The old version could only ever move from open to closed; this one reads the whole schedule.
+- **The build and the browser share one rule.** `questionSchedule()` in `src/lib/the-question.ts` returns the timeline as `{at, state}` pairs, and the script does nothing but look up the last step whose moment has passed. Two implementations of that rule would be two chances to disagree, so there is only one.
+- **The script runs in the head**, before the body is parsed, so a panel never flashes on screen. If you move it, keep it there.
+
+Omit `opensOn` and an episode is open as soon as its file exists. Omit `answerBy` or `answerUrl` — as an archived episode would — and the card is closed and stays closed.
+
+Both states are on the [style guide](http://localhost:4321/style-guide#question-promo), pinned side by side.
 
 ## 👥 Updating the member list
 

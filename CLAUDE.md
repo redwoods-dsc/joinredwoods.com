@@ -65,7 +65,9 @@ interface Props {
 const { tone = 'info' } = Astro.props;
 ---
 
-<div class="callout" data-tone={tone}><slot /></div>
+<div class="callout" data-tone={tone}>
+  <slot />
+</div>
 
 <style>
   .callout {
@@ -193,7 +195,8 @@ CSS attracts commentary, and this repo has had to be weeded once already. The ba
   - **`.github/workflows/sync-members.yml` runs the same script** weekly and on demand, and pushes a `sync-members` branch, leaving the pull request for a person to open from the link in the run summary — Actions can't create one unless the repository allows it to, and it shouldn't need to. It skips `pnpm install`, because the script imports nothing outside `node:` — give the script a dependency and that workflow needs an install step too.
   - **Rangers are kept by hand in `src/data/rangers.ts`, keyed by slug rather than name**, because Slack names don't always read as you'd type them (Robin is `robin-di-capua`). A renamed Ranger gets a new slug, so the entry has to follow. A slug that matches no listed member fails silently — which is also what a Ranger who hasn't opted in looks like — so check the page after editing it.
 
-- Anything whose correct state depends on the current time can't be settled by a static build alone. The Question solves this by baking in the build-time state and re-checking the deadline in an inline `<head>` script that can only move the card one way (open → closed) — see "Updating The Question" in the README before adding a second one of these.
+- Anything whose correct state depends on the current time can't be settled by a static build alone. The Question solves this by **shipping a card that is true at any moment** — no "open", no "closed", no future tense — and letting an inline `<head>` script add the state that applies. The schedule travels into that script as `{at, state}` pairs from `questionSchedule()`, which is also what the build reads: one rule, so the two can't disagree. See "Updating The Question" in the README before adding a second one of these.
+- `src/content/episodes/*.md` carries **the same frontmatter bencallahan.com's episodes collection takes**, so one file describes an episode on both sites. The schema here validates only the fields the card renders and `.passthrough()`es the rest — `z.object()` would drop them silently, and declaring all of them would be a second copy of that site's schema to keep in step. The validation is what the collection is for: raw YAML hands back `date` as a string, and an unvalidated typo renders as `Invalid Date`.
 - Build output is fully static — do not introduce a server runtime without discussion.
 
 ## 🔗 Related

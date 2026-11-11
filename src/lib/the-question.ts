@@ -1,28 +1,80 @@
-export interface Question {
-  /** Episode number, as Ben numbers them on bencallahan.com. */
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export type Episode = CollectionEntry<'episodes'>;
+
+/**
+ * What the card actually renders, which is a fraction of what an episode file
+ * holds. Typed on its own rather than as the collection entry, so the style
+ * guide can hand the card a literal without pretending it came off disk — an
+ * `as unknown as` cast there would switch off the checking that catches a
+ * renamed field.
+ */
+export interface QuestionEpisode {
   number: number;
-  /** The question itself, as posed to the community. */
-  question: string;
-  /** Guest co-host(s) for this episode. */
-  cohosts: string[];
-  /** When the live discussion happens. */
-  episodeDate: Date;
-  /** When the survey closes. The only thing that decides live vs. fallback. */
-  answerBy: Date;
-  /** Survey people answer to earn an invite to the live discussion. */
-  answerUrl: string;
+  part?: string;
+  title: string;
+  date: Date;
+  cohosts: { name: string; url: string }[];
+  opensOn?: Date;
+  answerBy?: Date;
+  answerUrl?: string;
 }
+
+/** The show runs on Eastern time, and its dates read that way wherever shown. */
+const EASTERN = 'America/New_York';
 
 export const PAST_EPISODES_URL = 'https://bencallahan.com/the-question';
 
 export const PREVIOUS_EPISODES_URL = 'https://bencallahan.com/the-question#previous-episodes';
 
-export const MAILING_LIST_URL = 'https://bencallahan.com/the-question#signup';
+/**
+ * Open while there's a survey to answer, closed the rest of the time — which
+ * covers both a question that has finished and one whose file is in but whose
+ * `opensOn` hasn't arrived. The card has one resting panel and says the same
+ * thing in either case, so it has no use for a third state.
+ */
+export type QuestionState = 'open' | 'closed';
 
 /**
- * A question is live until its survey closes. Deliberately the single rule the
- * build and the browser both apply, so the two can never disagree about state.
+ * The card's whole rule, written as the moments it changes at: each step
+ * applies from `at` until the next one. The build renders the card and the
+ * browser picks a state from this same array, so the two can't disagree —
+ * which is only guaranteed while there is one rule. This is it.
+ *
+ * `at` is epoch milliseconds, which survives the trip into an inline script
+ * with no parsing at the other end.
  */
-export function isLive(question: Question, now: Date = new Date()): boolean {
-  return question.answerBy.getTime() > now.getTime();
+export function questionSchedule(episode: QuestionEpisode): { at: number; state: QuestionState }[] {
+  const { answerBy, answerUrl, opensOn } = episode;
+
+  /* An archived episode never opens: no deadline, or nowhere to answer. */
+  if (!answerBy || !answerUrl) return [{ at: 0, state: 'closed' }];
+
+  return [
+    { at: 0, state: opensOn ? 'closed' : 'open' },
+    ...(opensOn ? [{ at: opensOn.getTime(), state: 'open' as const }] : []),
+    { at: answerBy.getTime(), state: 'closed' },
+  ];
 }
+
+/**
+ * The one the card is about: simply the newest. Drop the next episode's file
+ * in and it takes over, the same way it does on bencallahan.com — which is
+ * also why a repo holding one file and a repo holding eighty-five both work.
+ */
+export async function currentEpisode(): Promise<Episode | undefined> {
+  const episodes = await getCollection('episodes');
+  return episodes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
+}
+
+/** "083", the way the show numbers itself — not 83. */
+export const episodeNumber = ({ number, part }: QuestionEpisode) =>
+  `${String(number).padStart(3, '0')}${part ? ` Part ${part}` : ''}`;
+
+/** "October 29" */
+export const monthDay = (date: Date) =>
+  new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    timeZone: EASTERN,
+  }).format(date);
