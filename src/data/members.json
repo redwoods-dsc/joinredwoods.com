@@ -316,6 +316,12 @@
     "avatar": "amy-lam.png"
   },
   {
+    "slug": "ted-low",
+    "name": "Ted Low",
+    "avatarHash": "f39baaed2ff5",
+    "avatar": "ted-low.jpg"
+  },
+  {
     "slug": "pedro-martins",
     "name": "Pedro Martins",
     "title": "Design Systems Addict :)",
