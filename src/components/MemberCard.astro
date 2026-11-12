@@ -59,66 +59,54 @@ const stand =
 
 <li class="member">
   <div class="member__photo" data-drawn={photo ? undefined : ''}>
-    {
-      (photo ?? stand) && (
-        <img
-          src={(photo ?? stand)!.src}
-          alt=""
-          width="64"
-          height="64"
-          loading="lazy"
-          decoding="async"
-        />
-      )
-    }
+    {(photo ?? stand) && (
+      <img
+        src={(photo ?? stand)!.src}
+        alt=""
+        width="64"
+        height="64"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
   </div>
   <div class="member__body">
     <p class="member__name">
       {name}
-      {
-        isRanger(slug) && (
-          <span role="img" aria-label="Redwoods Ranger" title="Redwoods Ranger">
-            🌲
-          </span>
-        )
-      }
+      {isRanger(slug) && (
+        <span role="img" aria-label="Redwoods Ranger" title="Redwoods Ranger">
+          🌲
+        </span>
+      )}
     </p>
     <p class="member__title">{memberTitle({ title })}</p>
-    {
-      (linkedin || website) && (
-        <p class="member__links">
-          {linkedin && (
-            <a href={linkedin} aria-label={`${name} on LinkedIn`}>
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C21.6 8.65 22 11.1 22 14.3V21h-4v-5.9c0-1.4-.03-3.2-1.95-3.2-1.96 0-2.26 1.53-2.26 3.1V21h-4V9Z" />
-              </svg>
-            </a>
-          )}
-          {website && (
-            <a href={website} aria-label={`${name}'s website`}>
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                aria-hidden="true"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" />
-              </svg>
-            </a>
-          )}
-        </p>
-      )
-    }
+    {(linkedin || website) && (
+      <p class="member__links">
+        {linkedin && (
+          <a href={linkedin} aria-label={`${name} on LinkedIn`}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+              <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C21.6 8.65 22 11.1 22 14.3V21h-4v-5.9c0-1.4-.03-3.2-1.95-3.2-1.96 0-2.26 1.53-2.26 3.1V21h-4V9Z" />
+            </svg>
+          </a>
+        )}
+        {website && (
+          <a href={website} aria-label={`${name}'s website`}>
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18" />
+            </svg>
+          </a>
+        )}
+      </p>
+    )}
   </div>
 </li>
 

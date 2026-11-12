@@ -12,18 +12,22 @@ const { aside = true } = Astro.props;
 
 <div class="global-wrap">
   <div class="shell" data-aside={String(aside)}>
-    <div class="shell__header"><Header /></div>
-    <div class="shell__main">
-      <main class="main-wrap"><slot /></main>
+    <div class="shell__header">
+      <Header />
     </div>
-    {
-      aside && (
-        <aside class="shell__aside">
-          <Sidebar />
-        </aside>
-      )
-    }
-    <div class="shell__footer"><Footer /></div>
+    <div class="shell__main">
+      <main class="main-wrap">
+        <slot />
+      </main>
+    </div>
+    {aside && (
+      <aside class="shell__aside">
+        <Sidebar />
+      </aside>
+    )}
+    <div class="shell__footer">
+      <Footer />
+    </div>
   </div>
   <p class="copyright">&copy; 2026 Redwoods. Better humans. Better practitioners.</p>
 </div>

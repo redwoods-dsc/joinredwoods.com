@@ -37,22 +37,16 @@ const format = src.format === 'svg' ? undefined : 'webp';
 ---
 
 <figure class={className} data-border={border ? undefined : 'false'}>
-  {
-    link ? (
-      <a href={link}>
-        <Image src={src} alt={imageAlt} format={format} {...rest} />
-      </a>
-    ) : (
+  {link ? (
+    <a href={link}>
       <Image src={src} alt={imageAlt} format={format} {...rest} />
-    )
-  }
-  {
-    captionText && (
-      <figcaption aria-hidden={captionRepeatsLinkName ? 'true' : undefined}>
-        {captionText}
-      </figcaption>
-    )
-  }
+    </a>
+  ) : (
+    <Image src={src} alt={imageAlt} format={format} {...rest} />
+  )}
+  {captionText && (
+    <figcaption aria-hidden={captionRepeatsLinkName ? 'true' : undefined}>{captionText}</figcaption>
+  )}
 </figure>
 
 <style>

@@ -14,18 +14,16 @@ const tree = buildTocTree(headings, { minDepth, maxDepth });
 const label = 'On this page';
 ---
 
-{
-  tree.length > 0 && (
-    <nav class="toc" aria-label="Table of contents" data-toc>
-      <details class="toc__disclosure">
-        <summary class="toc__summary">{label}</summary>
-        <div class="toc__body">
-          <TocList nodes={tree} />
-        </div>
-      </details>
-    </nav>
-  )
-}
+{tree.length > 0 && (
+  <nav class="toc" aria-label="Table of contents" data-toc>
+    <details class="toc__disclosure">
+      <summary class="toc__summary">{label}</summary>
+      <div class="toc__body">
+        <TocList nodes={tree} />
+      </div>
+    </details>
+  </nav>
+)}
 
 <style>
   .toc {
