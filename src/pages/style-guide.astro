@@ -439,7 +439,7 @@ const sections = [
       <div class="section__head">
         <h2>Blockquotes</h2>
         <p>
-          A redwood runs down the start edge in <code>--color-accent</code>, masked from the
+          A redwood runs down the start edge in <code>--color-green</code>, masked from the
           <code>tree-*.svg</code> pieces so the trunk stretches with the quote. Shorter quotes drop
           the lower crown, then the branches. Styled in <code>base.css</code>, so a Markdown
           <code>&gt;</code> quote and a <code>&lt;Quote&gt;</code> get the same treatment.
@@ -452,16 +452,13 @@ const sections = [
           it's a label about the quote, not part of it — while <code>&lt;cite&gt;</code> keeps its
           own italic.
         </p>
-        <p>
-          Past 1700px, where the main column runs wider than the measure, the quoted text holds the
-          same measure as the prose and only the tree hangs outside it — see Layout.
-        </p>
       </div>
       <p>
         The tree switches on the quote's own height, not the viewport. Below
-        <code>--crown-2-min</code> (about 189px) the lower crown drops out and the branches move up
-        under the top crown; below <code>--branch-min</code> (about 147px) the branches go too. The
-        trunk stretches in every case. The examples below run short, medium and full.
+        <code>--crown-2-min</code> (190px at the default root size) the lower crown drops out and
+        the branches move up under the top crown; below <code>--branch-min</code> (148px) the
+        branches go too. The trunk stretches in every case. The examples below run short, medium and
+        full.
       </p>
       <blockquote>
         <p>The best time to plant a tree was twenty years ago. The second best time is now.</p>
