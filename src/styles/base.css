@@ -132,16 +132,16 @@ ol {
  * the boundary between the two.
  */
 blockquote {
-  /* Each height is its SVG's aspect ratio at the tree's 1rem width; changing
-     --quote-rule-width means rescaling these by hand. */
-  --crown-h: 3.125rem;
-  --trunk-fixed-h: 4rem;
-  --trunk-w: 0.24rem;
-  --branch-1: 0.5rem;
-  --branch-2: 1.5rem;
-  --branch-1-h: 0.48rem;
-  --branch-2-h: 0.54rem;
-  --crown-2-h: 2.67rem;
+  /* One unit of the SVGs' 16-wide viewBox, so each size below reads straight off
+     its file and the whole tree still scales with the root font size. */
+  --tree-unit: calc(var(--quote-rule-width) / 16);
+  --crown-h: calc(50 * var(--tree-unit));
+  --crown-2-h: calc(42 * var(--tree-unit));
+  --branch-1: calc(8 * var(--tree-unit));
+  --branch-2: calc(24 * var(--tree-unit));
+  --branch-1-h: calc(8 * var(--tree-unit));
+  --branch-2-h: calc(9 * var(--tree-unit));
+  --trunk-fixed-h: calc(65 * var(--tree-unit));
   /* Shorter quotes drop crown 2 (lifting the branches into its place), then the
      branches too. The `* 1000` in the clamps makes each a switch, not a squash. */
   --crown-2-min: calc(
@@ -167,12 +167,12 @@ blockquote::before {
 
   background-color: var(--color-green); /* The masks cut the tree out of this fill. */
   mask-repeat: no-repeat;
-  /* One layer per piece; the gradient is the stretching trunk, which is only a
-     rectangle. mask-position and mask-size are read by index, so keep the order. */
+  /* One layer per piece. mask-position and mask-size are read by index, so keep
+     the order. */
   mask-image:
     url('../assets/tree-crown-1.svg'), url('../assets/tree-branch-1.svg'),
     url('../assets/tree-branch-2.svg'), url('../assets/tree-crown-2.svg'),
-    linear-gradient(#000, #000), url('../assets/tree-trunk-fixed.svg');
+    url('../assets/tree-trunk.svg'), url('../assets/tree-trunk-fixed.svg');
 
   /* A percentage here is the box height minus the layer's own, not the box
      height, which is why the branch clamps add the branch's height back. */
@@ -197,8 +197,9 @@ blockquote::before {
     var(--quote-rule-width) clamp(0px, (100% - var(--branch-min)) * 1000, var(--branch-1-h)),
     var(--quote-rule-width) clamp(0px, (100% - var(--branch-min)) * 1000, var(--branch-2-h)),
     var(--quote-rule-width) clamp(0px, (100% - var(--crown-2-min)) * 1000, var(--crown-2-h)),
-    /* Runs 2px into the trunk base so rounding can't open a hairline where they meet. */
-    var(--trunk-w) max(0px, calc(100% - var(--crown-h) - var(--trunk-fixed-h) + 2px)),
+    /* Full width, not trunk width, so its edges rasterise exactly like the base's
+       below. Runs 2px into the base so rounding can't open a hairline between them. */
+    var(--quote-rule-width) max(0px, calc(100% - var(--crown-h) - var(--trunk-fixed-h) + 2px)),
     var(--quote-rule-width) var(--trunk-fixed-h);
 }
 

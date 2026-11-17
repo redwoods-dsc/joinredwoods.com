@@ -81,8 +81,8 @@
   --space-4xl: 96px;
 
   --radius-xs: 2px;
-  /* The tree down a blockquote's start edge. A token because the wide layout
-     has to subtract it to hang the tree outside the measure. */
+  /* The tree down a blockquote's start edge. rem, not px, so the tree keeps pace
+     with the quote's text when someone raises their default font size. */
   --quote-rule-width: 1rem;
 
   --radius-sm: 4px;
